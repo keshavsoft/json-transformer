@@ -1,165 +1,389 @@
-# json-to-spec
+JSON Transformer
 
-Pure JSON specification compiler for declarative UI generation.
+A practical JSON-to-JSON transformation engine.
 
-This project takes a structured specification and data payload, resolves dynamic values, expands iteration, and returns a final JSON spec tree that can be rendered by downstream tools such as `json-to-dom`.
+The idea is simple:
 
-🌐 **Documentation & Directory Hub**: [https://keshavsoft.github.io/json-to-spec/](https://keshavsoft.github.io/json-to-spec/)  
-🏷️ **New Documentation & Directory Hub**: [https://keshavsoft.github.io/json-to-spec/newDocumentation/](https://keshavsoft.github.io/json-to-spec/newDocumentation/)      
+SOURCE JSON
+    +
+TRANSFORMATION JSON
+    │
+    ▼
+OUTPUT JSON
 
+The three have different responsibilities:
 
-## What this repo does
+- Source JSON is the data.
+- Transformation JSON is the instruction.
+- Output JSON is the result.
 
-`json-to-spec` is not a renderer. It is a compiler.
+The source can belong to another system. The transformation belongs to the application. The output belongs to the consumer.
 
-It takes two inputs:
+---
 
-- `specJson`: the blueprint describing the output structure
-- `dataJson`: the runtime data used to fill and expand the structure
+The Mental Model
 
-Then it transforms that into a final, concrete JSON specification ready to render.
+Think of the transformation as an output recipe.
 
-Core behaviors include:
+Source JSON
 
-- resolving values from nested data
-- replacing `${...}` expressions within strings and attributes
-- iterating arrays and objects with template-based expansion
-- producing a serializable object tree for downstream rendering
+{
+  "name": "Keshav",
+  "city": "Kakinada",
+  "phone": "9999999999",
+  "internalCode": "SECRET"
+}
 
-## Install
+This is simply data.
 
-```bash
-npm install
-```
+Transformation JSON
 
-## Run locally
-
-```bash
-npm run dev
-```
-
-This starts the Vite dev server for the project demo and sample pages.
-
-## Build
-
-```bash
-npm run build
-```
-
-## API
-
-The package entry exports a default function named `buildSpecElement`.
-
-```js
-import buildSpecElement from "json-to-spec";
-
-const structure = {
-  tagName: "div",
-  attributes: { class: "card" },
-  children: [
-    { tagName: "h2", textContent: "${title}" },
-    {
-      jsonToSpec: {
-        operation: "loopArray",
-        source: "items",
-        template: {
-          tagName: "li",
-          textContent: "${name}"
+const transformation = {
+    mapping: {
+        item: {
+            customerName: "name",
+            customerCity: "city"
         }
-      }
+    }
+};
+
+This is the instruction.
+
+It says:
+
+«Create "customerName" using "name", and create "customerCity" using "city".»
+
+Output JSON
+
+{
+  "customerName": "Keshav",
+  "customerCity": "Kakinada"
+}
+
+The source has not been modified.
+
+The transformation has decided what the output should look like.
+
+---
+
+The Core Rule
+
+SOURCE JSON
+    = DATA
+
+TRANSFORMATION JSON
+    = INSTRUCTIONS
+
+OUTPUT JSON
+    = RESULT
+
+This distinction is the foundation of the project.
+
+---
+
+Basic Usage
+
+import transformer from "json-traversal";
+
+const source = {
+    name: "Keshav",
+    city: "Kakinada"
+};
+
+const transformation = {
+    mapping: {
+        item: {
+            customerName: "name",
+            customerCity: "city"
+        }
+    }
+};
+
+const result = transformer.transform(source, transformation);
+
+console.log(result);
+
+Result:
+
+{
+  "customerName": "Keshav",
+  "customerCity": "Kakinada"
+}
+
+---
+
+The Transformation Defines the Output
+
+The source does not have to look like the output.
+
+A source can contain:
+
+{
+  "id": 1001,
+  "name": "Keshav",
+  "city": "Kakinada",
+  "phone": "9999999999",
+  "internalCode": "SECRET"
+}
+
+while the transformation selects only:
+
+{
+  "id": "id",
+  "name": "name",
+  "city": "city"
+}
+
+The result becomes:
+
+{
+  "id": 1001,
+  "name": "Keshav",
+  "city": "Kakinada"
+}
+
+Unmentioned source properties are not automatically copied.
+
+---
+
+The Output Can Have a Different Shape
+
+The transformation can create structure that does not exist in the source.
+
+Source:
+
+{
+  "name": "Keshav",
+  "city": "Kakinada"
+}
+
+Transformation:
+
+{
+    mapping: {
+        item: {
+            customer: {
+                item: {
+                    name: "name",
+                    location: {
+                        item: {
+                            city: "city"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+Output:
+
+{
+  "customer": {
+    "name": "Keshav",
+    "location": {
+      "city": "Kakinada"
+    }
+  }
+}
+
+The source provided the data.
+
+The transformation created the shape.
+
+---
+
+Arrays
+
+The same transformation model works with collections.
+
+Source:
+
+{
+  "items": [
+    { "name": "ROPE", "amount": 260 },
+    { "name": "CABLE", "amount": 540 }
+  ]
+}
+
+Transformation:
+
+{
+    mapping: {
+        item: {
+            products: [
+                {
+                    list: "items",
+                    item: {
+                        productName: "name",
+                        amount: "amount"
+                    }
+                }
+            ]
+        }
+    }
+}
+
+Output:
+
+{
+  "products": [
+    {
+      "productName": "ROPE",
+      "amount": 260
+    },
+    {
+      "productName": "CABLE",
+      "amount": 540
     }
   ]
-};
+}
 
-const data = {
-  title: "Products",
-  items: [
-    { name: "Laptop" },
-    { name: "Phone" },
-    { name: "Tablet" }
+The important part is that "list" selects the source collection and "item" describes how each element becomes output.
+
+The same idea can be composed again for nested arrays.
+
+---
+
+Scalar Arrays
+
+The source collection does not have to contain objects.
+
+For example:
+
+{
+  "LedgerName": [
+    "Cash",
+    "Sales",
+    "Purchase"
   ]
-};
+}
 
-const spec = buildSpecElement({
-  specJson: structure,
-  dataJson: data
-});
+A list can process those values directly.
 
-console.log(spec);
-```
+Within the current item:
 
-### Notes
+""
 
-- The function is implemented in `src/v25/index.js`
-- Supported loop operations are currently `loopArray` and `loopObject`
-- The output is a JSON spec structure, not a DOM element by itself
+represents the current source value.
 
-## Browser usage
+Therefore the same mechanism can process scalar collections without requiring the source to be changed into artificial objects.
 
-The project includes browser samples that render the output using `json-to-tag`.
+---
 
-```html
-<script src="https://keshavsoft.github.io/json-to-tag/dist/v4/min.js"></script>
-<script type="module">
-  import buildSpecElement from "./src/index.js";
+Tally and XML-Shaped JSON
 
-  const spec = {
-    tagName: "div",
-    children: [{ tagName: "span", textContent: "Hello" }]
-  };
+The transformer is useful with JSON produced from XML/Tally-style structures.
 
-  const element = buildSpecElement({ specJson: spec, dataJson: {} });
-  document.body.appendChild(window.ks.jsonToTag.buildSpecElement(element));
-</script>
-```
+A source may contain keys such as:
 
-## Repository structure
+ALLINVENTORYENTRIES.LIST
+LEDGERENTRIES.LIST
+LEDGERNAME.#text
+AMOUNT.#text
 
-```text
-.
-├── src/                  # Compiler source and published entry
-├── samples/              # Example apps and sample data
-├── docs/                 # Static documentation pages
-├── test/                 # Local/legacy test pages
-├── index.html            # Demo entry page
-├── index.js              # Top-level module export
-├── package.json          # Package metadata and scripts
-├── vite.config.js        # Vite config
-├── README.md             # Project documentation
-└── LICENSE               # If present in the repo
-```
+The transformation can describe the application-facing result:
 
-## Current implementation notes
+{
+    mapping: {
+        item: {
+            ledger: [
+                {
+                    list: "LEDGERENTRIES.LIST",
+                    item: {
+                        name: "LEDGERNAME.#text",
+                        amount: "AMOUNT.#text"
+                    }
+                }
+            ]
+        }
+    }
+}
 
-The package entry points to the latest compiler version:
+The Tally structure remains on the source side.
 
-```js
-export { default } from "./src/v25/index.js";
-export * from "./src/v25/index.js";
-```
+The application receives the shape described by the transformation.
 
-This means the current public API is effectively built around the logic in `src/v25`.
+Tally is therefore a source story, not the definition of the transformer itself.
 
-## Documentation
+---
 
-The repo includes documentation pages under `docs/`, including:
+Mapping Language
 
-- `docs/index.html`
-- `docs/pages/what.html`
-- `docs/pages/why.html`
-- `docs/pages/how-it-works.html`
-- `docs/pages/architecture.html`
+The transformation language provides several mapping forms:
 
-## Contributing
+Mapping| Purpose
+"item"| Describe an output object
+"list"| Select a source collection and repeat an item mapping
+"objectify"| Represent a source value through an array-oriented mapping
+"flat"| Select one indexed element from a source array
+"collect"| Compose array results
+"$value"| Provide a literal value
+""""| Use the current source value
+"(TYPE)"| Apply a supported type conversion
+"{ACTION}"| Apply a supported action
+"^path"| Resolve against the root source
 
-1. Clone the repo
-2. Install dependencies with `npm install`
-3. Run the demo with `npm run dev`
-4. Update source files in `src/` and sample files in `samples/`
-5. Validate with `npm run build`
+See ""docs/mapping-language.md"" (docs/mapping-language.md) for the detailed language.
 
-## License
+---
 
-MIT
+Architecture
 
-This project is maintained by KeshavSoft and published under the MIT license.
+Conceptually:
+
+transform(source, transformation)
+              │
+              ▼
+       mapping traversal
+              │
+       ┌──────┼──────┐
+       ▼      ▼      ▼
+     object  array   value
+       │      │       │
+       │      │       ▼
+       │      │   resolve value
+       │      │       │
+       │      │       ▼
+       │      │   resolve path
+       │      │
+       │      ▼
+       │   source collection
+       │
+       ▼
+ recursively traverse
+ child mappings
+              │
+              ▼
+          OUTPUT JSON
+
+The responsibilities are intentionally separated:
+
+- "traverse.js" understands the transformation structure.
+- "resolve.js" understands source paths.
+- "value.js" resolves mapping values.
+- "actions.js" handles supported actions and conversions.
+- "constants.js" contains mapping syntax identifiers.
+
+---
+
+Documentation
+
+Start with:
+
+- ""docs/concepts.md"" (docs/concepts.md) — the central mental model.
+- ""docs/architecture.md"" (docs/architecture.md) — how the engine works.
+- ""docs/mapping-language.md"" (docs/mapping-language.md) — transformation syntax.
+- ""docs/arrays.md"" (docs/arrays.md) — arrays and nested arrays.
+- ""docs/path-resolution.md"" (docs/path-resolution.md) — source-path resolution.
+- ""docs/tally.md"" (docs/tally.md) — Tally/XML-shaped source data.
+- ""docs/examples.md"" (docs/examples.md) — progressive examples.
+- ""docs/maintenance.md"" (docs/maintenance.md) — rules for evolving the engine.
+
+---
+
+One Sentence
+
+«JSON Transformer takes source data and a transformation recipe and produces output JSON.»
+
+Everything else in the project exists to make that transformation understandable, composable, and reliable.
