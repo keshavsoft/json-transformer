@@ -1,0 +1,102 @@
+{
+    "transform": {
+        "VOUCHER": {
+            "alterKey": "Sales"
+        }
+    },
+    "Sales": {
+        "transform": {
+            "DATE": {
+                "alterKey": "Date",
+                "valueKey": "#text"
+            },
+            "VOUCHERTYPENAME": {
+                "alterKey": "VoucherTypeName"
+            },
+            "PARTYLEDGERNAME": {
+                "alterKey": "PartyLedgerName",
+                "valueKey": "#text"
+            },
+            "VOUCHERNUMBER": {
+                "alterKey": "VoucherNumber"
+            },
+            "REFERENCE": {
+                "alterKey": "Reference",
+                "valueKey": "#text"
+            },
+            "ISDEEMEDPOSITIVE": {
+                "alterKey": "IsDeemedPositive",
+                "valueKey": "#text"
+            },
+            "ISINVOICE": {
+                "alterKey": "IsInvoice"
+            },
+            "MASTERID": {
+                "alterKey": "MasterId",
+                "valueKey": "#text"
+            },
+            "AMOUNT": {
+                "alterKey": "Amount",
+                "valueKey": "#text"
+            },
+            "ALLINVENTORYENTRIES.LIST": {
+                "alterKey": "InventoryEntries",
+                "transform": {
+                    "STOCKITEMNAME": {
+                        "alterKey": "StockItemName"
+                    },
+                    "ISDEEMEDPOSITIVE": {
+                        "alterKey": "IsDeemedPositive"
+                    },
+                    "RATE": {
+                        "alterKey": "Rate"
+                    },
+                    "AMOUNT": {
+                        "alterKey": "Amount"
+                    },
+                    "ACTUALQTY": {
+                        "alterKey": "ActualQty"
+                    },
+                    "BILLEDQTY": {
+                        "alterKey": "BilledQty"
+                    },
+                    "BATCHALLOCATIONS.LIST": {
+                        "alterKey": "BatchAllocations",
+                        "transform": {
+                            "GODOWNNAME": {
+                                "alterKey": "GodownName"
+                            },
+                            "BATCHNAME": {
+                                "alterKey": "BatchName"
+                            },
+                            "DESTINATIONGODOWNNAME": {
+                                "alterKey": "DestinationGodownName"
+                            },
+                            "BATCHID": {
+                                "alterKey": "BatchId",
+                                "valueKey": "#text"
+                            },
+                            "BATCHDISCOUNT": {
+                                "alterKey": "BatchDiscount",
+                                "valueKey": "#text"
+                            },
+                            "AMOUNT": {
+                                "alterKey": "Amount"
+                            },
+                            "ACTUALQTY": {
+                                "alterKey": "ActualQty"
+                            },
+                            "BILLEDQTY": {
+                                "alterKey": "BilledQty"
+                            },
+                            "BATCHRATE": {
+                                "alterKey": "BatchRate",
+                                "valueKey": "#text"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

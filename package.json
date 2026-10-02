@@ -1,6 +1,6 @@
 {
   "name": "@keshavsoft/json-transformer",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "Pure JSON Specification Compiler with jsonToSpec namespace: (structure, data) -> Spec JSON",
   "main": "./src/index.js",
   "module": "./src/index.js",
