@@ -3,6 +3,9 @@
     "transform": {
       "@_NAME": {
         "alterKey": "Name"
+      },
+      "@_RESERVEDNAME": {
+        "alterKey": "ReserveName"
       }
     }
   }

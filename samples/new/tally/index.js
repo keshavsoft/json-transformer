@@ -6,7 +6,7 @@ import data from "./data.json" with {type: 'json'};
 const start = () => {
   try {
     let specAsJsonToDom = buildSpecElement(structure, data);
-    console.log("specAsJsonToDom : ", specAsJsonToDom);
+    console.log("---------- : ", specAsJsonToDom);
   } catch (err) {
     console.log("error : ", err);
   }
