@@ -1,0 +1,42 @@
+{
+    "transform": {
+        "LEDGER": {
+            "alterKey": "Ledgers"
+        }
+    },
+    "Ledgers": {
+        "transform": {
+            "@_NAME": {
+                "alterKey": "Name"
+            },
+            "@_RESERVEDNAME": {
+                "alterKey": "ReserveName"
+            },
+            "LEDGSTREGDETAILS.LIST": {
+                "alterKey": "GstDetails",
+                "transform": {
+                    "GSTIN": {
+                        "alterKey": "GSTIN",
+                        "valueKey": "#text"
+                    },
+                    "GSTREGISTRATIONTYPE": {
+                        "alterKey": "RegistrationType",
+                        "valueKey": "#text"
+                    },
+                    "STATE": {
+                        "alterKey": "State",
+                        "valueKey": "#text"
+                    },
+                    "PLACEOFSUPPLY": {
+                        "alterKey": "PlaceOfSupply",
+                        "valueKey": "#text"
+                    },
+                    "APPLICABLEFROM": {
+                        "alterKey": "ApplicableFrom",
+                        "valueKey": "#text"
+                    }
+                }
+            }
+        }
+    }
+}

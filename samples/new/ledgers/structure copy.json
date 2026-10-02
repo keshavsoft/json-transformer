@@ -1,0 +1,2223 @@
+{
+    "STOCKITEM": [
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "263 Nos",
+                "OPENINGVALUE": -24072.39,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "AABL 2-Elec Goods-nos-8513-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "24 Nos",
+                "OPENINGVALUE": -2248.05,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Adaptor-Nos-8504-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "1 Nos",
+                "OPENINGVALUE": -2441.55,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "ADFL-300W-LED Flood Light-Nos-9405-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "1 Nos",
+                "OPENINGVALUE": -543.07,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "ADFL-50W-LED Flood Light-Nos-9405-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "827 Nos",
+                "OPENINGVALUE": -22970.11,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Adhesive Tapes-Nos-3919-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "BATCHALLOCATIONS.LIST": "",
+            "@_NAME": "ADSL-100W-LED Lights-Nos-9405-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "BATCHALLOCATIONS.LIST": "",
+            "@_NAME": "ALMR02-Electrical Goods-Nos-8516-18%-Bat",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "5 Nos",
+                "OPENINGVALUE": -1802.4,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "AS04/06 (Solar PV Module)-Nos-8541-12%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "BATCHALLOCATIONS.LIST": "",
+            "@_NAME": "Basin-Nos-3923-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "66 Nos",
+                "OPENINGVALUE": -7796.96,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Basins-Nos-3924-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "502 Nos",
+                "OPENINGVALUE": -9386.45,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Batteries-Nos-8506-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "BATCHALLOCATIONS.LIST": "",
+            "@_NAME": "Batteries-Nos-8507-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "14 Nos",
+                "OPENINGVALUE": -1964.76,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Beam-Elec Goods-nos-8513-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "1 Nos",
+                "OPENINGVALUE": -65,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Bike Covers-Nos-8714-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "1833 Nos",
+                "OPENINGVALUE": -51321.67,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Bobbins-Nos-5404-12%-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "115.490 kgs",
+                "OPENINGVALUE": -13490.55,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Braided Rope-Kgs-5902-12%-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Mts",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "356.50 Mts",
+                "OPENINGVALUE": -49910,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Cc Fabrics-Mtr-5209-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "479 Nos",
+                "OPENINGVALUE": -14370,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "C.Iron Rods-Pcs-7214-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "1966 Nos",
+                "OPENINGVALUE": -113232.69,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Cotton Thread Nos 5205 5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "326 Nos",
+                "OPENINGVALUE": -3978.3,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Counting Plates-No-3923-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "21 Nos",
+                "OPENINGVALUE": -2923.23,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Covers-Nos-3920-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "BATCHALLOCATIONS.LIST": "",
+            "@_NAME": "DBEX 4-Elec Goods-Nos-8513-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "150 Nos",
+                "OPENINGVALUE": -24070.8,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "DBR 1-Elec Goods-nos-8513-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Mts",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "8.00 Mts",
+                "OPENINGVALUE": -626.61,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Dura Protector-Mtr-3920-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Mts",
+                "@_TYPE": "String"
+            },
+            "BATCHALLOCATIONS.LIST": "",
+            "@_NAME": "Dura Protector-Mtr-3921-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "110.690 kgs",
+                "OPENINGVALUE": -44279.29,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Dyes & Chemicals-Kgs-3204-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "1228 Nos",
+                "OPENINGVALUE": -149642.15,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Elect Goods-Lights-Nos-8513-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "50 Nos",
+                "OPENINGVALUE": -3000,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Face Shield-Nos-6506-12%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "175062 Nos",
+                "OPENINGVALUE": -180313.86,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Fishing Hooks-Nos-9507-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": " Not Applicable",
+                "@_TYPE": "String"
+            },
+            "BATCHALLOCATIONS.LIST": "",
+            "@_NAME": "Fishing Material-Nos-7325-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "305.285 kgs",
+                "OPENINGVALUE": -53350,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Fishing Tackle Kgs-9507-12%-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "175921 Nos",
+                "OPENINGVALUE": -368862.36,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Fishing Tackle-Nos-9507-12%-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "21382 Nos",
+                "OPENINGVALUE": -95149.9,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Fishing Tackle Nos-9507 5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "80.900 kgs",
+                "OPENINGVALUE": -27067.21,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Fishing Tackles-Kgs-9507-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "9831 Nos",
+                "OPENINGVALUE": -26506.83,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Fishnet Float-Nos-9507 90-12%-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "18850.770 kgs",
+                "OPENINGVALUE": -3075503.13,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Fishnets Kgs-5608-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "222.015 kgs",
+                "OPENINGVALUE": -35522.4,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Float-Kgs-3926-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "967 Nos",
+                "OPENINGVALUE": -16772.56,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Floats-Pcs-3926-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "BATCHALLOCATIONS.LIST": "",
+            "@_NAME": "Fruit Bags-No-3923-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "34 Nos",
+                "OPENINGVALUE": -46538,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Furniture Parts-Nos-9403-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Mts",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "167.25 Mts",
+                "OPENINGVALUE": -27414.46,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Garden Mesh-Mts-3925 18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "2 Nos",
+                "OPENINGVALUE": -21753.14,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Garmin Gps-Nos-8526-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Mts",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "68.00 Mts",
+                "OPENINGVALUE": -15300,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Geonet121-Mtr-3926-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Mts",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "1126.50 Mts",
+                "OPENINGVALUE": -9655.91,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Gum Tape-Mtr-5906-12% (Velcro)-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "BATCHALLOCATIONS.LIST": "",
+            "@_NAME": "Hand Emboidery Thread-Nos-5403-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "1.320 kgs",
+                "OPENINGVALUE": -251.69,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "HDPE Woven Fabric-Kgs-3920-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "266.185 kgs",
+                "OPENINGVALUE": -45877.92,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Hdpe Woven Fabric-Kgs-3926-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "99 Nos",
+                "OPENINGVALUE": -215005.6,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Insulated Box-Nos-3923-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "ft",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "759.00 ft",
+                "OPENINGVALUE": -5999.07,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Iron Coated Wire Mesh-Sft-7314-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Mts",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "8674.99 Mts",
+                "OPENINGVALUE": -125779.89,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Knitted Fabrics Mtr-6001-5% (RMH)",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "9827 Nos",
+                "OPENINGVALUE": -110108.88,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Knitted Hand Gloves Nos-6116-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "3.950 kgs",
+                "OPENINGVALUE": -434.5,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Lead-7802-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "27938 Nos",
+                "OPENINGVALUE": -13969,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Lead Nos-7806 18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "5155 Nos",
+                "OPENINGVALUE": -80021.79,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Life Buoy Nos-8907-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "18 Nos",
+                "OPENINGVALUE": -8100,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Life Jacket Light-Nos-8513-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "93 Nos",
+                "OPENINGVALUE": -51034.79,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Life Jacket-Nos-6307-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "12 Nos",
+                "OPENINGVALUE": -5912.08,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Life Jackets Nos-6307 5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "81 Nos",
+                "OPENINGVALUE": -14085.9,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Luster-Elec Goods-Nos-9405-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "131 Nos",
+                "OPENINGVALUE": -549.41,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Mini Cutters-Nos-8214-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "8514.540 kgs",
+                "OPENINGVALUE": -1012378.81,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Monofilament Yarn Kgs-3916 18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "266.680 kgs",
+                "OPENINGVALUE": -41241.13,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Monofil Yarn-Kgs-32061900-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "BATCHALLOCATIONS.LIST": "",
+            "@_NAME": "Monofil Yarn-Kgs-3907-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "4104.657 kgs",
+                "OPENINGVALUE": -520675.74,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Monofil Yarn-Kgs-5404-12%-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "173 Nos",
+                "OPENINGVALUE": -1326.56,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Monofil Yarn-Nos-5405-12%-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "ft",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "2138.00 ft",
+                "OPENINGVALUE": -6568.11,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Mosq Fiber Mesh-Sft-7019-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "ft",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "1765.00 ft",
+                "OPENINGVALUE": -6190.74,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Mosquito Mesh-Sft-3926-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "10 Nos",
+                "OPENINGVALUE": -625.07,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Mosquito Nets-Nos-6304-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "23 Nos",
+                "OPENINGVALUE": -8405.82,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Nano Eco-Elec Goods-Nos-8513-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "6 Nos",
+                "OPENINGVALUE": -3637.98,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Nano-Elec Goods-Nos-8513-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Mts",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "5379.00 Mts",
+                "OPENINGVALUE": -28317.21,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Narr Wov Fabric-Hook & Loop Mts-5806-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "950.172 kgs",
+                "OPENINGVALUE": -268897.6,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "N.F.Twine-Kgs-5402-12%-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Mts",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "1318.50 Mts",
+                "OPENINGVALUE": -72293.36,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Non Woven Fabric-Mts-5603-12%-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "30 Nos",
+                "OPENINGVALUE": -7200,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Non Woven PPE Kit-Nos-6216-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "39 Nos",
+                "OPENINGVALUE": -1888.72,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Nylon Fishnet Twine Nos-5402 12%-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "BATCHALLOCATIONS.LIST": "",
+            "@_NAME": "Nylon Sea Anchor-Nos-8804-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "173 Nos",
+                "OPENINGVALUE": -22237.65,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Packing Strap Nos-3920",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "18 Nos",
+                "OPENINGVALUE": -4063.68,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Picker Head Light-Electrical Goods-Nos-8512-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "928.850 kgs",
+                "OPENINGVALUE": -89085.08,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Plastic Sutali-3923 18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "205 Nos",
+                "OPENINGVALUE": -82357.23,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Plastic Trays-3923-18%-Nos (Nk)",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Mts",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "309.00 Mts",
+                "OPENINGVALUE": -109520,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Polyester Screen Mesh-Mtr-591120-12%-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "10230 Nos",
+                "OPENINGVALUE": -8389.01,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Polyester Tubes-Nos-3917-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "115500 Nos",
+                "OPENINGVALUE": -91245,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Polyester Tubes-Nos-5609-12%-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "2 Nos",
+                "OPENINGVALUE": -6256,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Poly Form Buoys-Nos-4016-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "225.117 kgs",
+                "OPENINGVALUE": -25445.18,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Polythin Sheet Kgs-3920-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Mts",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "378.65 Mts",
+                "OPENINGVALUE": -43894.08,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Pvc Flooring Mat-Mtr-3918-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "5 Nos",
+                "OPENINGVALUE": -4271.2,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Ranger-Elec Goods-Nos-8513-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "12 Nos",
+                "OPENINGVALUE": -5850.36,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "RHL-2-Electric Goods-Nos-8512-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "1 Nos",
+                "OPENINGVALUE": -671.19,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Rider-Elec Goods-Nos-8513-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "6358.851 kgs",
+                "OPENINGVALUE": -963985.47,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Rope-Kgs-5607-12%-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "11 Nos",
+                "OPENINGVALUE": -2750,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Rubber Sheet-Nos-4008-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "11 Nos",
+                "OPENINGVALUE": -702.76,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Scoops-Nos-3223-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "411.916 kgs",
+                "OPENINGVALUE": -110758.94,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Sewing Thread-Kgs-5401-12%-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "510 Nos",
+                "OPENINGVALUE": -21823.01,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Sewing Thread Nos-5401-12%-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "383.370 kgs",
+                "OPENINGVALUE": -55641.15,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Shadenet Kgs(Knittedfabric)-6005-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Mts",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "47018.67 Mts",
+                "OPENINGVALUE": -826333.85,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Shadenet Mtrs(Warf Knitted Fabric)-6005-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Mts",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "5855.63 Mts",
+                "OPENINGVALUE": -10622.87,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Smart Pack Net-Mtrs-3923-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "1442 Nos",
+                "OPENINGVALUE": -72200.84,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Steel Wire-Nos-7314-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "13.930 kgs",
+                "OPENINGVALUE": -1950.2,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Stretch Film-Wrap-Kgs-3920-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "0.005 kgs",
+                "OPENINGVALUE": -0.34,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Sutali Kgs-5607-12%-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "1777.510 kgs",
+                "OPENINGVALUE": -181922.71,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Tarpaulin Kgs-3926-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Mts",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "241.00 Mts",
+                "OPENINGVALUE": -50271.44,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Tarpaulin-Mtr-3926-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "2221 Nos",
+                "OPENINGVALUE": -923158.65,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Tarpaulin-Nos-3926-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "ft",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "14567.58 ft",
+                "OPENINGVALUE": -31187,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Tarpaulin Sft-3926-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "2 Nos",
+                "OPENINGVALUE": -2477.29,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Tejas Shakti-Elec Goods-Nos-8513-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Mts",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "179.50 Mts",
+                "OPENINGVALUE": -16025.76,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Textile Fabric Coated-Mtr-5903-12%-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "doz",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "377.05 doz",
+                "OPENINGVALUE": -150820,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Tinsels-Doz-5205-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "BATCHALLOCATIONS.LIST": "",
+            "@_NAME": "Tinsels-Nos-3923-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "65.930 kgs",
+                "OPENINGVALUE": -24660.9,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Tinsel Twine 5605 12%-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "436.995 kgs",
+                "OPENINGVALUE": -90185.91,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Twine-Kgs-5607 12%-5%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Nos",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "35 Nos",
+                "OPENINGVALUE": -12937.29,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "VIP-Elec Goods-nos-8513-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "ft",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "232.00 ft",
+                "OPENINGVALUE": -11166.51,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Wipe Snake Mat-Sft-3924-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Mts",
+                "@_TYPE": "String"
+            },
+            "BATCHALLOCATIONS.LIST": "",
+            "@_NAME": "Wire Rope-Mts-7312-18%",
+            "@_RESERVEDNAME": ""
+        },
+        {
+            "BASEUNITS": {
+                "#text": "Mts",
+                "@_TYPE": "String"
+            },
+            "HASMFGDATE": {
+                "#text": "No",
+                "@_TYPE": "Logical"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "MFDON": "",
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Primary Batch",
+                "OPENINGBALANCE": "12216.63 Mts",
+                "OPENINGVALUE": -264443.74,
+                "OPENINGRATE": "",
+                "EXPIRYPERIOD": ""
+            },
+            "@_NAME": "Woven Fabrics-Mtr-5407-5%",
+            "@_RESERVEDNAME": ""
+        }
+    ],
+    "@_ISMSTDEPTYPE": "Yes",
+    "@_MSTDEPTYPE": "512"
+}
