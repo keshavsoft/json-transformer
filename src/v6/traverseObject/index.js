@@ -8,7 +8,7 @@ const traverseObject = (specJson, dataJson) => {
     let newElement;
 
     if ("transform" in dataJson) {
-        newElement = ifTransformFound(specJson, dataJson);
+        newElement = ifTransformFound(specJson, dataJson?.transform);
     };
 
     for (const [key, value] of Object.entries(newElement)) {

@@ -1,33 +1,32 @@
 import traverse from "../traverse.js";
 
-const startFunc = (inJsonToSpec, dataJson) => {
+const startFunc = (inJsonToSpec, inTransform) => {
     let newElement = {};
     // console.log("inJsonToSpec : ", inJsonToSpec, dataJson);
 
     for (const [key, value] of Object.entries(inJsonToSpec)) {
-        if (key in dataJson?.transform) {
+        if (key in inTransform) {
             let newkey;
 
-            if ("alterKey" in dataJson?.transform[key]) {
-                newkey = dataJson?.transform[key]?.alterKey;
+            if ("alterKey" in inTransform[key]) {
+                newkey = inTransform[key]?.alterKey;
                 newElement[newkey] = value;
             };
 
-            if ("valueType1" in dataJson?.transform[key]) {
-                const valueType = dataJson?.transform[key]?.valueType;
+            if ("transform" in inTransform[key]) {
+                newElement[newkey] = traverse(value, inTransform[key]);
+            };
+
+            if ("valueType" in inTransform[key]) {
+                const valueType = inTransform[key]?.valueType;
+
                 if (valueType === "array") {
-                    newElement[newkey] = [value];
-                } else {
-                    newElement[newkey] = value;
+                    newElement[newkey] = [newElement[newkey]];
                 };
             };
 
-            if ("transform" in dataJson?.transform[key]) {
-                newElement[newkey] = traverse(value, dataJson?.transform[key]);
-            };
-
-            if ("valueKey" in dataJson?.transform[key]) {
-                const newValue = dataJson?.transform[key]?.valueKey;
+            if ("valueKey" in inTransform[key]) {
+                const newValue = inTransform[key]?.valueKey;
 
                 newElement[newkey] = newElement[newkey][newValue];
             };

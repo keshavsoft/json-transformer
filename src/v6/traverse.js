@@ -21,10 +21,6 @@ const traverse = (specJson, dataJson) => {
         return traverseObject(specJson, dataJson);
     };
 
-    if (typeof specJson === "string" || typeof specJson === "number") {
-        return document.createTextNode(String(specJson));
-    };
-
     return specJson;
 };
 
