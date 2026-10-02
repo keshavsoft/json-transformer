@@ -15,6 +15,15 @@
             "BASEUNITS": {
                 "alterKey": "Units",
                 "valueKey": "#text"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "alterKey": "Batches",
+                "valueType": "array",
+                "transform": {
+                    "GODOWNNAME": {
+                        "alterKey": "godownName"
+                    }
+                }
             }
         }
     }
