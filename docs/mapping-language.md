@@ -50,3 +50,7 @@ Is it a literal?
 Should a collection be repeated?
 Should the value be specially processed?
 ```
+
+---
+
+[← Previous: Architecture](architecture.md) | [Index](index.md) | [Next: Arrays & Collections →](arrays.md)

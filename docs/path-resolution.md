@@ -31,3 +31,7 @@ The key itself contains a dot. The resolver must distinguish such a literal prop
 ## Separation
 
 Traversal decides what the transformation asks for. Resolution decides where that value exists in the source.
+
+---
+
+[← Previous: Arrays & Collections](arrays.md) | [Index](index.md) | [Next: Tally & XML →](tally.md)

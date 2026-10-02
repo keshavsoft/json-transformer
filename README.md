@@ -369,16 +369,16 @@ The responsibilities are intentionally separated:
 
 Documentation
 
-Start with:
-
-- ""docs/concepts.md"" (docs/concepts.md) — the central mental model.
-- ""docs/architecture.md"" (docs/architecture.md) — how the engine works.
-- ""docs/mapping-language.md"" (docs/mapping-language.md) — transformation syntax.
-- ""docs/arrays.md"" (docs/arrays.md) — arrays and nested arrays.
-- ""docs/path-resolution.md"" (docs/path-resolution.md) — source-path resolution.
-- ""docs/tally.md"" (docs/tally.md) — Tally/XML-shaped source data.
-- ""docs/examples.md"" (docs/examples.md) — progressive examples.
-- ""docs/maintenance.md"" (docs/maintenance.md) — rules for evolving the engine.
+- [**Live Showcase & Playground**](https://keshavsoft.github.io/json-transformer/) — interactive browser sandbox.
+- [**Documentation Index**](docs/index.md) — complete reading order and ecosystem story.
+- [**Concepts**](docs/concepts.md) — the central mental model and ownership boundaries.
+- [**Architecture**](docs/architecture.md) — how traversal and resolution operate separately.
+- [**Mapping Language**](docs/mapping-language.md) — transformation syntax and directives.
+- [**Arrays & Collections**](docs/arrays.md) — basic, nested, and scalar array iteration.
+- [**Path Resolution**](docs/path-resolution.md) — dotted keys, XML `#text`, and root escapes.
+- [**Tally & XML**](docs/tally.md) — consuming real-world Tally accounting vouchers.
+- [**Examples & Recipes**](docs/examples.md) — progressive cookbook and patterns.
+- [**Maintenance Principles**](docs/maintenance.md) — rules for evolving and protecting the engine.
 
 ---
 

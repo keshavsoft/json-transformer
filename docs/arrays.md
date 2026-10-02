@@ -48,3 +48,7 @@ voucher[]
   ├── ledger[]
   └── allLedger[]
 ```
+
+---
+
+[← Previous: Mapping Language](mapping-language.md) | [Index](index.md) | [Next: Path Resolution →](path-resolution.md)

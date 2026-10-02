@@ -56,6 +56,8 @@ Responsibilities:
 
 XML/Tally data can contain literal keys such as `LEDGERNAME.#text` or `ALLINVENTORYENTRIES.LIST`. Distinguishing a literal dotted key from a nested path belongs to the resolver, not the traversal layer.
 
-## Maintenance principle
-
 Traversal understands the transformation. Resolution understands the source. Value handling connects instructions to values. Actions handle special processing.
+
+---
+
+[← Previous: Concepts](concepts.md) | [Index](index.md) | [Next: Mapping Language →](mapping-language.md)

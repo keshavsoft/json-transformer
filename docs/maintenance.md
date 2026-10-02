@@ -58,3 +58,7 @@ Ask:
 ## Final test
 
 > A JSON Transformer takes source data and a transformation recipe and produces output JSON.
+
+---
+
+[← Previous: Examples & Recipes](examples.md) | [Documentation Index (index.md)](index.md) | [Live Playground (index.html)](index.html)

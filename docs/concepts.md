@@ -49,6 +49,8 @@ The same mapping model is reused at every level.
 
 Inside an iteration, `""` represents the current source value. This allows scalar arrays such as `{"names":["A","B","C"]}` to be transformed without wrapping each value in an object.
 
-## Invariant
-
 > **Source is data. Transformation is instruction. Output is result.**
+
+---
+
+[← Index](index.md) | [Next: Architecture →](architecture.md)

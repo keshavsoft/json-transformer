@@ -36,3 +36,7 @@ The Tally/XML naming stays on the source side. The application receives its own 
 ## Boundary
 
 Tally is a source story, not a reason to make the core transformer Tally-specific.
+
+---
+
+[← Previous: Path Resolution](path-resolution.md) | [Index](index.md) | [Next: Examples & Recipes →](examples.md)
