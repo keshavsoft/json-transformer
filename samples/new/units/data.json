@@ -1,5 +1,10 @@
 {
-  "UNIT": {
+  "transform": {
+    "UNIT": {
+      "alterKey": "Units"
+    }
+  },
+  "Units": {
     "transform": {
       "@_NAME": {
         "alterKey": "Name"

@@ -1,0 +1,21 @@
+{
+    "BASEUNITS": {
+        "#text": "Nos",
+        "@_TYPE": "String"
+    },
+    "HASMFGDATE": {
+        "#text": "No",
+        "@_TYPE": "Logical"
+    },
+    "BATCHALLOCATIONS.LIST": {
+        "MFDON": "",
+        "GODOWNNAME": "Main Location",
+        "BATCHNAME": "Primary Batch",
+        "OPENINGBALANCE": "263 Nos",
+        "OPENINGVALUE": -24072.39,
+        "OPENINGRATE": "",
+        "EXPIRYPERIOD": ""
+    },
+    "@_NAME": "AABL 2-Elec Goods-nos-8513-18%",
+    "@_RESERVEDNAME": ""
+}
