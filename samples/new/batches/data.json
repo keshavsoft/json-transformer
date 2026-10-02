@@ -1,0 +1,17 @@
+{
+    "transform": {
+        "STOCKITEM": {
+            "alterKey": "StockItems"
+        }
+    },
+    "StockItems": {
+        "transform": {
+            "@_NAME": {
+                "alterKey": "Name"
+            },
+            "@_RESERVEDNAME": {
+                "alterKey": "ReserveName"
+            }
+        }
+    }
+}
