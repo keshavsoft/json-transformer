@@ -11,6 +11,10 @@
             },
             "@_RESERVEDNAME": {
                 "alterKey": "ReserveName"
+            },
+            "BASEUNITS": {
+                "alterKey": "Units",
+                "valueKey": "#text"
             }
         }
     }
