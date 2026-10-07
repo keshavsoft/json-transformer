@@ -3,60 +3,96 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Repository Story</title>
+  <title>Document 1 — Repository Story</title>
   <style>
     :root { color-scheme: light; }
-
     body {
       margin: 0;
       background: #f7f7f5;
       color: #202124;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      line-height: 1.7;
+      line-height: 1.65;
     }
-
     main {
       max-width: 760px;
       margin: 0 auto;
-      padding: 56px 24px 72px;
+      padding: 40px 24px 72px;
     }
-
-    blockquote {
-      margin: 0 0 48px;
-      padding: 24px 28px;
-      border-left: 4px solid #202124;
-      background: #fff;
-      font-size: 1.2rem;
-      line-height: 1.65;
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #ddd;
+      font-size: 0.9rem;
+      color: #666;
     }
-
+    .top-bar a {
+      color: #1a73e8;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .top-bar a:hover {
+      text-decoration: underline;
+    }
+    h1 {
+      margin-bottom: 12px;
+      font-size: 2rem;
+      letter-spacing: -0.02em;
+    }
     h2 {
-      margin-top: 48px;
+      margin-top: 42px;
       font-size: 1.35rem;
     }
-
-    p {
-      margin: 16px 0;
+    p { margin: 16px 0; }
+    strong { font-weight: 650; }
+    blockquote {
+      margin: 0 0 40px;
+      padding: 22px 26px;
+      border-left: 4px solid #202124;
+      background: #fff;
+      font-size: 1.15rem;
+      line-height: 1.65;
+      border-radius: 0 8px 8px 0;
     }
-
-    strong {
-      font-weight: 650;
-    }
-
     .flow {
-      margin-top: 28px;
+      margin: 28px 0;
       padding: 20px;
       background: #fff;
+      border: 1px solid #ddd;
       border-radius: 10px;
       text-align: center;
       font-weight: 600;
       letter-spacing: .01em;
+    }
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1px solid #ddd;
+      font-weight: 500;
+    }
+    .nav a {
+      color: #1a73e8;
+      text-decoration: none;
+    }
+    .nav a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 
 <body>
   <main>
+    <div class="top-bar">
+      <a href="index.html">&larr; Conceptual Series Index</a>
+      <span>Document 1 of 7</span>
+    </div>
+
+    <h1>Document 1 — Repository Story</h1>
 
     <blockquote>
       Given a structure, an instructions object, and a function, the engine traverses
@@ -134,7 +170,7 @@
     </p>
 
     <div class="flow">
-      Structure → Instructions → Traversal → In-memory object
+      Structure &rarr; Instructions &rarr; Traversal &rarr; In-memory object
     </div>
 
     <p>
@@ -142,8 +178,9 @@
       the resulting leaves.
     </p>
 
-    <div style="display:flex;justify-content:flex-end;margin-top:48px;padding-top:24px;border-top:1px solid #ddd;font-weight:500;">
-      <a href="2.html" style="color:#1a73e8;text-decoration:none;">Next: Document 2 — How It Works &rarr;</a>
+    <div class="nav">
+      <a href="index.html">Series Index</a>
+      <a href="02-how-it-works.html">Next: Document 2 — How It Works &rarr;</a>
     </div>
 
   </main>

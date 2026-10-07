@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Document 7 — Understanding the Function</title>
   <style>
     :root { color-scheme: light; }
@@ -16,7 +16,25 @@
     main {
       max-width: 760px;
       margin: 0 auto;
-      padding: 52px 24px 72px;
+      padding: 40px 24px 72px;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #ddd;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    .top-bar a {
+      color: #1a73e8;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .top-bar a:hover {
+      text-decoration: underline;
     }
     h1 {
       margin-bottom: 24px;
@@ -31,11 +49,13 @@
     blockquote {
       margin: 28px 0;
       padding: 20px 24px;
-      border-left: 4px solid #202124;
+      border-left: 4px solid #1a73e8;
       background: #fff;
       font-size: 1.15rem;
       line-height: 1.65;
       border-radius: 0 8px 8px 0;
+      border: 1px solid #e0e0e0;
+      border-left: 4px solid #1a73e8;
     }
     pre {
       padding: 18px;
@@ -62,7 +82,8 @@
     .nav {
       display: flex;
       justify-content: space-between;
-      margin-top: 48px;
+      align-items: center;
+      margin-top: 56px;
       padding-top: 24px;
       border-top: 1px solid #ddd;
       font-weight: 500;
@@ -79,6 +100,11 @@
 
 <body>
 <main>
+
+  <div class="top-bar">
+    <a href="index.html">&larr; Conceptual Series Index</a>
+    <span>Document 7 of 7</span>
+  </div>
 
   <h1>Document 7 — Understanding the Function</h1>
 
@@ -254,7 +280,7 @@ FUNCTION
 Application behavior executed</code></pre>
 
   <div class="nav">
-    <a href="6.html">&larr; Previous: Document 6 — Selective Instructions</a>
+    <a href="06-selective-instructions.html">&larr; Previous: Document 6 — Selective Instructions</a>
     <a href="index.html">Series Index &rarr;</a>
   </div>
 

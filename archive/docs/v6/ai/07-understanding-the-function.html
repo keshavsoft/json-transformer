@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document 7 — Understanding the Function</title>
+  <style>
+    :root { color-scheme: light; }
+    body {
+      margin: 0;
+      background: #f7f7f5;
+      color: #202124;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 40px 24px 72px;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #ddd;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    .top-bar a {
+      color: #1a73e8;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .top-bar a:hover {
+      text-decoration: underline;
+    }
+    h1 {
+      margin-bottom: 24px;
+      font-size: 2rem;
+      letter-spacing: -0.02em;
+    }
+    h2 {
+      margin-top: 40px;
+      font-size: 1.35rem;
+    }
+    p { margin: 14px 0; }
+    blockquote {
+      margin: 28px 0;
+      padding: 20px 24px;
+      border-left: 4px solid #1a73e8;
+      background: #fff;
+      font-size: 1.15rem;
+      line-height: 1.65;
+      border-radius: 0 8px 8px 0;
+      border: 1px solid #e0e0e0;
+      border-left: 4px solid #1a73e8;
+    }
+    pre {
+      padding: 18px;
+      overflow-x: auto;
+      background: #eeeeeb;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    .flow {
+      margin: 28px 0;
+      padding: 18px;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: 600;
+    }
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1px solid #ddd;
+      font-weight: 500;
+    }
+    .nav a {
+      color: #1a73e8;
+      text-decoration: none;
+    }
+    .nav a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+<main>
+
+  <div class="top-bar">
+    <a href="index.html">&larr; Conceptual Series Index</a>
+    <span>Document 7 of 7</span>
+  </div>
+
+  <h1>Document 7 — Understanding the Function</h1>
+
+  <blockquote>
+    The traversal engine knows where it is in the source.<br>
+    The function receives that information and decides what to do with it.
+  </blockquote>
+
+  <h2>1. We Already Have the Tree</h2>
+
+  <p>
+    The previous documents showed how a source structure can be traversed
+    according to an instructions object, and that a function can be attached to the resulting leaves.
+  </p>
+
+  <p>
+    Now we will look specifically at the function itself.
+  </p>
+
+  <h2>2. The Function Is Supplied From Outside</h2>
+
+  <p>
+    The traversal engine does not need to know what the function actually does.
+    The application supplies the function:
+  </p>
+
+  <pre><code>function inspect(value, path, source, instruction) {
+  console.log("Value:", value);
+  console.log("Path:", path);
+  console.log("Source:", source);
+  console.log("Instruction:", instruction);
+}</code></pre>
+
+  <p>
+    The central question is: <strong>what does each argument represent?</strong>
+  </p>
+
+  <h2>3. The Four Inputs &amp; Architecture Diagram</h2>
+
+  <div class="flow">
+    value &nbsp; + &nbsp; path &nbsp; + &nbsp; source &nbsp; + &nbsp; instruction
+  </div>
+
+  <pre><code>CURRENT FUNCTION
+                        │
+        ┌───────────────┼────────────────┐
+        │               │                │
+      value            path          root/source
+        │               │                │
+        ▼               ▼                ▼
+   What did we    Where are we?    What is the complete
+   find here?                      source we're working on?
+                        
+                        +
+               instruction/context
+                        │
+                        ▼
+                 Why are we here?</code></pre>
+
+  <h2>4. The First Input — value</h2>
+
+  <p>
+    <code>value</code> is the actual data found at the current location in the source:
+  </p>
+
+  <pre><code>{
+  "customer": {
+    "name": "Keshav"
+  }
+}</code></pre>
+
+  <p>
+    If the current location is <code>customer.name</code>, then:
+  </p>
+
+  <pre><code>value === "Keshav"</code></pre>
+
+  <p>
+    This answers: <strong>what is present here?</strong>
+  </p>
+
+  <h2>5. The Second Input — path</h2>
+
+  <p>
+    <code>path</code> tells the function where the current value was found in the tree:
+  </p>
+
+  <pre><code>path === "customer.name"</code></pre>
+
+  <p>
+    The value tells us <em>what</em> we found; the path tells us <em>where</em> we found it.
+  </p>
+
+  <h2>6. The Third Input — source</h2>
+
+  <p>
+    <code>source</code> represents the complete, root data structure being traversed:
+  </p>
+
+  <pre><code>{
+  "customer": {
+    "name": "Keshav",
+    "email": "keshav@example.com"
+  },
+  "order": {
+    "id": "ORD-101"
+  }
+}</code></pre>
+
+  <p>
+    Even though the function may currently be operating on <code>customer.name</code>,
+    it can access the complete source when broader cross-referencing context is required.
+  </p>
+
+  <h2>7. The Fourth Input — instruction</h2>
+
+  <p>
+    <code>instruction</code> represents the recipe directive that caused the function to be invoked at this location:
+  </p>
+
+  <pre><code>{
+  "transform": "inspect"
+}</code></pre>
+
+  <p>
+    The function therefore knows not only the data and its location, but also <em>why</em> it was called.
+  </p>
+
+  <h2>8. Putting the Four Inputs Together</h2>
+
+  <pre><code>function inspect(value, path, source, instruction) {
+  // 1. What is here?
+  console.log(value);
+
+  // 2. Where is it?
+  console.log(path);
+
+  // 3. What is the complete source?
+  console.log(source);
+
+  // 4. Why was this function attached here?
+  console.log(instruction);
+}</code></pre>
+
+  <h2>9. The Function Does Not Traverse</h2>
+
+  <p>
+    The function itself does not walk through <code>customer</code>, then <code>name</code>.
+    The traversal engine has already done that work.
+  </p>
+
+  <div class="flow">
+    Source &rarr; Traversal &rarr; Current location reached &rarr; Function receives the 4 inputs
+  </div>
+
+  <h2>10. The Mental Model</h2>
+
+  <pre><code>SOURCE
+   ↓
+TRAVERSAL
+   ↓
+current node
+   ↓
+┌─────────────────────────────┐
+│ value                       │  → What did we find here?
+│ path                        │  → Where are we in the tree?
+│ source                      │  → What is the complete source?
+│ instruction                 │  → Why are we here?
+└─────────────────────────────┘
+   ↓
+FUNCTION
+   ↓
+Application behavior executed</code></pre>
+
+  <div class="nav">
+    <a href="06-selective-instructions.html">&larr; Previous: Document 6 — Selective Instructions</a>
+    <a href="index.html">Series Index &rarr;</a>
+  </div>
+
+</main>
+</body>
+</html>
