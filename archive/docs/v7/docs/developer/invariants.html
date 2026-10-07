@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Developer Guide — Core Invariants</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="brand-title">Developer Guide</a>
+        <div class="brand-subtitle">json-transformer &bull; Engine Internals</div>
+      </div>
+
+      <div class="nav-hub">
+        <a href="../index.html">&larr; Back to Main Portal</a>
+        <a href="../walkthrough/index.html">💡 Conceptual Walkthrough</a>
+      </div>
+
+      <div class="nav-label">Engine Architecture</div>
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link">1. Overview &amp; Evolution</a></li>
+        <li><a href="invariants.html" class="nav-link active">2. Core Invariants</a></li>
+        <li><a href="pipeline.html" class="nav-link">3. Traversal Pipeline</a></li>
+        <li><a href="trace.html" class="nav-link">4. Trace &amp; Testing</a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <a href="../user/index.html">Switch to User Guide &rarr;</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <h1>Core Invariants <span class="badge">Architecture Rules</span></h1>
+      <div class="lead">The four non-negotiable architectural guardrails governing all engine code in <code>src/v8/</code>.</div>
+
+      <!-- INVARIANT 1 -->
+      <h2>Invariant 1: The <code>in</code> &amp; <code>local</code> Parameter Convention</h2>
+      <p>Every internal function in the engine strictly accepts a single configuration object with <code>in</code>-prefixed keys, and immediately assigns each key to an immutable <code>local</code>-prefixed constant:</p>
+
+      <pre><code>// CORRECT: Adheres to KeshavSoft convention
+const startFunc = ({ inSource, inRecipe }) => {
+    const localSource = inSource;
+    const localRecipe = inRecipe;
+
+    // Use ONLY localSource and localRecipe below
+    if (Array.isArray(localSource)) {
+        return traverseArray({ inItems: localSource, inRecipe: localRecipe });
+    }
+
+    if (typeof localSource === "object" &amp;&amp; localSource !== null) {
+        return traverseObject({ inSource: localSource, inRecipe: localRecipe });
+    }
+
+    return localSource;
+};
+
+// VIOLATION: Never use naked positional parameters
+function startFunc(source, recipe) { ... }</code></pre>
+
+      <p><strong>Rationale:</strong></p>
+      <ul>
+        <li>Prevents parameter re-assignment bugs.</li>
+        <li>Enforces immutability at the function boundary.</li>
+        <li>Standardizes internal stack traces and function signatures across the entire repository.</li>
+      </ul>
+
+      <!-- INVARIANT 2 -->
+      <h2>Invariant 2: Absolute Source Immutability</h2>
+      <p><code>inSource</code> belongs to the external Data Provider. It must <strong>never</strong> be mutated, altered, or augmented in place. The transformed result is constructed fresh as a new object or array.</p>
+      <div class="note">
+        <strong>Why this is critical:</strong> In high-throughput Node.js servers, caching reverse-proxies, or edge workers, mutating incoming payloads pollutes shared heap memory and causes intermittent data-corruption bugs that are nearly impossible to reproduce.
+      </div>
+
+      <!-- INVARIANT 3 -->
+      <h2>Invariant 3: Zero Runtime Dependencies</h2>
+      <p>The engine is written in standard ES modules without third-party dependencies (no <code>lodash</code>, <code>ramda</code>, or custom AST parsers).</p>
+      <p><strong>Benefits:</strong> Zero security vulnerability surface, instant browser bundle loading, and universal execution across Node.js, Bun, Deno, and web browsers.</p>
+
+      <!-- INVARIANT 4 -->
+      <h2>Invariant 4: Zero Code Comments in Core Engine</h2>
+      <p>Code intent is communicated purely through file/directory hierarchy (<code>traverseObject</code>, <code>traverseArray</code>, <code>ifTransformFound</code>) and explicit variable naming. If logic seems complicated enough to require a comment, it must be refactored into a clear, dedicated submodule.</p>
+
+      <div class="page-nav">
+        <a href="index.html">&larr; Previous: Overview &amp; Evolution</a>
+        <a href="pipeline.html">Next: Traversal Pipeline &rarr;</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

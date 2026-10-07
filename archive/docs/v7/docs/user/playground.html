@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>User Guide — Live Transformation Sandbox</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="brand-title">User Guide</a>
+        <div class="brand-subtitle">json-transformer &bull; Recipe Authors</div>
+      </div>
+
+      <div class="nav-hub">
+        <a href="../index.html">&larr; Back to Main Portal</a>
+        <a href="../walkthrough/index.html">💡 Conceptual Walkthrough</a>
+      </div>
+
+      <div class="nav-label">User Documentation</div>
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link">1. Overview &amp; Story</a></li>
+        <li><a href="directives.html" class="nav-link">2. Directives Toolkit</a></li>
+        <li><a href="examples.html" class="nav-link">3. Enterprise Cookbook</a></li>
+        <li><a href="playground.html" class="nav-link active">4. Live Sandbox 🧪</a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <a href="../developer/index.html">Switch to Developer Guide &rarr;</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <h1>Live Transformation Sandbox <span class="badge">Interactive</span></h1>
+      <div class="lead">Experiment with real recipes and source payloads directly in your browser with instant client-side execution.</div>
+
+      <div class="playground-section">
+        <div class="playground-header">
+          <div class="playground-title">
+            <span>🧪</span> Playground Editor
+          </div>
+          <div class="preset-controls">
+            <span class="preset-label">Preset:</span>
+            <select id="presetSelect" class="preset-select">
+              <option value="tallyBatches">Tally ERP: Stock Items &amp; Batches</option>
+              <option value="xmlUnwrap">XML #text Unwrapping</option>
+              <option value="arrayNormalize">Single Object &rarr; Array Normalization</option>
+              <option value="simpleRename">Simple Field Renaming</option>
+            </select>
+            <button id="runBtn" class="btn"><span>&#9654;</span> Transform</button>
+            <button id="copyBtn" class="btn btn-secondary"><span>📋</span> Copy Output</button>
+          </div>
+        </div>
+
+        <div class="playground-grid">
+          <!-- PANE 1: SOURCE -->
+          <div class="pane">
+            <div class="pane-header">
+              <span class="pane-title">1. The Food (source.json)</span>
+            </div>
+            <textarea id="sourceEditor" class="pane-editor" spellcheck="false"></textarea>
+          </div>
+
+          <!-- PANE 2: RECIPE -->
+          <div class="pane">
+            <div class="pane-header">
+              <span class="pane-title">2. The Recipe (recipe.json)</span>
+            </div>
+            <textarea id="recipeEditor" class="pane-editor" spellcheck="false"></textarea>
+          </div>
+
+          <!-- PANE 3: RESULT -->
+          <div class="pane">
+            <div class="pane-header">
+              <span class="pane-title">3. The Result (output.json)</span>
+            </div>
+            <textarea id="resultEditor" class="pane-editor readonly" readonly spellcheck="false"></textarea>
+          </div>
+        </div>
+
+        <div class="status-bar">
+          <div class="status-indicator">
+            <div id="statusDot" class="status-dot"></div>
+            <span id="statusText">Engine Ready &bull; Pure Invariant Maintained</span>
+          </div>
+          <span id="timingText">Execution: &lt; 1ms</span>
+        </div>
+      </div>
+
+      <div class="page-nav">
+        <a href="examples.html">&larr; Previous: Enterprise Cookbook</a>
+        <a href="../developer/index.html">Next: Developer Guide &rarr;</a>
+      </div>
+    </main>
+  </div>
+
+  <!-- SCRIPT FOR COMPILING & TRANSFORMING IN-BROWSER -->
+  <script type="module">
+    const traverseArray = ({ inItems, inRecipe }) => {
+      const localItems = inItems;
+      const localRecipe = inRecipe;
+      return localItems
+        .map((item) => traverse({ inSource: item, inRecipe: localRecipe }))
+        .flat(Infinity)
+        .filter(Boolean);
+    };
+
+    const ifTransformFound = ({ inSource, inTransform }) => {
+      const localSource = inSource;
+      const localTransform = inTransform;
+      const newElement = {};
+
+      for (const [key, value] of Object.entries(localSource)) {
+        if (!(key in localTransform)) {
+          continue;
+        }
+
+        const directive = localTransform[key];
+        const newKey = directive?.alterKey || key;
+        let processedValue = value;
+
+        if (directive && typeof directive === "object" && "transform" in directive) {
+          processedValue = traverse({
+            inSource: value,
+            inRecipe: directive
+          });
+        }
+
+        if (directive?.valueType === "array" && !Array.isArray(processedValue)) {
+          processedValue = [processedValue];
+        }
+
+        if (directive?.valueKey && processedValue && typeof processedValue === "object") {
+          processedValue = processedValue[directive.valueKey];
+        }
+
+        newElement[newKey] = processedValue;
+      }
+
+      return newElement;
+    };
+
+    const traverseObject = ({ inSource, inRecipe }) => {
+      const localSource = inSource;
+      const localRecipe = inRecipe;
+      let newElement = localSource;
+
+      if (localRecipe && typeof localRecipe === "object" && "transform" in localRecipe) {
+        newElement = ifTransformFound({
+          inSource: localSource,
+          inTransform: localRecipe.transform
+        });
+      }
+
+      for (const [key, value] of Object.entries(newElement)) {
+        if (Array.isArray(value) && localRecipe && key in localRecipe) {
+          newElement[key] = traverseArray({
+            inItems: value,
+            inRecipe: localRecipe[key]
+          });
+        }
+      }
+
+      return newElement;
+    };
+
+    const traverse = ({ inSource, inRecipe }) => {
+      const localSource = inSource;
+      const localRecipe = inRecipe;
+
+      if (Array.isArray(localSource)) {
+        return traverseArray({
+          inItems: localSource,
+          inRecipe: localRecipe
+        });
+      }
+
+      if (typeof localSource === "object" && localSource !== null) {
+        return traverseObject({
+          inSource: localSource,
+          inRecipe: localRecipe
+        });
+      }
+
+      return localSource;
+    };
+
+    const runTransform = (source, recipe) => {
+      return traverse({
+        inSource: source,
+        inRecipe: recipe
+      });
+    };
+
+    // PRESETS
+    const presets = {
+      tallyBatches: {
+        source: {
+          "STOCKITEM": [
+            {
+              "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+              },
+              "@_NAME": "0.09/30mm",
+              "@_RESERVEDNAME": "",
+              "BATCHALLOCATIONS.LIST": {
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Navratan-Rs.1210/-",
+                "OPENINGBALANCE": "-9.250 kgs",
+                "OPENINGVALUE": 11100,
+                "OPENINGRATE": "1200.00/kgs"
+              }
+            }
+          ]
+        },
+        recipe: {
+          "transform": {
+            "STOCKITEM": {
+              "alterKey": "StockItems",
+              "transform": {
+                "BASEUNITS": {
+                  "alterKey": "Units",
+                  "valueKey": "#text"
+                },
+                "@_NAME": { "alterKey": "Name" },
+                "@_RESERVEDNAME": { "alterKey": "ReserveName" },
+                "BATCHALLOCATIONS.LIST": {
+                  "alterKey": "Batches",
+                  "valueType": "array",
+                  "transform": {
+                    "GODOWNNAME": { "alterKey": "godownName" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      xmlUnwrap: {
+        source: {
+          "LEDGER": {
+            "NAME": { "#text": "HDFC Bank Ltd", "@_TYPE": "String" },
+            "CURRENCY": { "#text": "INR", "@_TYPE": "Currency" },
+            "CLOSINGBALANCE": { "#text": "145000.00", "@_TYPE": "Amount" }
+          }
+        },
+        recipe: {
+          "transform": {
+            "LEDGER": {
+              "alterKey": "Account",
+              "transform": {
+                "NAME": { "alterKey": "bankName", "valueKey": "#text" },
+                "CURRENCY": { "alterKey": "currency", "valueKey": "#text" },
+                "CLOSINGBALANCE": { "alterKey": "balance", "valueKey": "#text" }
+              }
+            }
+          }
+        }
+      },
+      arrayNormalize: {
+        source: {
+          "INVOICE": {
+            "VOUCHERNUMBER": "INV-2026-001",
+            "ITEM": {
+              "DESCRIPTION": "Widget Pro",
+              "QTY": 5
+            }
+          }
+        },
+        recipe: {
+          "transform": {
+            "INVOICE": {
+              "alterKey": "Invoice",
+              "transform": {
+                "VOUCHERNUMBER": { "alterKey": "invoiceNumber" },
+                "ITEM": {
+                  "alterKey": "items",
+                  "valueType": "array",
+                  "transform": {
+                    "DESCRIPTION": { "alterKey": "desc" },
+                    "QTY": { "alterKey": "quantity" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      simpleRename: {
+        source: {
+          "cust_id": "CUST-992",
+          "cust_nm": "Alpha Logistics",
+          "is_active": true
+        },
+        recipe: {
+          "transform": {
+            "cust_id": { "alterKey": "id" },
+            "cust_nm": { "alterKey": "customerName" },
+            "is_active": { "alterKey": "active" }
+          }
+        }
+      }
+    };
+
+    // UI ELEMENTS
+    const sourceEl = document.getElementById("sourceEditor");
+    const recipeEl = document.getElementById("recipeEditor");
+    const resultEl = document.getElementById("resultEditor");
+    const presetSelect = document.getElementById("presetSelect");
+    const runBtn = document.getElementById("runBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const statusDot = document.getElementById("statusDot");
+    const statusText = document.getElementById("statusText");
+    const timingText = document.getElementById("timingText");
+
+    function loadPreset(key) {
+      const preset = presets[key];
+      if (!preset) return;
+      sourceEl.value = JSON.stringify(preset.source, null, 2);
+      recipeEl.value = JSON.stringify(preset.recipe, null, 2);
+      executeTransformation();
+    }
+
+    function executeTransformation() {
+      try {
+        const srcJson = JSON.parse(sourceEl.value);
+        const recJson = JSON.parse(recipeEl.value);
+
+        const t0 = performance.now();
+        const res = runTransform(srcJson, recJson);
+        const t1 = performance.now();
+
+        resultEl.value = JSON.stringify(res, null, 2);
+        statusDot.className = "status-dot";
+        statusText.textContent = "Transformation Complete • Pure Output Generated";
+        timingText.textContent = `Execution: ${(t1 - t0).toFixed(2)} ms`;
+      } catch (err) {
+        resultEl.value = `Error: ${err.message}`;
+        statusDot.className = "status-dot error";
+        statusText.textContent = `Syntax Error: ${err.message}`;
+        timingText.textContent = "Execution Halted";
+      }
+    }
+
+    presetSelect.addEventListener("change", (e) => loadPreset(e.target.value));
+    runBtn.addEventListener("click", executeTransformation);
+    sourceEl.addEventListener("input", executeTransformation);
+    recipeEl.addEventListener("input", executeTransformation);
+
+    copyBtn.addEventListener("click", () => {
+      navigator.clipboard.writeText(resultEl.value).then(() => {
+        const oldText = copyBtn.innerHTML;
+        copyBtn.innerHTML = "<span>✓</span> Copied!";
+        setTimeout(() => { copyBtn.innerHTML = oldText; }, 1500);
+      });
+    });
+
+    loadPreset("tallyBatches");
+  </script>
+</body>
+</html>

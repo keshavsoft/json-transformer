@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Developer Guide — Trace &amp; Testing Workflow</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="brand-title">Developer Guide</a>
+        <div class="brand-subtitle">json-transformer &bull; Engine Internals</div>
+      </div>
+
+      <div class="nav-hub">
+        <a href="../index.html">&larr; Back to Main Portal</a>
+        <a href="../walkthrough/index.html">💡 Conceptual Walkthrough</a>
+      </div>
+
+      <div class="nav-label">Engine Architecture</div>
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link">1. Overview &amp; Evolution</a></li>
+        <li><a href="invariants.html" class="nav-link">2. Core Invariants</a></li>
+        <li><a href="pipeline.html" class="nav-link">3. Traversal Pipeline</a></li>
+        <li><a href="trace.html" class="nav-link active">4. Trace &amp; Testing</a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <a href="../user/index.html">Switch to User Guide &rarr;</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <h1>Execution Trace &amp; Testing <span class="badge">Verification</span></h1>
+      <div class="lead">Step-by-step call stack execution walkthrough, enterprise edge cases, and container testing workflows.</div>
+
+      <!-- SECTION 1: EXECUTION TRACE -->
+      <h2>1. The Execution Call Stack Trace</h2>
+      <p>Here is what happens inside the engine when transforming a complex enterprise payload like a Tally stock item:</p>
+
+      <div class="trace-container">
+<span class="trace-call">1. transform(food, recipe)</span>
+<div class="trace-indent">
+  &rarr; Enters <span class="trace-call">traverse({ inSource, inRecipe })</span>
+  <div class="trace-indent">
+    &rarr; Type is Object: Enters <span class="trace-call">traverseObject</span>
+    <div class="trace-indent">
+      &rarr; Recipe has "transform": Enters <span class="trace-call">ifTransformFound</span>
+      <div class="trace-indent">
+        &bull; Matches key "STOCKITEM" &rarr; has nested "transform"<br>
+        &bull; Recurses to <span class="trace-call">traverse({ inSource: STOCKITEM, inRecipe: directive })</span><br>
+        <div class="trace-indent">
+          &rarr; Type is Array: Enters <span class="trace-call">traverseArray</span><br>
+          <div class="trace-indent">
+            &bull; Maps item #0 &rarr; <span class="trace-call">traverse({ inSource: item[0], inRecipe })</span><br>
+            &bull; Applies <code>alterKey: "Name"</code> &rarr; outputs clean name<br>
+            &bull; Applies <code>valueKey: "#text"</code> to BASEUNITS &rarr; extracts "kgs"<br>
+            &bull; Applies <code>valueType: "array"</code> to BATCHALLOCATIONS.LIST &rarr; returns clean array
+          </div>
+          <span class="trace-ret">&larr; Returns mapped &amp; filtered array</span>
+        </div>
+      </div>
+      <span class="trace-ret">&larr; Constructs new root object</span>
+    </div>
+  </div>
+  <span class="trace-ret">&larr; Returns final reshaped JSON output</span>
+</div>
+      </div>
+
+      <!-- SECTION 2: ENTERPRISE XML & TALLY QUIRKS -->
+      <h2>2. Enterprise Quirks Handled by Design</h2>
+      <ul>
+        <li><strong>Literal Dotted Keys:</strong> Tally exports often contain literal dots in property names, such as <code>BATCHALLOCATIONS.LIST</code> or <code>LEDGERNAME.#text</code>. Because <code>ifTransformFound</code> uses direct property indexing (<code>localTransform[key]</code>), literal dotted keys match directly without ambiguous path splitting.</li>
+        <li><strong>Single-Item Object / Array Inconsistency:</strong> XML parsers output an object for a single item and an array for multiple items. The <code>valueType: "array"</code> directive normalizes single-item objects into arrays cleanly.</li>
+        <li><strong>Deep Tree Cleanliness:</strong> Unwanted metadata attributes (e.g. <code>@_TYPE="String"</code>, <code>@_RESERVEDNAME=""</code>) are naturally pruned because they are never listed in the recipe.</li>
+      </ul>
+
+      <!-- SECTION 3: TESTING WORKFLOW -->
+      <h2>3. Development &amp; Test Workflow</h2>
+      <p>Use the containerized environment to verify tests and build the production bundle:</p>
+
+      <h3>1. Run Real-World Enterprise Sample</h3>
+      <pre><code># Inside container or via wslc:
+wslc exec node-dev node samples/6oct/batches/index.js
+
+# Test simple transformation:
+wslc exec node-dev node samples/new/simple/index.js</code></pre>
+
+      <h3>2. Build Production Bundle</h3>
+      <pre><code>wslc exec node-dev npm --prefix /workspace/json-transformer run build</code></pre>
+      <p>Builds the minified ES bundle to <code>docs/dist/v8/min.js</code> and copies it to <code>docs/dist/min.js</code>.</p>
+
+      <div class="page-nav">
+        <a href="pipeline.html">&larr; Previous: Traversal Pipeline</a>
+        <a href="../index.html">Back to Main Portal &rarr;</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document 7 — Understanding the Function &amp; The 4 Inputs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="brand-title">Conceptual Walkthrough</a>
+        <div class="brand-subtitle">json-transformer &bull; First Principles</div>
+      </div>
+
+      <div class="nav-hub">
+        <a href="../index.html">&larr; Back to Main Portal</a>
+      </div>
+
+      <div class="nav-label">The 7-Document Series</div>
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link">Overview &amp; Road Map</a></li>
+        <li><a href="01-repository-story.html" class="nav-link">1. Repository Story</a></li>
+        <li><a href="02-how-it-works.html" class="nav-link">2. Source-Driven Traversal</a></li>
+        <li><a href="03-see-it-working.html" class="nav-link">3. Two Root Nodes</a></li>
+        <li><a href="04-adding-another-node.html" class="nav-link">4. Adding Another Node</a></li>
+        <li><a href="05-introducing-children.html" class="nav-link">5. Introducing Children</a></li>
+        <li><a href="06-selective-instructions.html" class="nav-link">6. Selective Instructions</a></li>
+        <li><a href="07-understanding-the-function.html" class="nav-link active">7. The Leaf Function</a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <a href="../user/index.html">Continue to User Guide &rarr;</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <h1>Document 7 — Understanding the Function <span class="badge">The 4 Inputs</span></h1>
+      <div class="lead">Deep-dive on the leaf function signature: value (What?), path (Where?), source (Context?), and instruction (Why?).</div>
+
+      <blockquote>
+        The traversal engine knows where it is in the source.<br>
+        The function receives that information and decides what to do with it.
+      </blockquote>
+
+      <h2>1. The External Function Signature</h2>
+      <p>
+        The traversal engine does not need to know what the function actually does.
+        The application supplies the function:
+      </p>
+
+      <pre><code>function inspect(value, path, source, instruction) {
+  console.log("Value:", value);
+  console.log("Path:", path);
+  console.log("Source:", source);
+  console.log("Instruction:", instruction);
+}</code></pre>
+
+      <p>
+        The central question is: <strong>what does each argument represent?</strong>
+      </p>
+
+      <h2>2. Architecture Diagram: The Four Inputs</h2>
+
+      <div class="flow">
+        value &nbsp; + &nbsp; path &nbsp; + &nbsp; source &nbsp; + &nbsp; instruction
+      </div>
+
+      <pre><code>CURRENT FUNCTION
+                        │
+        ┌───────────────┼────────────────┐
+        │               │                │
+      value            path          root/source
+        │               │                │
+        ▼               ▼                ▼
+   What did we    Where are we?    What is the complete
+   find here?                      source we're working on?
+                        
+                        +
+               instruction/context
+                        │
+                        ▼
+                 Why are we here?</code></pre>
+
+      <h2>3. Input 1: <code>value</code> — What Did We Find?</h2>
+      <p>
+        <code>value</code> is the actual data found at the current location in the source:
+      </p>
+
+      <pre><code>{
+  "customer": {
+    "name": "Keshav"
+  }
+}</code></pre>
+
+      <p>
+        If the current location is <code>customer.name</code>, then:
+      </p>
+
+      <pre><code>value === "Keshav"</code></pre>
+
+      <h2>4. Input 2: <code>path</code> — Where Are We?</h2>
+      <p>
+        <code>path</code> tells the function where the current value was found in the tree:
+      </p>
+
+      <pre><code>path === "customer.name"</code></pre>
+
+      <p>
+        The value tells us <em>what</em> we found; the path tells us <em>where</em> we found it.
+      </p>
+
+      <h2>5. Input 3: <code>source</code> — What is the Context?</h2>
+      <p>
+        <code>source</code> represents the complete root data structure being traversed:
+      </p>
+
+      <pre><code>{
+  "customer": {
+    "name": "Keshav",
+    "email": "keshav@example.com"
+  },
+  "order": {
+    "id": "ORD-101"
+  }
+}</code></pre>
+
+      <p>
+        Even though the function is operating on <code>customer.name</code>,
+        it can access the complete source whenever cross-referencing context (such as looking up <code>order.id</code>) is required.
+      </p>
+
+      <h2>6. Input 4: <code>instruction</code> — Why Are We Here?</h2>
+      <p>
+        <code>instruction</code> represents the recipe directive that caused the function to be invoked at this location:
+      </p>
+
+      <pre><code>{
+  "transform": "inspect"
+}</code></pre>
+
+      <p>
+        The function knows not only the data and its location, but also <em>why</em> it was called.
+      </p>
+
+      <h2>7. Putting It Together: The Complete Mental Model</h2>
+
+      <pre><code>SOURCE
+   ↓
+TRAVERSAL
+   ↓
+Current Node
+   ↓
+┌─────────────────────────────┐
+│ value                       │  → What did we find here?
+│ path                        │  → Where are we in the tree?
+│ source                      │  → What is the complete source?
+│ instruction                 │  → Why are we here?
+└─────────────────────────────┘
+   ↓
+FUNCTION
+   ↓
+Application behavior executed</code></pre>
+
+      <div class="note">
+        <strong>You have completed the Conceptual Walkthrough!</strong><br>
+        Now that you understand the foundational mental model, dive into the production User Guide to learn the full directive toolkit and try out the live interactive playground.
+      </div>
+
+      <div class="page-nav">
+        <a href="06-selective-instructions.html">&larr; Previous: Document 6 — Selective Instructions</a>
+        <a href="../user/index.html">Continue to User Guide (Recipe Authors) &rarr;</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

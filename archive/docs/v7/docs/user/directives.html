@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>User Guide — Directives Toolkit</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="brand-title">User Guide</a>
+        <div class="brand-subtitle">json-transformer &bull; Recipe Authors</div>
+      </div>
+
+      <div class="nav-hub">
+        <a href="../index.html">&larr; Back to Main Portal</a>
+        <a href="../walkthrough/index.html">💡 Conceptual Walkthrough</a>
+      </div>
+
+      <div class="nav-label">User Documentation</div>
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link">1. Overview &amp; Story</a></li>
+        <li><a href="directives.html" class="nav-link active">2. Directives Toolkit</a></li>
+        <li><a href="examples.html" class="nav-link">3. Enterprise Cookbook</a></li>
+        <li><a href="playground.html" class="nav-link">4. Live Sandbox 🧪</a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <a href="../developer/index.html">Switch to Developer Guide &rarr;</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <h1>Directives Toolkit <span class="badge">Reference</span></h1>
+      <div class="lead">Declarative instructions used inside recipes to reshape and normalize JSON nodes.</div>
+
+      <h2>Directives Summary</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Directive</th>
+            <th>Type</th>
+            <th>Purpose</th>
+            <th>Target Scenarios</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>alterKey</code></td>
+            <td><code>string</code></td>
+            <td>Renames the source key in the output JSON.</td>
+            <td>Converting uppercase enterprise keys to camelCase/idiomatic names.</td>
+          </tr>
+          <tr>
+            <td><code>transform</code></td>
+            <td><code>object</code></td>
+            <td>Nests transformation directives for child objects or arrays.</td>
+            <td>Drilling down through nested collections (vouchers, inventory, batches).</td>
+          </tr>
+          <tr>
+            <td><code>valueKey</code></td>
+            <td><code>string</code></td>
+            <td>Unwraps a child property from an object, flattening it into a scalar.</td>
+            <td>Extracting <code>#text</code> from XML text wrapper objects.</td>
+          </tr>
+          <tr>
+            <td><code>valueType</code></td>
+            <td><code>"array"</code></td>
+            <td>Guarantees output is wrapped in an array, even if input is a single object.</td>
+            <td>Normalizing single-element collections into reliable arrays.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- DIRECTIVE 1 -->
+      <h2>1. <code>alterKey</code>: Renaming Fields</h2>
+      <p>Renames incoming enterprise property names into clean API property names on the output object:</p>
+      <pre><code>// Recipe
+{
+  "transform": {
+    "STOCKITEM": { "alterKey": "stockItems" }
+  }
+}
+
+// Input:  { "STOCKITEM": [...] }
+// Output: { "stockItems": [...] }</code></pre>
+
+      <!-- DIRECTIVE 2 -->
+      <h2>2. <code>transform</code>: Nested Tree Traversal</h2>
+      <p>Instructs the engine to descend recursively into child structures. When an incoming node is an object or array of objects, <code>transform</code> defines what to alter inside those children:</p>
+      <pre><code>// Recipe
+{
+  "transform": {
+    "STOCKITEM": {
+      "alterKey": "items",
+      "transform": {
+        "NAME": { "alterKey": "name" },
+        "BASEUNITS": { "alterKey": "units" }
+      }
+    }
+  }
+}</code></pre>
+
+      <!-- DIRECTIVE 3 -->
+      <h2>3. <code>valueKey</code>: Unwrapping XML Text Objects</h2>
+      <p>XML parsers often produce nested text wrapper objects like <code>{ "#text": "Main Location", "@_TYPE": "String" }</code>. <code>valueKey</code> extracts the inner value directly:</p>
+      <pre><code>// Recipe
+{
+  "transform": {
+    "GODOWNNAME": {
+      "alterKey": "location",
+      "valueKey": "#text"
+    }
+  }
+}
+
+// Input:  { "GODOWNNAME": { "#text": "Main Location", "@_TYPE": "String" } }
+// Output: { "location": "Main Location" }</code></pre>
+
+      <!-- DIRECTIVE 4 -->
+      <h2>4. <code>valueType: "array"</code>: Collection Normalization</h2>
+      <p>XML parsers output a plain object when there is only one child tag, but an array when there are multiple child tags. <code>valueType: "array"</code> enforces array output:</p>
+      <pre><code>// Recipe
+{
+  "transform": {
+    "BATCHALLOCATIONS.LIST": {
+      "alterKey": "batches",
+      "valueType": "array",
+      "transform": {
+        "BATCHNAME": { "alterKey": "batchNumber" }
+      }
+    }
+  }
+}
+
+// Input:  { "BATCHALLOCATIONS.LIST": { "BATCHNAME": "B-01" } }
+// Output: { "batches": [ { "batchNumber": "B-01" } ] }</code></pre>
+
+      <div class="page-nav">
+        <a href="index.html">&larr; Previous: Overview &amp; Story</a>
+        <a href="examples.html">Next: Enterprise Cookbook &rarr;</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

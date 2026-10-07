@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>User Guide — Overview &amp; The Source-to-Consumption Story</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="brand-title">User Guide</a>
+        <div class="brand-subtitle">json-transformer &bull; Recipe Authors</div>
+      </div>
+
+      <div class="nav-hub">
+        <a href="../index.html">&larr; Back to Main Portal</a>
+        <a href="../walkthrough/index.html">💡 Conceptual Walkthrough</a>
+      </div>
+
+      <div class="nav-label">User Documentation</div>
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link active">1. Overview &amp; Story</a></li>
+        <li><a href="directives.html" class="nav-link">2. Directives Toolkit</a></li>
+        <li><a href="examples.html" class="nav-link">3. Enterprise Cookbook</a></li>
+        <li><a href="playground.html" class="nav-link">4. Live Sandbox 🧪</a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <a href="../developer/index.html">Switch to Developer Guide &rarr;</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <h1>The User Guide <span class="badge">Recipe Author</span></h1>
+      <div class="lead">The Recipe Author's Handbook: Transforming raw enterprise data into clean, predictable JSON contracts.</div>
+
+      <!-- SECTION 1: THE STORY FROM SOURCE TO CONSUMPTION -->
+      <h2>1. The Big Story: From Source to Consumption</h2>
+      <p>In modern enterprise architecture, data flows between three fundamentally distinct parties with contradictory incentives:</p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-icon">📡</div>
+          <div class="concept-title">1. Data Provider</div>
+          <div class="concept-role">Source JSON &bull; The Food</div>
+          <div class="concept-desc">External systems (Tally ERP, SAP, SQL dumps, legacy SOAP/XML). Owned by upstream providers. Sacred, irregular, and 100% immutable.</div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-icon">📜</div>
+          <div class="concept-title">2. Application Contract</div>
+          <div class="concept-role">Transformation JSON &bull; The Recipe</div>
+          <div class="concept-desc">Owned by your application. Declarative mapping instructions that define what fields survive, how they are renamed, and where they nest.</div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-icon">🎯</div>
+          <div class="concept-title">3. Consumer</div>
+          <div class="concept-role">Output JSON &bull; Consumption</div>
+          <div class="concept-desc">Frontend UI, React/Vue views, mobile clients, or downstream REST services expecting a clean, uniform, typed schema.</div>
+        </div>
+      </div>
+
+      <div class="note">
+        <strong>The Central Invariant:</strong>
+        <em>Source is data. Transformation is instruction. Output is result.</em>
+        <br>
+        Never ask upstream data providers to alter their shape, and never write imperative mutable glue scripts that pollute caches.
+      </div>
+
+      <!-- SECTION 2: WHY TRANSFERRING REQUIRES DECLARATIVE PURITY -->
+      <h2>2. What Happens When We Transfer from Source to Consumption?</h2>
+      <p>When transferring enterprise data to consumption, traditional developers write imperative scripts full of nested loops, mutation, and fragile condition checks. That shortcut is where systems fail:</p>
+
+      <ul>
+        <li><strong>Cardinality Shock:</strong> XML parsers turn multiple items into an array, but a single item into a plain object. Imperative scripts throw <code>TypeError: map is not a function</code>.</li>
+        <li><strong>XML Clutter:</strong> Text nodes wrapped in <code>#text</code> and metadata attributes like <code>@_TYPE="String"</code> pollute your frontend stores.</li>
+        <li><strong>Silent Mutations:</strong> Modifying source objects in memory corrupts shared references and causes unpredictable memory leaks.</li>
+      </ul>
+
+      <p><code>@keshavsoft/json-transformer</code> provides a <strong>lossless, declarative bridge</strong>. It takes raw source data and a declarative recipe, compiling them into clean consumption JSON with zero side-effects.</p>
+
+      <!-- SECTION 3: THE THREE REASONS FOR TWO JSONS -->
+      <h2>3. Why Two Separate Files? The Immutability Principle</h2>
+      <ol>
+        <li><strong>Client Data is Sacrosanct:</strong> Upstream data does not belong to you. Mutating incoming client payloads pollutes shared memory and breaks downstream consumers.</li>
+        <li><strong>Preventing Infinite Loops:</strong> If a recursive engine mutates data while traversing it, self-referencing branches trigger infinite execution loops.</li>
+        <li><strong>Independent Lifecycles:</strong> The Food changes on every API request. The Recipe changes only when your business contract evolves.</li>
+      </ol>
+
+      <!-- SECTION 4: THE RECIPE IS DOMAIN KNOWLEDGE -->
+      <h2>4. The Recipe is Knowledge, Not Duplication</h2>
+      <p>Why does the recipe mirror the hierarchy of the source data? Because <strong>you cannot transform complex enterprise data without first proving you understand its hierarchy</strong>.</p>
+      <p>When an engineer writes a recipe matching the path down to the target field, they formally prove:</p>
+      <ul>
+        <li><strong>Structural Proof:</strong> <em>"I understand that <code>STOCKITEM</code> contains <code>BATCHALLOCATIONS.LIST</code>, which contains <code>GODOWNNAME</code>."</em></li>
+        <li><strong>Intentionality:</strong> Only paths that are explicitly acknowledged survive. All unrequested XML noise is pruned automatically.</li>
+      </ul>
+
+      <!-- SECTION 5: INSTALLATION & GETTING STARTED -->
+      <h2>5. Quickstart</h2>
+      <pre><code>npm install @keshavsoft/json-transformer</code></pre>
+
+      <pre><code>import transform from "@keshavsoft/json-transformer";
+
+const source = {
+  STOCKITEM: [
+    {
+      NAME: "Item A",
+      BASEUNITS: { "#text": "kgs" }
+    }
+  ]
+};
+
+const recipe = {
+  transform: {
+    STOCKITEM: {
+      alterKey: "Items",
+      transform: {
+        NAME: { alterKey: "name" },
+        BASEUNITS: { alterKey: "units", valueKey: "#text" }
+      }
+    }
+  }
+};
+
+const result = transform(source, recipe);
+console.log(result);
+// { Items: [ { name: "Item A", units: "kgs" } ] }</code></pre>
+
+      <div class="page-nav">
+        <span></span>
+        <a href="directives.html">Next: Directives Toolkit &rarr;</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

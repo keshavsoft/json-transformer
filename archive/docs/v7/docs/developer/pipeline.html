@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Developer Guide — Traversal Pipeline Anatomy</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="brand-title">Developer Guide</a>
+        <div class="brand-subtitle">json-transformer &bull; Engine Internals</div>
+      </div>
+
+      <div class="nav-hub">
+        <a href="../index.html">&larr; Back to Main Portal</a>
+        <a href="../walkthrough/index.html">💡 Conceptual Walkthrough</a>
+      </div>
+
+      <div class="nav-label">Engine Architecture</div>
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link">1. Overview &amp; Evolution</a></li>
+        <li><a href="invariants.html" class="nav-link">2. Core Invariants</a></li>
+        <li><a href="pipeline.html" class="nav-link active">3. Traversal Pipeline</a></li>
+        <li><a href="trace.html" class="nav-link">4. Trace &amp; Testing</a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <a href="../user/index.html">Switch to User Guide &rarr;</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <h1>Traversal Pipeline <span class="badge">Engine Anatomy</span></h1>
+      <div class="lead">Deep architectural breakdown of the five modules comprising the <code>src/v8/</code> co-traversal engine.</div>
+
+      <div class="pipeline-grid">
+        <!-- 1. INDEX.JS -->
+        <div class="pipeline-step">
+          <div class="pipeline-header">
+            <span class="pipeline-file">src/v8/index.js</span>
+            <span class="pipeline-tag">Public API Envelope</span>
+          </div>
+          <div class="pipeline-desc">
+            The external entry point. Converts positional arguments <code>(source, recipe)</code> into the internal <code>{ inSource, inRecipe }</code> configuration object and invokes the central dispatcher.
+          </div>
+          <pre class="pipeline-code"><code>import traverse from "./traverse.js";
+
+const transform = (source, recipe) => {
+    const localSource = source;
+    const localRecipe = recipe;
+
+    return traverse({
+        inSource: localSource,
+        inRecipe: localRecipe
+    });
+};
+
+export default transform;</code></pre>
+        </div>
+
+        <!-- 2. TRAVERSE.JS -->
+        <div class="pipeline-step">
+          <div class="pipeline-header">
+            <span class="pipeline-file">src/v8/traverse.js</span>
+            <span class="pipeline-tag">Central Dispatcher</span>
+          </div>
+          <div class="pipeline-desc">
+            The core router. It inspects the runtime type of <code>localSource</code>:
+            <ul style="margin-top: 8px; margin-bottom: 8px;">
+              <li><strong>Arrays</strong> route to <code>traverseArray</code>.</li>
+              <li><strong>Objects</strong> route to <code>traverseObject</code>.</li>
+              <li><strong>Primitives</strong> (strings, numbers, booleans, null) pass through untouched.</li>
+            </ul>
+          </div>
+          <pre class="pipeline-code"><code>const startFunc = ({ inSource, inRecipe }) => {
+    const localSource = inSource;
+    const localRecipe = inRecipe;
+
+    if (Array.isArray(localSource)) {
+        return traverseArray({ inItems: localSource, inRecipe: localRecipe });
+    }
+
+    if (typeof localSource === "object" &amp;&amp; localSource !== null) {
+        return traverseObject({ inSource: localSource, inRecipe: localRecipe });
+    }
+
+    return localSource;
+};</code></pre>
+        </div>
+
+        <!-- 3. TRAVERSEOBJECT -->
+        <div class="pipeline-step">
+          <div class="pipeline-header">
+            <span class="pipeline-file">src/v8/traverseObject/index.js</span>
+            <span class="pipeline-tag">The Secret Gatekeeper</span>
+          </div>
+          <div class="pipeline-desc">
+            <strong>The critical design decision:</strong> The engine inspects the <strong>Recipe</strong>, not the source. If <code>"transform" in localRecipe</code> is true, it enters reshaping mode via <code>ifTransformFound</code>. If absent, child properties continue unhindered to prevent unintended data loss.
+          </div>
+          <pre class="pipeline-code"><code>let newElement = localSource;
+
+if (localRecipe &amp;&amp; typeof localRecipe === "object" &amp;&amp; "transform" in localRecipe) {
+    newElement = ifTransformFound({
+        inSource: localSource,
+        inTransform: localRecipe.transform
+    });
+}
+
+for (const [key, value] of Object.entries(newElement)) {
+    if (Array.isArray(value) &amp;&amp; localRecipe &amp;&amp; key in localRecipe) {
+        newElement[key] = traverseArray({ inItems: value, inRecipe: localRecipe[key] });
+    }
+}
+
+return newElement;</code></pre>
+        </div>
+
+        <!-- 4. IFTRANSFORMFOUND -->
+        <div class="pipeline-step">
+          <div class="pipeline-header">
+            <span class="pipeline-file">src/v8/ifTransformFound/index.js</span>
+            <span class="pipeline-tag">The Inversion of Control</span>
+          </div>
+          <div class="pipeline-desc">
+            <code>localSource</code> drives the iteration (preventing phantom properties), while <code>localTransform</code> acts as the directive lookup. Directives execute in strict order:
+            <code>alterKey</code> &rarr; recursive <code>transform</code> &rarr; <code>valueType</code> &rarr; <code>valueKey</code>.
+          </div>
+          <pre class="pipeline-code"><code>for (const [key, value] of Object.entries(localSource)) {
+    if (!(key in localTransform)) {
+        continue; // Unacknowledged properties are pruned
+    }
+
+    const directive = localTransform[key];
+    const newKey = directive?.alterKey || key;
+    let processedValue = value;
+
+    if ("transform" in directive) {
+        processedValue = traverse({ inSource: value, inRecipe: directive });
+    }
+
+    if (directive?.valueType === "array" &amp;&amp; !Array.isArray(processedValue)) {
+        processedValue = [processedValue];
+    }
+
+    if (directive?.valueKey &amp;&amp; processedValue &amp;&amp; typeof processedValue === "object") {
+        processedValue = processedValue[directive.valueKey];
+    }
+
+    newElement[newKey] = processedValue;
+}</code></pre>
+        </div>
+
+        <!-- 5. TRAVERSEARRAY -->
+        <div class="pipeline-step">
+          <div class="pipeline-header">
+            <span class="pipeline-file">src/v8/traverseArray/index.js</span>
+            <span class="pipeline-tag">Collection Processor</span>
+          </div>
+          <div class="pipeline-desc">
+            Maps each array element recursively through <code>traverse</code>, flattens deep sub-arrays with <code>.flat(Infinity)</code>, and strips empty/falsy residues with <code>.filter(Boolean)</code>.
+          </div>
+          <pre class="pipeline-code"><code>const startFunc = ({ inItems, inRecipe }) => {
+    const localItems = inItems;
+    const localRecipe = inRecipe;
+
+    return localItems
+        .map((item) => traverse({ inSource: item, inRecipe: localRecipe }))
+        .flat(Infinity)
+        .filter(Boolean);
+};</code></pre>
+        </div>
+      </div>
+
+      <div class="page-nav">
+        <a href="invariants.html">&larr; Previous: Core Invariants</a>
+        <a href="trace.html">Next: Trace &amp; Testing &rarr;</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

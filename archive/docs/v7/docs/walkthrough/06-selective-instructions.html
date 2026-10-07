@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document 6 — Selective Instructions on a Larger Source</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="brand-title">Conceptual Walkthrough</a>
+        <div class="brand-subtitle">json-transformer &bull; First Principles</div>
+      </div>
+
+      <div class="nav-hub">
+        <a href="../index.html">&larr; Back to Main Portal</a>
+      </div>
+
+      <div class="nav-label">The 7-Document Series</div>
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link">Overview &amp; Road Map</a></li>
+        <li><a href="01-repository-story.html" class="nav-link">1. Repository Story</a></li>
+        <li><a href="02-how-it-works.html" class="nav-link">2. Source-Driven Traversal</a></li>
+        <li><a href="03-see-it-working.html" class="nav-link">3. Two Root Nodes</a></li>
+        <li><a href="04-adding-another-node.html" class="nav-link">4. Adding Another Node</a></li>
+        <li><a href="05-introducing-children.html" class="nav-link">5. Introducing Children</a></li>
+        <li><a href="06-selective-instructions.html" class="nav-link active">6. Selective Instructions</a></li>
+        <li><a href="07-understanding-the-function.html" class="nav-link">7. The Leaf Function</a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <a href="../user/index.html">Continue to User Guide &rarr;</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <h1>Document 6 — Selective Instructions <span class="badge">Sparse Recipes</span></h1>
+      <div class="lead">Large source data with sparse instructions. Why instructions only touch targeted nodes and omit unneeded data.</div>
+
+      <p>
+        We have already seen that the structure can grow by adding new roots
+        and children without changing the traversal mechanism.
+      </p>
+
+      <p>
+        Now we make the source considerably larger.
+        The important point is that the source can contain much more information
+        than the instructions need to address.
+      </p>
+
+      <blockquote>
+        <strong>Instructions are mandatory:</strong>
+        A node is acted upon only when an instruction exists for that node.
+        There is no fallback behavior.
+      </blockquote>
+
+      <h2>1. A Larger Source</h2>
+
+      <p>
+        Imagine that our source contains several parts of an enterprise order:
+      </p>
+
+      <pre><code>{
+  "customer": {
+    "name": "Keshav",
+    "email": "keshav@example.com",
+    "phone": "9876543210"
+  },
+  "order": {
+    "id": "ORD-101",
+    "date": "2026-10-07",
+    "status": "confirmed"
+  },
+  "product": {
+    "code": "P-100",
+    "name": "Laptop",
+    "price": 75000
+  },
+  "shipping": {
+    "address": {
+      "city": "Kakinada",
+      "state": "Andhra Pradesh"
+    },
+    "method": "Express"
+  }
+}</code></pre>
+
+      <p>
+        This is a much larger source.
+        Yet the traversal engine does not need to become more complicated.
+      </p>
+
+      <h2>2. Instructions Are Selective</h2>
+
+      <p>
+        We do not have to attach a function to every value in this source.
+        Instead, we explicitly describe only the locations we want to act upon:
+      </p>
+
+      <pre><code>{
+  "customer": {
+    "name": {
+      "transform": "logPath"
+    }
+  },
+  "order": {
+    "id": {
+      "transform": "logPath"
+    }
+  },
+  "shipping": {
+    "address": {
+      "city": {
+        "transform": "logPath"
+      }
+    }
+  }
+}</code></pre>
+
+      <p>
+        Notice what happened:
+        The source is large, but the instructions are small.
+        Only three locations have instructions, so only those three locations become function points.
+      </p>
+
+      <h2>3. What the Traversal Sees</h2>
+
+      <pre><code>customer
+  └── name &rarr; transform &rarr; logPath
+
+order
+  └── id &rarr; transform &rarr; logPath
+
+shipping
+  └── address
+      └── city &rarr; transform &rarr; logPath</code></pre>
+
+      <p>
+        Other source values such as
+        <code>customer.email</code>,
+        <code>customer.phone</code>,
+        <code>order.date</code>,
+        <code>product.price</code>,
+        and <code>shipping.method</code>
+        have no instruction in this example. They are simply untouched.
+      </p>
+
+      <h2>4. Runtime Output</h2>
+
+      <pre><code>I am here in the tree: customer.name Keshav
+I am here in the tree: order.id ORD-101
+I am here in the tree: shipping.address.city Kakinada</code></pre>
+
+      <h2>5. The Resulting In-Memory Object</h2>
+
+      <pre><code>{
+  customer: {
+    name: logPath
+  },
+  order: {
+    id: logPath
+  },
+  shipping: {
+    address: {
+      city: logPath
+    }
+  }
+}</code></pre>
+
+      <h2>Why This Matters</h2>
+
+      <div class="note">
+        <strong>The Separation of Concerns:</strong>
+        <ul>
+          <li>The source describes <strong>what exists</strong>.</li>
+          <li>The instructions describe <strong>what should happen</strong>.</li>
+          <li>The external function provides <strong>the behavior</strong>.</li>
+        </ul>
+      </div>
+
+      <p>
+        A very large source therefore does not force us to create a very large
+        instruction set. We select only the parts of the structure that matter.
+      </p>
+
+      <div class="page-nav">
+        <a href="05-introducing-children.html">&larr; Previous: Document 5 — Introducing Children</a>
+        <a href="07-understanding-the-function.html">Next: Document 7 — The Leaf Function &rarr;</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document 3 — See It Working: Two Root Nodes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="brand-title">Conceptual Walkthrough</a>
+        <div class="brand-subtitle">json-transformer &bull; First Principles</div>
+      </div>
+
+      <div class="nav-hub">
+        <a href="../index.html">&larr; Back to Main Portal</a>
+      </div>
+
+      <div class="nav-label">The 7-Document Series</div>
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link">Overview &amp; Road Map</a></li>
+        <li><a href="01-repository-story.html" class="nav-link">1. Repository Story</a></li>
+        <li><a href="02-how-it-works.html" class="nav-link">2. Source-Driven Traversal</a></li>
+        <li><a href="03-see-it-working.html" class="nav-link active">3. Two Root Nodes</a></li>
+        <li><a href="04-adding-another-node.html" class="nav-link">4. Adding Another Node</a></li>
+        <li><a href="05-introducing-children.html" class="nav-link">5. Introducing Children</a></li>
+        <li><a href="06-selective-instructions.html" class="nav-link">6. Selective Instructions</a></li>
+        <li><a href="07-understanding-the-function.html" class="nav-link">7. The Leaf Function</a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <a href="../user/index.html">Continue to User Guide &rarr;</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <h1>Document 3 — See It Working <span class="badge">Two Root Nodes</span></h1>
+      <div class="lead">The minimal working example: traversing a 2-node source (customer, order) and attaching behavior at runtime.</div>
+
+      <h2>1. The Source Data</h2>
+      <p>
+        Consider a minimal source with two root nodes:
+      </p>
+
+      <pre><code>{
+  "customer": {
+    "name": "Keshav"
+  },
+  "order": {
+    "id": "ORD-101"
+  }
+}</code></pre>
+
+      <h2>2. The Instructions</h2>
+      <p>
+        We want both nodes to invoke a function called <code>logPath</code>:
+      </p>
+
+      <pre><code>{
+  "customer": {
+    "transform": "logPath"
+  },
+  "order": {
+    "transform": "logPath"
+  }
+}</code></pre>
+
+      <h2>3. The External Function</h2>
+      <p>
+        The function is declared outside the JSON, in pure JavaScript:
+      </p>
+
+      <pre><code>function logPath(value, path) {
+  console.log("I am here in the tree:", path, value);
+}</code></pre>
+
+      <p>
+        Notice that <code>logPath</code> does not know the tree shape in advance.
+        It simply logs whatever path and value the traversal engine hands to it.
+      </p>
+
+      <h2>4. Traversal Execution</h2>
+      <p>
+        When the engine executes, it visits each source node, matches the instruction, and binds the function:
+      </p>
+
+      <pre><code>1. Visit customer &rarr; Find "transform": "logPath" &rarr; Bind logPath
+2. Visit order    &rarr; Find "transform": "logPath" &rarr; Bind logPath</code></pre>
+
+      <h2>5. Runtime Output</h2>
+      <p>
+        Invoking the resulting leaf functions prints:
+      </p>
+
+      <pre><code>I am here in the tree: customer.name Keshav
+I am here in the tree: order.id ORD-101</code></pre>
+
+      <h2>6. The Key Takeaway</h2>
+
+      <blockquote>
+        The engine walked the source, consulted the instructions, and bound the external function to every instructed leaf.
+      </blockquote>
+
+      <div class="flow">
+        2 Source Nodes &rarr; 2 Instructions &rarr; 2 Function Calls &rarr; Zero hard-coded paths in the function
+      </div>
+
+      <div class="page-nav">
+        <a href="02-how-it-works.html">&larr; Previous: Document 2 — Source-Driven Traversal</a>
+        <a href="04-adding-another-node.html">Next: Document 4 — Adding Another Node &rarr;</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
