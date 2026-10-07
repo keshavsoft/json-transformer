@@ -1,389 +1,163 @@
-JSON Transformer
+# @keshavsoft/json-transformer
 
-A practical JSON-to-JSON transformation engine.
-
-The idea is simple:
-
-SOURCE JSON
-    +
-TRANSFORMATION JSON
-    │
-    ▼
-OUTPUT JSON
-
-The three have different responsibilities:
-
-- Source JSON is the data.
-- Transformation JSON is the instruction.
-- Output JSON is the result.
-
-The source can belong to another system. The transformation belongs to the application. The output belongs to the consumer.
+> Pure JSON Specification Compiler: `(structure, data) -> Spec JSON`
 
 ---
 
-The Mental Model
+## The Mental Model: The Food & The Recipe
 
-Think of the transformation as an output recipe.
+In application architecture, transforming data should never involve arbitrary scripts mutating objects in place.
 
-Source JSON
+Think of it this way:
 
-{
-  "name": "Keshav",
-  "city": "Kakinada",
-  "phone": "9999999999",
-  "internalCode": "SECRET"
+- **`structure.json` is the Food**: Raw, untouched source data coming from an external client, database, or API (such as Tally or SAP).
+- **`data.json` is the Recipe**: The declarative transformation instructions specifying which keys to alter, which branches to drill into, and how to reshape the output.
+- **`json-transformer` is the Kitchen**: It takes the food, reads the recipe, and produces the final dish without ever touching or modifying the original ingredients.
+
+```
+       structure.json (The Food)           data.json (The Recipe)
+       [Untouchable Client Data]          [Declarative Directives]
+                   │                                  │
+                   └────────────────┬─────────────────┘
+                                    │
+                                    ▼
+                         @keshavsoft/json-transformer
+                                    │
+                                    ▼
+                               Result JSON
+                         [Clean, Reshaped Output]
+```
+
+---
+
+## Why Two Separate JSONs? The Immutability Principle
+
+Developers often ask: *"Why maintain two separate files? Why not embed transformation directives directly into the source JSON?"*
+
+There is a fundamental architectural reason:
+
+1. **Client Data Must Remain Sacrosanct**:
+   Source data belongs to the external producer (client, upstream service, database). You do not own it. Mutating it in place corrupts original caches and introduces unintended side-effects.
+
+2. **Preventing Infinite Loops**:
+   If you modify the source object while recursively traversing it, the traversal engine can easily get caught in infinite recursion loops.
+
+3. **Separation of Concerns**:
+   The data changes dynamically on every request. The recipe changes only when your business contract evolves. Keeping them separated creates a clean, deterministic pipeline.
+
+---
+
+## How It Works: The Traversal Pipeline
+
+Under the hood in `v8`, the traversal follows a strict, predictable sequence:
+
+### 1. Central Dispatcher (`traverse.js`)
+The engine inspects the input:
+- If it is an Array ➔ delegates to `traverseArray`.
+- If it is an Object ➔ delegates to `traverseObject`.
+- Otherwise ➔ returns the primitive as-is.
+
+### 2. The Decision Point in `traverseObject` (Line 14 Rule)
+The engine checks the **Recipe**, not the source:
+
+```javascript
+if (localRecipe && typeof localRecipe === "object" && "transform" in localRecipe) {
+    newElement = ifTransformFound({
+        inSource: localSource,
+        inTransform: localRecipe.transform
+    });
 }
+```
 
-This is simply data.
+The engine queries the recipe: *"Do you have instructions for this level?"* If `"transform"` exists, it delegates to `ifTransformFound`.
 
-Transformation JSON
+### 3. Iteration in `ifTransformFound`
+Here, the roles flip:
+- `localSource` becomes the **Source of Truth** that drives the loop (`Object.entries(localSource)`).
+- `localTransform` acts strictly as the **Lookup Table** for instructions.
 
-const transformation = {
-    mapping: {
-        item: {
-            customerName: "name",
-            customerCity: "city"
-        }
-    }
-};
-
-This is the instruction.
-
-It says:
-
-«Create "customerName" using "name", and create "customerCity" using "city".»
-
-Output JSON
-
-{
-  "customerName": "Keshav",
-  "customerCity": "Kakinada"
-}
-
-The source has not been modified.
-
-The transformation has decided what the output should look like.
+For every key in `localSource`:
+- If the key is not in `localTransform`, it is ignored.
+- If the key has directives:
+  - `alterKey`: Renames the key on the output object.
+  - `transform`: Recursively invokes `traverse` on nested values.
+  - `valueType: "array"`: Ensures the output is an array.
+  - `valueKey`: Extracts a specific child property value.
 
 ---
 
-The Core Rule
+## Quickstart
 
-SOURCE JSON
-    = DATA
+```bash
+npm install @keshavsoft/json-transformer
+```
 
-TRANSFORMATION JSON
-    = INSTRUCTIONS
-
-OUTPUT JSON
-    = RESULT
-
-This distinction is the foundation of the project.
-
----
-
-Basic Usage
-
-import transformer from "json-traversal";
+```javascript
+import transform from "@keshavsoft/json-transformer";
 
 const source = {
-    name: "Keshav",
-    city: "Kakinada"
-};
-
-const transformation = {
-    mapping: {
-        item: {
-            customerName: "name",
-            customerCity: "city"
+    STOCKITEM: [
+        {
+            BASEUNITS: { "#text": "kgs", "@_TYPE": "String" },
+            NAME: "Item A"
         }
-    }
+    ]
 };
 
-const result = transformer.transform(source, transformation);
-
-console.log(result);
-
-Result:
-
-{
-  "customerName": "Keshav",
-  "customerCity": "Kakinada"
-}
-
----
-
-The Transformation Defines the Output
-
-The source does not have to look like the output.
-
-A source can contain:
-
-{
-  "id": 1001,
-  "name": "Keshav",
-  "city": "Kakinada",
-  "phone": "9999999999",
-  "internalCode": "SECRET"
-}
-
-while the transformation selects only:
-
-{
-  "id": "id",
-  "name": "name",
-  "city": "city"
-}
-
-The result becomes:
-
-{
-  "id": 1001,
-  "name": "Keshav",
-  "city": "Kakinada"
-}
-
-Unmentioned source properties are not automatically copied.
-
----
-
-The Output Can Have a Different Shape
-
-The transformation can create structure that does not exist in the source.
-
-Source:
-
-{
-  "name": "Keshav",
-  "city": "Kakinada"
-}
-
-Transformation:
-
-{
-    mapping: {
-        item: {
-            customer: {
-                item: {
-                    name: "name",
-                    location: {
-                        item: {
-                            city: "city"
-                        }
-                    }
-                }
+const recipe = {
+    transform: {
+        STOCKITEM: {
+            alterKey: "StockItems",
+            transform: {
+                BASEUNITS: { alterKey: "Units", valueKey: "#text" },
+                NAME: { alterKey: "Name" }
             }
         }
     }
-}
+};
 
-Output:
+const result = transform(source, recipe);
+```
 
+**Output:**
+```json
 {
-  "customer": {
-    "name": "Keshav",
-    "location": {
-      "city": "Kakinada"
-    }
-  }
-}
-
-The source provided the data.
-
-The transformation created the shape.
-
----
-
-Arrays
-
-The same transformation model works with collections.
-
-Source:
-
-{
-  "items": [
-    { "name": "ROPE", "amount": 260 },
-    { "name": "CABLE", "amount": 540 }
-  ]
-}
-
-Transformation:
-
-{
-    mapping: {
-        item: {
-            products: [
-                {
-                    list: "items",
-                    item: {
-                        productName: "name",
-                        amount: "amount"
-                    }
-                }
-            ]
-        }
-    }
-}
-
-Output:
-
-{
-  "products": [
+  "StockItems": [
     {
-      "productName": "ROPE",
-      "amount": 260
-    },
-    {
-      "productName": "CABLE",
-      "amount": 540
+      "Units": "kgs",
+      "Name": "Item A"
     }
   ]
 }
-
-The important part is that "list" selects the source collection and "item" describes how each element becomes output.
-
-The same idea can be composed again for nested arrays.
+```
 
 ---
 
-Scalar Arrays
+## Directives Reference
 
-The source collection does not have to contain objects.
-
-For example:
-
-{
-  "LedgerName": [
-    "Cash",
-    "Sales",
-    "Purchase"
-  ]
-}
-
-A list can process those values directly.
-
-Within the current item:
-
-""
-
-represents the current source value.
-
-Therefore the same mechanism can process scalar collections without requiring the source to be changed into artificial objects.
+| Directive | Type | Description |
+| :--- | :--- | :--- |
+| `alterKey` | `string` | Renames the key in the transformed output. |
+| `transform` | `object` | Specifies nested transformation rules for children. |
+| `valueKey` | `string` | Unwraps a specific child property from an object (e.g. `"#text"`). |
+| `valueType` | `"array"` | Guarantees the output value is wrapped in an array. |
 
 ---
 
-Tally and XML-Shaped JSON
+## Architecture (`src/v8/`)
 
-The transformer is useful with JSON produced from XML/Tally-style structures.
+```
+src/v8/
+├── index.js                  # Clean public entry point: transform(source, recipe)
+├── traverse.js               # Central recursive dispatcher
+├── traverseObject/
+│   └── index.js              # Object handler: checks recipe for transform
+├── traverseArray/
+│   └── index.js              # Array handler: maps elements through traverse
+└── ifTransformFound/
+    └── index.js              # Directive applicator: walks source entries
+```
 
-A source may contain keys such as:
-
-ALLINVENTORYENTRIES.LIST
-LEDGERENTRIES.LIST
-LEDGERNAME.#text
-AMOUNT.#text
-
-The transformation can describe the application-facing result:
-
-{
-    mapping: {
-        item: {
-            ledger: [
-                {
-                    list: "LEDGERENTRIES.LIST",
-                    item: {
-                        name: "LEDGERNAME.#text",
-                        amount: "AMOUNT.#text"
-                    }
-                }
-            ]
-        }
-    }
-}
-
-The Tally structure remains on the source side.
-
-The application receives the shape described by the transformation.
-
-Tally is therefore a source story, not the definition of the transformer itself.
-
----
-
-Mapping Language
-
-The transformation language provides several mapping forms:
-
-Mapping| Purpose
-"item"| Describe an output object
-"list"| Select a source collection and repeat an item mapping
-"objectify"| Represent a source value through an array-oriented mapping
-"flat"| Select one indexed element from a source array
-"collect"| Compose array results
-"$value"| Provide a literal value
-""""| Use the current source value
-"(TYPE)"| Apply a supported type conversion
-"{ACTION}"| Apply a supported action
-"^path"| Resolve against the root source
-
-See ""docs/mapping-language.md"" (docs/mapping-language.md) for the detailed language.
-
----
-
-Architecture
-
-Conceptually:
-
-transform(source, transformation)
-              │
-              ▼
-       mapping traversal
-              │
-       ┌──────┼──────┐
-       ▼      ▼      ▼
-     object  array   value
-       │      │       │
-       │      │       ▼
-       │      │   resolve value
-       │      │       │
-       │      │       ▼
-       │      │   resolve path
-       │      │
-       │      ▼
-       │   source collection
-       │
-       ▼
- recursively traverse
- child mappings
-              │
-              ▼
-          OUTPUT JSON
-
-The responsibilities are intentionally separated:
-
-- "traverse.js" understands the transformation structure.
-- "resolve.js" understands source paths.
-- "value.js" resolves mapping values.
-- "actions.js" handles supported actions and conversions.
-- "constants.js" contains mapping syntax identifiers.
-
----
-
-Documentation
-
-- [**Live Showcase & Playground**](https://keshavsoft.github.io/json-transformer/) — interactive browser sandbox.
-- [**Documentation Index**](docs/index.md) — complete reading order and ecosystem story.
-- [**Concepts**](docs/concepts.md) — the central mental model and ownership boundaries.
-- [**Architecture**](docs/architecture.md) — how traversal and resolution operate separately.
-- [**Mapping Language**](docs/mapping-language.md) — transformation syntax and directives.
-- [**Arrays & Collections**](docs/arrays.md) — basic, nested, and scalar array iteration.
-- [**Path Resolution**](docs/path-resolution.md) — dotted keys, XML `#text`, and root escapes.
-- [**Tally & XML**](docs/tally.md) — consuming real-world Tally accounting vouchers.
-- [**Examples & Recipes**](docs/examples.md) — progressive cookbook and patterns.
-- [**Maintenance Principles**](docs/maintenance.md) — rules for evolving and protecting the engine.
-
----
-
-One Sentence
-
-«JSON Transformer takes source data and a transformation recipe and produces output JSON.»
-
-Everything else in the project exists to make that transformation understandable, composable, and reliable.
+- **Zero comments**: Code intent is conveyed entirely through folder structure and naming.
+- **Strict In-Local convention**: Parameter unpacking is strictly internal.
+- **Zero dependencies**: Pure, deterministic JavaScript.

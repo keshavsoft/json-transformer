@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>json-transformer — Directives Reference</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="brand-title">json-transformer</a>
+        <div class="brand-subtitle">v8.0.0 &bull; KeshavSoft</div>
+      </div>
+      <div class="nav-label">Documentation</div>
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link">The Story &amp; Philosophy</a></li>
+        <li><a href="how-it-works.html" class="nav-link">How It Works</a></li>
+        <li><a href="directives.html" class="nav-link active">Directives Reference</a></li>
+        <li><a href="examples.html" class="nav-link">Real-World Examples</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <a href="https://github.com/keshavsoft/json-transformer" target="_blank" rel="noopener">GitHub Repository &rarr;</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <h1>Directives Reference</h1>
+      <div class="lead">Declarative instructions supported inside the recipe JSON.</div>
+
+      <h2>Summary Table</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Directive</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>alterKey</code></td>
+            <td><code>string</code></td>
+            <td>Renames the matching source property on the output object.</td>
+          </tr>
+          <tr>
+            <td><code>transform</code></td>
+            <td><code>object</code></td>
+            <td>Defines nested transformation directives for child objects or arrays.</td>
+          </tr>
+          <tr>
+            <td><code>valueKey</code></td>
+            <td><code>string</code></td>
+            <td>Unwraps a specific child property from an object (e.g. <code>#text</code>).</td>
+          </tr>
+          <tr>
+            <td><code>valueType</code></td>
+            <td><code>"array"</code></td>
+            <td>Forces the processed value to always be wrapped in an array.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>1. <code>alterKey</code></h2>
+      <p>Renames an incoming property to a clean, domain-specific name on the output.</p>
+      <pre><code>// Recipe
+{
+    "transform": {
+        "STOCKITEM": { "alterKey": "StockItems" }
+    }
+}
+
+// Input:  { "STOCKITEM": [...] }
+// Output: { "StockItems": [...] }</code></pre>
+
+      <h2>2. <code>transform</code></h2>
+      <p>Nests instructions for child structures. When an incoming node is an object or array of objects, <code>transform</code> defines what to alter inside those children.</p>
+      <pre><code>// Recipe
+{
+    "transform": {
+        "STOCKITEM": {
+            "alterKey": "StockItems",
+            "transform": {
+                "NAME": { "alterKey": "Name" },
+                "BASEUNITS": { "alterKey": "Units" }
+            }
+        }
+    }
+}</code></pre>
+
+      <h2>3. <code>valueKey</code></h2>
+      <p>XML-to-JSON parsers often produce nested text objects like <code>{ "#text": "Main Location", "@_TYPE": "String" }</code>. <code>valueKey</code> extracts the raw text directly, eliminating unnecessary nesting.</p>
+      <pre><code>// Recipe
+{
+    "transform": {
+        "GODOWNNAME": {
+            "alterKey": "godownName",
+            "valueKey": "#text"
+        }
+    }
+}
+
+// Input:  { "GODOWNNAME": { "#text": "Main Location" } }
+// Output: { "godownName": "Main Location" }</code></pre>
+
+      <h2>4. <code>valueType</code></h2>
+      <p>Ensures consistent data types. If an upstream service returns a single object instead of a list when there is only one item, <code>valueType: "array"</code> normalizes it into a list.</p>
+      <pre><code>// Recipe
+{
+    "transform": {
+        "BATCHALLOCATIONS.LIST": {
+            "alterKey": "Batches",
+            "valueType": "array"
+        }
+    }
+}</code></pre>
+
+      <div class="page-nav">
+        <a href="how-it-works.html">&larr; Previous: How It Works</a>
+        <a href="examples.html">Next: Real-World Examples &rarr;</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
