@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document 1 — Repository Story</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="brand-title">Conceptual Walkthrough</a>
+        <div class="brand-subtitle">json-transformer &bull; First Principles</div>
+      </div>
+
+      <div class="nav-hub">
+        <a href="../index.html">&larr; Back to Main Portal</a>
+      </div>
+
+      <div class="nav-label">The 7-Document Series</div>
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link">Overview &amp; Road Map</a></li>
+        <li><a href="01-repository-story.html" class="nav-link active">1. Repository Story</a></li>
+        <li><a href="02-how-it-works.html" class="nav-link">2. Source-Driven Traversal</a></li>
+        <li><a href="03-see-it-working.html" class="nav-link">3. Two Root Nodes</a></li>
+        <li><a href="04-adding-another-node.html" class="nav-link">4. Adding Another Node</a></li>
+        <li><a href="05-introducing-children.html" class="nav-link">5. Introducing Children</a></li>
+        <li><a href="06-selective-instructions.html" class="nav-link">6. Selective Instructions</a></li>
+        <li><a href="07-understanding-the-function.html" class="nav-link">7. The Leaf Function</a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <a href="../user/index.html">Continue to User Guide &rarr;</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <h1>Document 1 — Repository Story <span class="badge">Problem Statement</span></h1>
+      <div class="lead">Why functions with large, complex inputs need structured tree navigation rather than monolithic parameter objects.</div>
+
+      <blockquote>
+        Functions work well when inputs are simple.<br>
+        As systems grow, inputs stop being values and start becoming structures.<br>
+        At that point, passing a large object into a function stops being a good design.
+      </blockquote>
+
+      <h2>1. The Problem with Large Inputs</h2>
+      <p>
+        In small examples, a function usually looks like this:
+      </p>
+
+      <pre><code>function processUser(user) {
+  // do something with user
+}</code></pre>
+
+      <p>
+        This works when <code>user</code> has a few obvious fields.
+        But in real applications, inputs quickly grow into large objects:
+      </p>
+
+      <ul>
+        <li>customer information</li>
+        <li>order details</li>
+        <li>permissions and roles</li>
+        <li>billing addresses</li>
+        <li>system state</li>
+        <li>metadata</li>
+      </ul>
+
+      <p>
+        Developers often continue using the same pattern:
+      </p>
+
+      <pre><code>function handleRequest(payload) {
+  // payload contains dozens of properties and nested structures
+}</code></pre>
+
+      <p>
+        The function becomes responsible for navigating the structure,
+        checking which fields exist, deciding which parts matter,
+        and extracting the values it needs.
+      </p>
+
+      <h2>2. Why This Becomes a Maintenance Burden</h2>
+      <p>
+        When a function receives a large input object:
+      </p>
+
+      <ol>
+        <li><strong>The function becomes tightly coupled to the input structure.</strong>
+          If the structure changes, the function breaks.
+        </li>
+        <li><strong>Navigation logic mixes with business logic.</strong>
+          Code that exists only to drill down into objects clutters the core behavior.
+        </li>
+        <li><strong>Testing becomes harder.</strong>
+          To test one small rule, you must construct a large input object.
+        </li>
+        <li><strong>Functions become difficult to reuse.</strong>
+          Another part of the system cannot easily reuse the logic unless it provides the exact same payload shape.
+        </li>
+      </ol>
+
+      <div class="flow">
+        Large Input Object &rarr; Function mixes traversal with logic &rarr; High coupling, brittle tests
+      </div>
+
+      <h2>3. Moving Navigation Out of the Function</h2>
+      <p>
+        Instead of passing the entire structure into the function and making the function navigate it,
+        we can invert the responsibility:
+      </p>
+
+      <p>
+        <strong>Navigate the structure from the outside, and attach functions only where actions need to happen.</strong>
+      </p>
+
+      <pre><code>Source Structure
+      ↓
+External Traversal
+      ↓
+Target Location Reached
+      ↓
+Small, Focused Function Executed</code></pre>
+
+      <p>
+        Now the function does not need to know where it lives in the larger system.
+        It only receives the value it needs and does its job.
+      </p>
+
+      <h2>4. The Invariant: JSON Rules, External Code</h2>
+      <p>
+        To keep this predictable, we separate three concerns:
+      </p>
+
+      <ul>
+        <li><strong>The source data:</strong> A plain JSON structure.</li>
+        <li><strong>The instructions:</strong> Another JSON structure describing what should happen at specific locations.</li>
+        <li><strong>The behavior:</strong> JavaScript functions supplied from outside.</li>
+      </ul>
+
+      <p>
+        The instructions describe <em>where</em> to act and <em>what</em> to do,
+        but the actual implementation logic remains in external functions.
+      </p>
+
+      <div class="note">
+        <strong>The Rule:</strong>
+        JSON describes structure and instructions. JavaScript provides behavior.
+        The traversal engine connects the two without mutating either.
+      </div>
+
+      <h2>5. The Result: A New In-Memory Object</h2>
+      <p>
+        When the system runs, it does not mutate the source data.
+        Instead, it produces a new in-memory structure where functions
+        are attached to the appropriate leaves.
+      </p>
+
+      <div class="flow">
+        Structure &rarr; Instructions &rarr; Traversal &rarr; In-Memory Function Tree
+      </div>
+
+      <p>
+        This allows an application to prepare a callable, structured representation
+        of behavior that matches the shape of the source data.
+      </p>
+
+      <div class="page-nav">
+        <a href="index.html">&larr; Series Overview</a>
+        <a href="02-how-it-works.html">Next: Document 2 — Source-Driven Traversal &rarr;</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
