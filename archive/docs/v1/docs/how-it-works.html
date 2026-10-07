@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>json-transformer — How It Works</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="brand-title">json-transformer</a>
+        <div class="brand-subtitle">v8.0.0 &bull; KeshavSoft</div>
+      </div>
+      <div class="nav-label">Documentation</div>
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link">The Story &amp; Philosophy</a></li>
+        <li><a href="how-it-works.html" class="nav-link active">How It Works</a></li>
+        <li><a href="directives.html" class="nav-link">Directives Reference</a></li>
+        <li><a href="examples.html" class="nav-link">Real-World Examples</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <a href="https://github.com/keshavsoft/json-transformer" target="_blank" rel="noopener">GitHub Repository &rarr;</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <h1>How It Works</h1>
+      <div class="lead">Under the hood of the recursive transformation engine.</div>
+
+      <h2>1. The Central Dispatcher (<code>traverse.js</code>)</h2>
+      <p>When you invoke <code>transform(source, recipe)</code>, execution enters <code>traverse.js</code>. The dispatcher inspects the data type of the source node:</p>
+      <ul>
+        <li>If <code>inSource</code> is an <strong>Array</strong> ➔ delegates to <code>traverseArray</code>.</li>
+        <li>If <code>inSource</code> is an <strong>Object</strong> ➔ delegates to <code>traverseObject</code>.</li>
+        <li>Otherwise (primitive string, number, boolean) ➔ returns the value untouched.</li>
+      </ul>
+
+      <h2>2. The Decision Point: The Recipe Check (Line 14 Rule)</h2>
+      <p>Inside <code>traverseObject</code>, the engine performs a critical check:</p>
+
+      <pre><code>if (localRecipe &amp;&amp; typeof localRecipe === "object" &amp;&amp; "transform" in localRecipe) {
+    newElement = ifTransformFound({
+        inSource: localSource,
+        inTransform: localRecipe.transform
+    });
+}</code></pre>
+
+      <p><strong>Notice carefully:</strong> The check is on the <strong>Recipe</strong>, not the source! The engine asks: <em>"Does the recipe define instructions for this level?"</em></p>
+      <p>If <code>"transform"</code> is present in the recipe, the engine unwraps only that directive block and delegates to <code>ifTransformFound</code>.</p>
+
+      <h2>3. The Execution Phase: Source Becomes the Driver</h2>
+      <p>Inside <code>ifTransformFound</code>, the roles flip completely:</p>
+
+      <pre><code>for (const [key, value] of Object.entries(localSource)) {
+    if (!(key in localTransform)) {
+        continue;
+    }
+
+    const directive = localTransform[key];
+    const newKey = directive?.alterKey || key;
+    // Apply nested transforms, valueType, or valueKey
+}</code></pre>
+
+      <p>Here:</p>
+      <ul>
+        <li><code>localSource</code> is the <strong>Source of Truth</strong> driving the loop.</li>
+        <li><code>localTransform</code> acts strictly as the <strong>Lookup Table</strong>.</li>
+        <li>Keys not present in the recipe are skipped automatically.</li>
+        <li>If a key has an <code>alterKey</code> directive, the output object receives the rewritten property name.</li>
+        <li>If a key has a nested <code>transform</code> directive, the engine recursively calls <code>traverse</code> to dive into child objects or arrays.</li>
+      </ul>
+
+      <h2>4. Array Handling (<code>traverseArray</code>)</h2>
+      <p>When arrays are encountered, <code>traverseArray</code> maps each element through <code>traverse</code> using the current recipe level, flattening results and pruning empty nodes.</p>
+
+      <div class="page-nav">
+        <a href="index.html">&larr; Previous: The Story</a>
+        <a href="directives.html">Next: Directives Reference &rarr;</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

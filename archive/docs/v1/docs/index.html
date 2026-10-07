@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>json-transformer — The Story &amp; Philosophy</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="brand-title">json-transformer</a>
+        <div class="brand-subtitle">v8.0.0 &bull; KeshavSoft</div>
+      </div>
+      <div class="nav-label">Documentation</div>
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link active">The Story &amp; Philosophy</a></li>
+        <li><a href="how-it-works.html" class="nav-link">How It Works</a></li>
+        <li><a href="directives.html" class="nav-link">Directives Reference</a></li>
+        <li><a href="examples.html" class="nav-link">Real-World Examples</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <a href="https://github.com/keshavsoft/json-transformer" target="_blank" rel="noopener">GitHub Repository &rarr;</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <h1>The Story &amp; Philosophy</h1>
+      <div class="lead">Why pure JSON transformation requires separating the Food from the Recipe.</div>
+
+      <h2>1. The Mental Model: The Food and the Recipe</h2>
+      <p>When working with enterprise systems like Tally or SAP, data arrives in rigid, verbose structures. Transforming this data into clean models often degenerates into brittle JavaScript loops and mutable scripts.</p>
+
+      <p><strong>json-transformer</strong> solves this with a clear mental model:</p>
+      <ul>
+        <li><strong><code>structure.json</code> is the Food</strong>: The raw, untouched client data. It represents the source of truth from an external system.</li>
+        <li><strong><code>data.json</code> is the Recipe</strong>: A clean, declarative JSON structure defining your transformation instructions.</li>
+        <li><strong><code>json-transformer</code> is the Kitchen</strong>: It takes the food, reads the recipe, and produces the transformed dish without ever modifying the original ingredients.</li>
+      </ul>
+
+      <h2>2. Why Two Separate Files? The Immutability Principle</h2>
+      <p>A natural question arises: <em>"Why maintain two separate files? Why not embed transformation directives directly inside the source JSON?"</em></p>
+
+      <p>Embedding directives inside source data is a dangerous anti-pattern for three critical reasons:</p>
+
+      <ol>
+        <li><strong>Client Data is Sacrosanct</strong>: You do not own the source data. Mutating incoming client payloads pollutes shared references, invalidates caches, and creates subtle side-effects across your application.</li>
+        <li><strong>Preventing Infinite Loops</strong>: If the traversal engine were to mutate or enrich the source object while recursively navigating it, it would create self-referencing branches and trigger infinite loops.</li>
+        <li><strong>Different Lifecycles</strong>: Client data changes on every HTTP request or database query. The transformation recipe changes only when your business contract evolves. Decoupling them keeps your architecture deterministic and pure.</li>
+      </ol>
+
+      <h2>3. The Architecture at a Glance</h2>
+      <p>The transformation engine operates as a pure function:</p>
+      <pre><code>import transform from "@keshavsoft/json-transformer";
+
+const result = transform(source, recipe);</code></pre>
+
+      <p>It takes two inputs, applies declarative directives recursively, and returns a new transformed JSON structure with zero side effects.</p>
+
+      <div class="page-nav">
+        <span></span>
+        <a href="how-it-works.html">Next: How It Works &rarr;</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
