@@ -18,16 +18,15 @@
         <a href="../index.html">&larr; Back to Main Portal</a>
       </div>
 
-      <div class="nav-label">The 7-Document Series</div>
+      <div class="nav-label">The 6-Document Series</div>
       <ul class="nav-list">
         <li><a href="index.html" class="nav-link active">Overview &amp; Road Map</a></li>
-        <li><a href="01-repository-story.html" class="nav-link">1. Repository Story</a></li>
-        <li><a href="02-how-it-works.html" class="nav-link">2. Source-Driven Traversal</a></li>
-        <li><a href="03-see-it-working.html" class="nav-link">3. Two Root Nodes</a></li>
-        <li><a href="04-adding-another-node.html" class="nav-link">4. Adding Another Node</a></li>
-        <li><a href="05-introducing-children.html" class="nav-link">5. Introducing Children</a></li>
-        <li><a href="06-selective-instructions.html" class="nav-link">6. Selective Instructions</a></li>
-        <li><a href="07-understanding-the-function.html" class="nav-link">7. The Leaf Function</a></li>
+        <li><a href="01-source-driven-traversal.html" class="nav-link">1. Source-Driven Traversal</a></li>
+        <li><a href="02-see-it-working.html" class="nav-link">2. Two Root Nodes</a></li>
+        <li><a href="03-adding-another-node.html" class="nav-link">3. Adding Another Node</a></li>
+        <li><a href="04-introducing-children.html" class="nav-link">4. Introducing Children</a></li>
+        <li><a href="05-selective-instructions.html" class="nav-link">5. Selective Instructions</a></li>
+        <li><a href="06-understanding-the-function.html" class="nav-link">6. The Leaf Function</a></li>
       </ul>
 
       <div class="sidebar-footer">
@@ -39,7 +38,7 @@
       <h1>Conceptual Walkthrough <span class="badge">First Principles</span></h1>
       <div class="lead">
         A first-principles pedagogical journey through the architecture of <code>json-transformer</code>:
-        from parameter explosion to tree traversal, structural evolution, and leaf behavior.
+        from source-driven traversal to structural evolution and leaf function execution.
       </div>
 
       <h2>Why Start Here?</h2>
@@ -54,52 +53,46 @@
       </div>
 
       <p>
-        By following these 7 short, incremental documents, you will develop an intuitive mental model of why
+        By following these 6 short, incremental documents, you will develop an intuitive mental model of why
         <code>json-transformer</code> works the way it does, and why the engine code never changes even as your
         data models scale.
       </p>
 
-      <h2>The 7-Document Road Map</h2>
+      <h2>The 6-Document Road Map</h2>
 
       <div class="series-grid">
-        <a href="01-repository-story.html" class="card">
+        <a href="01-source-driven-traversal.html" class="card">
           <div class="card-num">Document 1</div>
-          <div class="card-title">Repository Story</div>
-          <p class="card-desc">Why functions with large, complex inputs need structured tree navigation rather than monolithic parameter objects.</p>
-        </a>
-
-        <a href="02-how-it-works.html" class="card">
-          <div class="card-num">Document 2</div>
-          <div class="card-title">How It Works: Source-Driven Traversal</div>
+          <div class="card-title">Source-Driven Traversal</div>
           <p class="card-desc">The core invariant: The source is traversed, the instructions are consulted. The engine never traverses the recipe.</p>
         </a>
 
-        <a href="03-see-it-working.html" class="card">
-          <div class="card-num">Document 3</div>
+        <a href="02-see-it-working.html" class="card">
+          <div class="card-num">Document 2</div>
           <div class="card-title">See It Working: Two Root Nodes</div>
           <p class="card-desc">The minimal working example: traversing a 2-node source (customer, order) and attaching behavior at runtime.</p>
         </a>
 
-        <a href="04-adding-another-node.html" class="card">
-          <div class="card-num">Document 4</div>
+        <a href="03-adding-another-node.html" class="card">
+          <div class="card-num">Document 3</div>
           <div class="card-title">Adding Another Node</div>
           <p class="card-desc">Adding a third root node (product). Demonstrating that data structure can grow while the traversal engine remains completely unchanged.</p>
         </a>
 
-        <a href="05-introducing-children.html" class="card">
-          <div class="card-num">Document 5</div>
+        <a href="04-introducing-children.html" class="card">
+          <div class="card-num">Document 4</div>
           <div class="card-title">Introducing Children</div>
           <p class="card-desc">Recursive nesting: adding child nodes (customer.email, product.code) without adding any special-case algorithms.</p>
         </a>
 
-        <a href="06-selective-instructions.html" class="card">
-          <div class="card-num">Document 6</div>
+        <a href="05-selective-instructions.html" class="card">
+          <div class="card-num">Document 5</div>
           <div class="card-title">Selective Instructions on a Larger Source</div>
           <p class="card-desc">Large source data with sparse instructions. Why instructions only touch targeted nodes and omit unneeded data.</p>
         </a>
 
-        <a href="07-understanding-the-function.html" class="card">
-          <div class="card-num">Document 7</div>
+        <a href="06-understanding-the-function.html" class="card">
+          <div class="card-num">Document 6</div>
           <div class="card-title">Understanding the Function &amp; The 4 Inputs</div>
           <p class="card-desc">Deep-dive on the leaf function signature: value (What?), path (Where?), source (Context?), and instruction (Why?).</p>
         </a>
@@ -107,7 +100,7 @@
 
       <div class="page-nav">
         <span></span>
-        <a href="01-repository-story.html">Start with Document 1: Repository Story &rarr;</a>
+        <a href="01-source-driven-traversal.html">Start with Document 1: Source-Driven Traversal &rarr;</a>
       </div>
     </main>
   </div>

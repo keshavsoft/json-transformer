@@ -6,7 +6,7 @@
 
 ## 📚 Documentation Tracks
 
-- [💡 **Conceptual Walkthrough**](docs/walkthrough/index.html) — **Start here!** A 7-part pedagogical tour explaining external tree traversal over monolithic parameter objects.
+- [💡 **Conceptual Walkthrough**](docs/walkthrough/index.html) — **Start here!** A 6-part pedagogical tour starting with source-driven traversal.
 - [👤 **User Guide & Live Sandbox**](docs/user/index.html) — Directives toolkit (`alterKey`, `valueType`), real-world enterprise cookbooks, and in-browser playground.
 - [🛠️ **Developer Guide**](docs/developer/index.html) — Engine invariants (`in`/`local`), the 5-module compiler pipeline, and test verification suite.
 
