@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Document 7 — Understanding the Function</title>
+
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 760px;
+      margin: 40px auto;
+      padding: 0 20px;
+      line-height: 1.6;
+    }
+
+    h1 {
+      margin-bottom: 32px;
+    }
+
+    h2 {
+      margin-top: 40px;
+    }
+
+    pre {
+      background: #f5f5f5;
+      padding: 16px;
+      overflow-x: auto;
+      border-radius: 6px;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    blockquote {
+      border-left: 4px solid #ccc;
+      padding-left: 16px;
+      margin-left: 0;
+    }
+
+    .flow {
+      background: #f5f5f5;
+      padding: 18px;
+      border-radius: 6px;
+      text-align: center;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Document 7 — Understanding the Function</h1>
+
+  <blockquote>
+    The traversal engine knows where it is in the source.
+    The function receives that information and decides what to do with it.
+  </blockquote>
+
+  <h2>1. We Already Have the Tree</h2>
+
+  <p>
+    The previous documents showed how a source structure can be traversed
+    according to an instructions object.
+  </p>
+
+  <p>
+    We also saw that a function can be attached to the resulting leaves.
+  </p>
+
+  <p>
+    Now we will stop looking at the tree for a moment and look only at
+    the function.
+  </p>
+
+  <h2>2. The Function Is Supplied From Outside</h2>
+
+  <p>
+    The traversal engine does not need to know what the function actually
+    does.
+  </p>
+
+  <p>
+    The application supplies the function.
+  </p>
+
+  <pre><code>function inspect(value, path, source, instruction) {
+  console.log("Value:", value);
+  console.log("Path:", path);
+  console.log("Source:", source);
+  console.log("Instruction:", instruction);
+}</code></pre>
+
+  <p>
+    The important question is therefore:
+    <strong>what does each argument mean?</strong>
+  </p>
+
+  <h2>3. The Four Inputs</h2>
+
+  <div class="flow">
+    value &nbsp; + &nbsp; path &nbsp; + &nbsp; source &nbsp; + &nbsp; instruction
+  </div>
+
+  <h2>4. The First Input — value</h2>
+
+  <p>
+    <code>value</code> is the actual value found at the current location
+    in the source.
+  </p>
+
+  <pre><code>{
+  "customer": {
+    "name": "Keshav"
+  }
+}</code></pre>
+
+  <p>
+    If the current location is <code>customer.name</code>, then:
+  </p>
+
+  <pre><code>value === "Keshav"</code></pre>
+
+  <p>
+    This is the most direct information given to the function:
+    <strong>what is present here?</strong>
+  </p>
+
+  <h2>5. The Second Input — path</h2>
+
+  <p>
+    <code>path</code> tells the function where the current value was found.
+  </p>
+
+  <pre><code>path === "customer.name"</code></pre>
+
+  <p>
+    The value tells us <em>what</em> we found.
+    The path tells us <em>where</em> we found it.
+  </p>
+
+  <pre><code>value
+  ↓
+"Keshav"
+
+path
+  ↓
+"customer.name"</code></pre>
+
+  <h2>6. The Third Input — source</h2>
+
+  <p>
+    <code>source</code> represents the complete source structure being
+    traversed.
+  </p>
+
+  <pre><code>{
+  "customer": {
+    "name": "Keshav",
+    "email": "keshav@example.com"
+  },
+
+  "order": {
+    "id": "ORD-101"
+  }
+}</code></pre>
+
+  <p>
+    Even though the function may currently be operating on
+    <code>customer.name</code>, it can still be given the complete source
+    when broader context is useful.
+  </p>
+
+  <p>
+    Therefore:
+  </p>
+
+  <pre><code>value   → the current value
+
+path    → the current location
+
+source  → the complete source</code></pre>
+
+  <h2>7. The Fourth Input — instruction</h2>
+
+  <p>
+    <code>instruction</code> represents the instruction that caused the
+    function to be used at this location.
+  </p>
+
+  <p>
+    For example:
+  </p>
+
+  <pre><code>{
+  "transform": "inspect"
+}</code></pre>
+
+  <p>
+    The function can therefore know not only the value and its location,
+    but also the instruction associated with that location.
+  </p>
+
+  <h2>8. Putting the Four Inputs Together</h2>
+
+  <pre><code>function inspect(value, path, source, instruction) {
+
+  // What is here?
+  console.log(value);
+
+  // Where is it?
+  console.log(path);
+
+  // What is the complete source?
+  console.log(source);
+
+  // Why was this function attached here?
+  console.log(instruction);
+}</code></pre>
+
+  <p>
+    The four inputs answer four different questions:
+  </p>
+
+  <pre><code>value
+  → What is here?
+
+path
+  → Where is it?
+
+source
+  → What is the complete structure?
+
+instruction
+  → What instruction applies here?</code></pre>
+
+  <h2>9. The Function Does Not Traverse</h2>
+
+  <p>
+    This distinction is important.
+  </p>
+
+  <p>
+    The function itself does not need to know how to walk through
+    <code>customer</code>, then <code>name</code>, then another branch.
+  </p>
+
+  <p>
+    The traversal engine has already done that work.
+  </p>
+
+  <div class="flow">
+    Source<br>
+    ↓<br>
+    Traversal<br>
+    ↓<br>
+    Current location found<br>
+    ↓<br>
+    Function receives its four inputs
+  </div>
+
+  <p>
+    The function can therefore remain completely focused on its own job.
+  </p>
+
+  <h2>10. A Runtime Example</h2>
+
+  <p>
+    Suppose the source is:
+  </p>
+
+  <pre><code>{
+  "customer": {
+    "name": "Keshav"
+  }
+}</code></pre>
+
+  <p>
+    And the instruction at <code>customer.name</code> is:
+  </p>
+
+  <pre><code>{
+  "transform": "inspect"
+}</code></pre>
+
+  <p>
+    When traversal reaches that location, the function can receive:
+  </p>
+
+  <pre><code>inspect(
+  "Keshav",
+  "customer.name",
+  {
+    customer: {
+      name: "Keshav"
+    }
+  },
+  {
+    transform: "inspect"
+  }
+);</code></pre>
+
+  <h2>11. What the Function Now Knows</h2>
+
+  <p>
+    Without performing any traversal itself, the function knows:
+  </p>
+
+  <ul>
+    <li>the value it is operating on;</li>
+    <li>where that value exists in the tree;</li>
+    <li>the complete source structure;</li>
+    <li>the instruction associated with that location.</li>
+  </ul>
+
+  <p>
+    That is the real purpose of the function interface.
+  </p>
+
+  <h2>12. The Important Separation</h2>
+
+  <blockquote>
+    The traversal engine knows how to navigate.
+    The function knows what to do.
+  </blockquote>
+
+  <p>
+    This separation is what keeps the function independent from the
+    traversal mechanism.
+  </p>
+
+  <p>
+    The engine supplies the context.
+    The application supplies the behavior.
+  </p>
+
+  <h2>13. The Mental Model</h2>
+
+  <pre><code>SOURCE
+   ↓
+TRAVERSAL
+   ↓
+current node
+   ↓
+┌─────────────────────────────┐
+│ value                       │
+│ path                        │
+│ source                      │
+│ instruction                 │
+└─────────────────────────────┘
+   ↓
+FUNCTION
+   ↓
+application behavior</code></pre>
+
+  <p>
+    So the function does not need to understand the tree-building process.
+    It receives a precise description of where it has been called and
+    the information available at that location.
+  </p>
+
+</body>
+</html>

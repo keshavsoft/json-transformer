@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document 6 — Selective Instructions on a Larger Source</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 760px;
+      margin: 40px auto;
+      padding: 0 20px;
+      line-height: 1.6;
+    }
+
+    pre {
+      background: #f5f5f5;
+      padding: 16px;
+      overflow-x: auto;
+      border-radius: 6px;
+    }
+
+    blockquote {
+      border-left: 4px solid #ccc;
+      padding-left: 16px;
+      margin-left: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Document 6 — Selective Instructions on a Larger Source</h1>
+
+  <p>
+    We have already seen that the structure can grow by adding new roots
+    and children without changing the traversal mechanism.
+  </p>
+
+  <p>
+    Now we make the source considerably larger.
+    The important point is that the source can contain much more information
+    than the instructions need to address.
+  </p>
+
+  <p>
+    <strong>Instructions are mandatory.</strong>
+    A node is acted upon only when an instruction exists for that node.
+    There is no fallback behavior in this example.
+  </p>
+
+  <h2>1. A Larger Source</h2>
+
+  <p>
+    Imagine that our source contains several parts of an order:
+  </p>
+
+  <pre><code>{
+  "customer": {
+    "name": "Keshav",
+    "email": "keshav@example.com",
+    "phone": "9876543210"
+  },
+
+  "order": {
+    "id": "ORD-101",
+    "date": "2026-10-07",
+    "status": "confirmed"
+  },
+
+  "product": {
+    "code": "P-100",
+    "name": "Laptop",
+    "price": 75000
+  },
+
+  "shipping": {
+    "address": {
+      "city": "Kakinada",
+      "state": "Andhra Pradesh"
+    },
+    "method": "Express"
+  }
+}</code></pre>
+
+  <p>
+    This is a reasonably large source compared with our previous examples.
+    But the traversal engine does not need to become more complicated.
+  </p>
+
+  <h2>2. Instructions Are the Important Part</h2>
+
+  <p>
+    We do not have to attach a function to every value in this source.
+    Instead, we explicitly describe the locations we want to act upon.
+  </p>
+
+  <pre><code>{
+  "customer": {
+    "name": {
+      "transform": "logPath"
+    }
+  },
+
+  "order": {
+    "id": {
+      "transform": "logPath"
+    }
+  },
+
+  "shipping": {
+    "address": {
+      "city": {
+        "transform": "logPath"
+      }
+    }
+  }
+}</code></pre>
+
+  <p>
+    Notice what happened.
+    The source is large, but the instructions are small.
+  </p>
+
+  <p>
+    Only three locations have instructions.
+    Therefore, only those three locations become function points.
+  </p>
+
+  <h2>3. The Function Comes From Outside</h2>
+
+  <p>
+    The traversal system does not need to know how <code>logPath</code>
+    works.
+    The function is supplied from outside.
+  </p>
+
+  <pre><code>function logPath(value, path) {
+  console.log(
+    "I am here in the tree:",
+    path,
+    value
+  );
+}</code></pre>
+
+  <p>
+    The traversal encounters an instruction, resolves what that instruction
+    means, and uses the supplied function at that location.
+  </p>
+
+  <h2>4. What the Traversal Sees</h2>
+
+  <p>
+    The source is still traversed normally.
+    The instructions are consulted when the corresponding source node
+    is encountered.
+  </p>
+
+  <pre><code>customer
+  └── name
+      → transform → logPath
+
+order
+  └── id
+      → transform → logPath
+
+shipping
+  └── address
+      └── city
+          → transform → logPath</code></pre>
+
+  <p>
+    Other source values such as
+    <code>customer.email</code>,
+    <code>customer.phone</code>,
+    <code>order.date</code>,
+    <code>product.price</code>,
+    and <code>shipping.method</code>
+    have no instruction in this example.
+  </p>
+
+  <p>
+    They therefore do not receive the function.
+  </p>
+
+  <h2>5. Runtime Output</h2>
+
+  <pre><code>I am here in the tree: customer.name Keshav
+I am here in the tree: order.id ORD-101
+I am here in the tree: shipping.address.city Kakinada</code></pre>
+
+  <h2>6. The Resulting In-Memory Object</h2>
+
+  <p>
+    The resulting object preserves the larger source structure,
+    while the instructed locations contain the supplied function.
+  </p>
+
+  <pre><code>{
+  customer: {
+    name: logPath
+  },
+
+  order: {
+    id: logPath
+  },
+
+  shipping: {
+    address: {
+      city: logPath
+    }
+  }
+}</code></pre>
+
+  <h2>7. The Important Idea</h2>
+
+  <blockquote>
+    <p>
+      The source can be large.
+      The instructions can be small.
+      The instructions decide where behavior is attached.
+    </p>
+  </blockquote>
+
+  <p>
+    Nothing special was added to the traversal algorithm because the source
+    became larger.
+  </p>
+
+  <p>
+    We simply supplied a different instruction structure.
+  </p>
+
+  <p>
+    The progression is still:
+  </p>
+
+  <pre><code>Source
+   ↓
+Traverse the source
+   ↓
+Consult the instructions
+   ↓
+Resolve the instruction
+   ↓
+Use the supplied function
+   ↓
+Continue through the source</code></pre>
+
+  <h2>8. Why This Matters</h2>
+
+  <p>
+    This example shows an important separation.
+    The source describes <strong>what exists</strong>.
+    The instructions describe <strong>what should happen</strong>.
+    The function provides <strong>the behavior</strong>.
+  </p>
+
+  <p>
+    A very large source therefore does not force us to create a very large
+    instruction set.
+    We can select only the parts of the structure that matter.
+  </p>
+
+  <p>
+    The traversal mechanism remains unchanged.
+  </p>
+
+</body>
+</html>

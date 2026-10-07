@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Introducing Children</title>
+  <style>
+    body {
+      margin: 0;
+      background: #f7f7f5;
+      color: #202124;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 52px 24px 72px;
+    }
+
+    h1 {
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      margin-top: 42px;
+    }
+
+    p {
+      margin: 14px 0;
+    }
+
+    pre {
+      padding: 18px;
+      overflow-x: auto;
+      background: #eeeeeb;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+    }
+
+    .flow {
+      margin: 28px 0;
+      padding: 18px;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .note {
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+<main>
+
+  <h1>Introducing Children</h1>
+
+  <p>
+    So far, every node has been simple.
+    Now we make the structure slightly more interesting.
+  </p>
+
+  <p>
+    We will do two things:
+  </p>
+
+  <ul>
+    <li>add a child to an existing root node;</li>
+    <li>add a new root node and give that new node a child.</li>
+  </ul>
+
+  <p>
+    The traversal itself still does not change.
+  </p>
+
+  <h2>1. Add a Child to an Existing Node</h2>
+
+  <p>
+    Start with the existing <code>customer</code> node:
+  </p>
+
+  <pre>{
+  "customer": {
+    "name": "Keshav"
+  },
+  "order": {
+    "id": "ORD-101"
+  }
+}</pre>
+
+  <p>
+    Now give <code>customer</code> another child:
+    <code>email</code>.
+  </p>
+
+  <pre>{
+  "customer": {
+    "name": "Keshav",
+    "email": "keshav@example.com"
+  },
+  "order": {
+    "id": "ORD-101"
+  }
+}</pre>
+
+  <h2>2. Add a New Root with Its Own Child</h2>
+
+  <p>
+    Now add <code>product</code> at the root,
+    and give it a child called <code>code</code>.
+  </p>
+
+  <pre>{
+  "customer": {
+    "name": "Keshav",
+    "email": "keshav@example.com"
+  },
+  "order": {
+    "id": "ORD-101"
+  },
+  "product": {
+    "code": "P-100"
+  }
+}</pre>
+
+  <h2>3. Describe the New Structure with Instructions</h2>
+
+  <pre>{
+  "customer": {
+    "name": {
+      "transform": "logPath"
+    },
+    "email": {
+      "transform": "logPath"
+    }
+  },
+  "order": {
+    "id": {
+      "transform": "logPath"
+    }
+  },
+  "product": {
+    "code": {
+      "transform": "logPath"
+    }
+  }
+}</pre>
+
+  <p>
+    Notice what happened.
+    We did not add another traversal algorithm for children.
+    The same traversal simply continues deeper into the source.
+  </p>
+
+  <div class="flow">
+    customer → email<br>
+    product → code
+  </div>
+
+  <h2>4. The Function Still Does Not Change</h2>
+
+  <pre>function logPath(value, path) {
+  console.log("I am here in the tree:", path, value);
+}</pre>
+
+  <p>
+    The function knows nothing about <code>customer</code>,
+    <code>email</code>, <code>product</code>, or <code>code</code>.
+    Those values come from the source at runtime.
+  </p>
+
+  <h2>5. The Traversal Reaches the New Locations</h2>
+
+  <pre>I am here in the tree: customer.name Keshav
+I am here in the tree: customer.email keshav@example.com
+I am here in the tree: order.id ORD-101
+I am here in the tree: product.code P-100</pre>
+
+  <h2>The Point</h2>
+
+  <p>
+    The structure has become deeper, but the traversal has not become
+    more complicated.
+  </p>
+
+  <p>
+    It still follows the same rule:
+  </p>
+
+  <div class="flow">
+    Traverse the source → find the instruction → understand it → act on the source
+  </div>
+
+  <p>
+    A child is not a special case that requires a new algorithm.
+    It is simply another source node encountered during traversal.
+  </p>
+
+  <p class="note">
+    This is where the value of the approach starts becoming visible:
+    the structure can grow without the traversal logic having to know
+    the names or depth of the nodes beforehand.
+  </p>
+
+</main>
+</body>
+</html>

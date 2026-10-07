@@ -1,0 +1,40 @@
+# How It Works
+
+## The Core Idea
+
+Given three things:
+
+1. a **structure**,
+2. an **instructions object**, and
+3. a **function**,
+
+the engine traverses the **source structure**, consults the instructions as it encounters each source node, and produces an in-memory object with the function attached to every leaf.
+
+The most important point is:
+
+> **The source is traversed. The instructions are consulted.**
+
+The engine does **not** traverse the instructions object.
+
+---
+
+## Source-Driven Traversal
+
+The traversal begins with the source.
+
+At each point in the source, the engine asks:
+
+```text
+What is the current source node?
+        ↓
+Is there an instruction for this node?
+        ↓
+        yes
+        ↓
+Seek / resolve that instruction
+        ↓
+Understand what the instruction says
+        ↓
+Apply that instruction to the current source
+        ↓
+Continue with the source    
