@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>json-transformer — Conceptual Walkthrough Series</title>
+  <style>
+    :root { color-scheme: light; }
+    body {
+      margin: 0;
+      background: #f7f7f5;
+      color: #202124;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 56px 24px 72px;
+    }
+    h1 {
+      margin-bottom: 12px;
+      font-size: 2.2rem;
+      letter-spacing: -0.03em;
+    }
+    .lead {
+      color: #5f6368;
+      font-size: 1.1rem;
+      margin-bottom: 36px;
+    }
+    .series-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 20px 24px;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .card:hover {
+      border-color: #1a73e8;
+      transform: translateY(-2px);
+    }
+    .card-num {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #1a73e8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 650;
+      margin-bottom: 6px;
+      color: #202124;
+    }
+    .card-desc {
+      color: #5f6368;
+      font-size: 0.95rem;
+      margin: 0;
+    }
+    .portal-link {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.95rem;
+    }
+    .portal-link a {
+      color: #1a73e8;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .portal-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+<main>
+
+  <h1>Conceptual Walkthrough Series</h1>
+  <p class="lead">
+    A first-principles pedagogical journey through the architecture of <code>json-transformer</code>:
+    from source structure to selective traversal and leaf behavior.
+  </p>
+
+  <div class="series-list">
+    <a href="1.html" class="card">
+      <div class="card-num">Document 1</div>
+      <div class="card-title">Repository Story</div>
+      <p class="card-desc">Why functions with large complex inputs need structured tree navigation rather than monolithic parameter objects.</p>
+    </a>
+
+    <a href="2.html" class="card">
+      <div class="card-num">Document 2</div>
+      <div class="card-title">How It Works: Source-Driven Traversal</div>
+      <p class="card-desc">The core invariant: The source is traversed, the instructions are consulted. The engine never traverses the recipe.</p>
+    </a>
+
+    <a href="3.html" class="card">
+      <div class="card-num">Document 3</div>
+      <div class="card-title">See It Working: Two Root Nodes</div>
+      <p class="card-desc">The minimal working example: traversing a 2-node source (customer, order) and attaching behavior at runtime.</p>
+    </a>
+
+    <a href="4.html" class="card">
+      <div class="card-num">Document 4</div>
+      <div class="card-title">Adding Another Node</div>
+      <p class="card-desc">Adding a third root node (product). Demonstrating that data structure can grow while the traversal engine remains completely unchanged.</p>
+    </a>
+
+    <a href="5.html" class="card">
+      <div class="card-num">Document 5</div>
+      <div class="card-title">Introducing Children</div>
+      <p class="card-desc">Recursive nesting: adding child nodes (customer.email, product.code) without adding any special-case algorithms.</p>
+    </a>
+
+    <a href="6.html" class="card">
+      <div class="card-num">Document 6</div>
+      <div class="card-title">Selective Instructions on a Larger Source</div>
+      <p class="card-desc">Large source data with sparse instructions. Why instructions only touch targeted nodes and omit unneeded data.</p>
+    </a>
+
+    <a href="7.html" class="card">
+      <div class="card-num">Document 7</div>
+      <div class="card-title">Understanding the Function &amp; The 4 Inputs</div>
+      <p class="card-desc">Deep-dive on the leaf function signature: value (What?), path (Where?), source (Context?), and instruction (Why?).</p>
+    </a>
+  </div>
+
+  <div class="portal-link">
+    <span>Ready for production recipes &amp; live sandbox?</span>
+    <a href="../docs/index.html">Visit Official Documentation Portal &rarr;</a>
+  </div>
+
+</main>
+</body>
+</html>
