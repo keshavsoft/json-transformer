@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>json-transformer — The Story &amp; Philosophy</title>
+  <title>json-transformer — The Story: From Source to Consumption</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,13 +13,14 @@
         <a href="index.html" class="brand-title">json-transformer</a>
         <div class="brand-subtitle">v8.0.0 &bull; KeshavSoft</div>
       </div>
-      <div class="nav-label">Documentation</div>
+
+      <div class="nav-label">Documentation Tracks</div>
       <ul class="nav-list">
         <li><a href="index.html" class="nav-link active">The Story &amp; Philosophy</a></li>
-        <li><a href="how-it-works.html" class="nav-link">How It Works</a></li>
-        <li><a href="directives.html" class="nav-link">Directives Reference</a></li>
-        <li><a href="examples.html" class="nav-link">Real-World Examples</a></li>
+        <li><a href="user/index.html" class="nav-link">For Users (Recipe Authors) <span class="badge badge-user">User Module</span></a></li>
+        <li><a href="developer/index.html" class="nav-link">For Developers (Engine Internals) <span class="badge badge-dev">Dev Module</span></a></li>
       </ul>
+
       <div class="sidebar-footer">
         <a href="https://github.com/keshavsoft/json-transformer" target="_blank" rel="noopener">GitHub Repository &rarr;</a>
       </div>
@@ -27,52 +28,127 @@
 
     <main class="content">
       <h1>The Story &amp; Philosophy</h1>
-      <div class="lead">Why pure JSON transformation requires separating the Food from the Recipe.</div>
+      <div class="lead">Why pure JSON transformation requires separating the Food from the Recipe: The journey from Source to Consumption.</div>
 
-      <h2>1. The Mental Model: The Food and the Recipe</h2>
-      <p>When working with enterprise systems like Tally or SAP, data arrives in rigid, verbose structures. Transforming this data into clean models often degenerates into brittle JavaScript loops and mutable scripts.</p>
+      <!-- SECTION 1: THE STORY FROM SOURCE TO CONSUMPTION -->
+      <h2>1. The Central Invariant: From Source to Consumption</h2>
+      <p>In modern software engineering, data must travel from external data producers to end-user applications. This creates a critical architectural boundary between three distinct worlds:</p>
 
-      <p><strong>json-transformer</strong> solves this with a clear mental model:</p>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-icon">📡</div>
+          <div class="concept-title">1. Data Provider</div>
+          <div class="concept-role">Source JSON &bull; The Food</div>
+          <div class="concept-desc">Belongs to external systems (Tally ERP, SAP, SQL databases, XML exports). Sacred, verbose, and 100% immutable. You do not own it.</div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-icon">📜</div>
+          <div class="concept-title">2. Application</div>
+          <div class="concept-role">Transformation JSON &bull; The Recipe</div>
+          <div class="concept-desc">Belongs to your application contract. A clean, declarative recipe specifying which fields matter, what to rename, and how to nest.</div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-icon">🍽️</div>
+          <div class="concept-title">3. Consumer</div>
+          <div class="concept-role">Output JSON &bull; Consumption</div>
+          <div class="concept-desc">Belongs to the consumer (React/Vue UI, mobile clients, REST APIs). A pristine, predictable JSON schema ready for instant display or processing.</div>
+        </div>
+      </div>
+
+      <div class="note">
+        <strong>The Central Invariant:</strong>
+        <em>Source is data. Transformation is instruction. Output is result.</em>
+        <br>
+        The transformation bridges differing shapes without side effects, without polluting upstream data, and without forcing compromises on the consumer.
+      </div>
+
+      <!-- SECTION 2: WHY TRANSFERRING REQUIRES DECLARATIVE PURITY -->
+      <h2>2. What Happens When We Transfer from Source to Consumption?</h2>
+      <p>Why do we need a transformation engine at all? Why can't developers just write a quick script or mutate the incoming payload directly?</p>
+
+      <p>Because that shortcut is where enterprise code goes to die. In real-world enterprise architectures, transferring data reveals three structural conflicts:</p>
+
       <ul>
-        <li><strong><code>structure.json</code> is the Food</strong>: The raw, untouched client data. It represents the source of truth from an external system.</li>
-        <li><strong><code>data.json</code> is the Recipe</strong>: A clean, declarative JSON structure defining your transformation instructions.</li>
-        <li><strong><code>json-transformer</code> is the Kitchen</strong>: It takes the food, reads the recipe, and produces the transformed dish without ever modifying the original ingredients.</li>
+        <li><strong>Cardinality Mismatches:</strong> Upstream systems (especially XML-based exports like Tally) output a plain object when there is one child element, but an array when there are multiple. Hand-written mapping scripts crash with <code>TypeError: .map is not a function</code>.</li>
+        <li><strong>XML Artifact Pollution:</strong> Data comes wrapped in verbose nodes like <code>#text</code>, metadata like <code>@_TYPE="String"</code>, and capitalized compound keys like <code>BATCHALLOCATIONS.LIST</code>. If passed raw to the consumer, the frontend UI becomes tightly coupled to ERP internal schemas.</li>
+        <li><strong>Memory Leakage &amp; Shared Mutability:</strong> When multiple concurrent requests mutate the incoming data in memory to reshape it, shared object references become corrupted, invalidating caches and triggering subtle race conditions.</li>
       </ul>
 
-      <h2>2. Why Two Separate Files? The Immutability Principle</h2>
-      <p>A natural question arises: <em>"Why maintain two separate files? Why not embed transformation directives directly inside the source JSON?"</em></p>
+      <p><strong>@keshavsoft/json-transformer</strong> is the pure mediator. It performs a deterministic co-traversal: taking the food, following the recipe, and producing the transformed dish with zero mutations and zero side-effects.</p>
 
-      <p>Embedding directives inside source data is a dangerous anti-pattern for three critical reasons:</p>
+      <!-- SECTION 3: THE IMMUTABILITY PRINCIPLE -->
+      <h2>3. Why Two Separate Files? The Immutability Principle</h2>
+      <p>Developers sometimes ask: <em>"Why maintain two separate JSON files? Why not embed transformation directives directly inside the source JSON?"</em></p>
+
+      <p>Embedding directives inside source data is a dangerous anti-pattern for three fundamental reasons:</p>
 
       <ol>
-        <li><strong>Client Data is Sacrosanct</strong>: You do not own the source data. Mutating incoming client payloads pollutes shared references, invalidates caches, and creates subtle side-effects across your application.</li>
-        <li><strong>Preventing Infinite Loops</strong>: If the traversal engine were to mutate or enrich the source object while recursively navigating it, it would create self-referencing branches and trigger infinite loops.</li>
-        <li><strong>Different Lifecycles</strong>: Client data changes on every HTTP request or database query. The transformation recipe changes only when your business contract evolves. Decoupling them keeps your architecture deterministic and pure.</li>
+        <li><strong>Client Data is Sacrosanct:</strong> You do not own the source data. Mutating incoming client payloads pollutes shared references, invalidates caches, and breaks downstream consumers.</li>
+        <li><strong>Preventing Infinite Loops:</strong> If the traversal engine were to mutate or enrich the source object while recursively navigating it, it would create self-referencing branches and trigger infinite loops.</li>
+        <li><strong>Different Lifecycles:</strong> Client data changes on every HTTP request or database query. The transformation recipe changes only when your business contract evolves. Decoupling them keeps your architecture rock-solid.</li>
       </ol>
 
-      <h2>3. The Recipe is Knowledge, Not Duplication</h2>
-      <p>Developers sometimes ask: <em>"Why does the recipe mirror the hierarchy of the source JSON? Isn't that duplicate effort?"</em></p>
+      <!-- SECTION 4: THE RECIPE IS KNOWLEDGE -->
+      <h2>4. The Recipe is Knowledge, Not Duplication</h2>
+      <p>Why does the recipe mirror the hierarchy of the source data? Because <strong>you cannot reliably reshape complex enterprise data without first proving you understand its hierarchy</strong>.</p>
 
-      <p><strong>No. The recipe is not duplication—it is proof of domain knowledge.</strong></p>
-
-      <p>You cannot reliably reshape complex enterprise data (like Tally batches or ledgers) without first understanding its hierarchy. When an engineer constructs the recipe matching the path down to the target field, they are formally codifying:</p>
+      <p>When an engineer constructs the recipe matching the path down to the target field, they formally prove:</p>
       <ul>
-        <li><strong>Structural Proof</strong>: <em>"I understand that <code>STOCKITEM</code> contains <code>BATCHALLOCATIONS.LIST</code>, which contains <code>GODOWNNAME</code>."</em></li>
-        <li><strong>Intentionality</strong>: Only paths that are explicitly acknowledged and intended for transformation are altered. Everything else is safely left untouched.</li>
-        <li><strong>Protection from Sloppy Hacks</strong>: It prevents developers from taking lazy shortcuts or applying unvalidated transformations. The recipe is a disciplined, typed blueprint of intent.</li>
+        <li><strong>Structural Proof:</strong> <em>"I understand that <code>STOCKITEM</code> contains <code>BATCHALLOCATIONS.LIST</code>, which contains <code>GODOWNNAME</code>."</em></li>
+        <li><strong>Intentionality:</strong> Only paths that are explicitly acknowledged and intended for transformation are altered. Everything else is safely pruned.</li>
+        <li><strong>Protection from Sloppy Hacks:</strong> It prevents developers from taking lazy shortcuts or applying unvalidated transformations. The recipe is a disciplined blueprint of intent.</li>
       </ul>
 
-      <h2>4. The Architecture at a Glance</h2>
-      <p>The transformation engine operates as a pure function:</p>
-      <pre><code>import transform from "@keshavsoft/json-transformer";
+      <!-- SECTION 5: THE DECLARATIVE ROUNDTRIP ECOSYSTEM -->
+      <h2>5. The KeshavSoft Declarative Ecosystem</h2>
+      <p>This project is the transformation engine of a 3-part lossless declarative ecosystem:</p>
 
-const result = transform(source, recipe);</code></pre>
+      <div class="note">
+        <strong>The 3-Part Declarative Round-Trip:</strong>
+        <ol style="margin-top: 8px; margin-bottom: 0;">
+          <li><strong><a href="https://keshavsoft.github.io/tag-to-json/" target="_blank" rel="noopener" style="color: var(--accent);">tag-to-json</a>:</strong> Extracts live HTML DOM trees into declarative JSON specifications.</li>
+          <li><strong>json-transformer:</strong> Transforms heterogeneous domain data (APIs, Tally/XML, SQL) into canonical target data shapes or UI specs.</li>
+          <li><strong><a href="https://keshavsoft.github.io/json-to-tag/" target="_blank" rel="noopener" style="color: var(--accent);">json-to-tag</a>:</strong> Renders declarative JSON specifications into reactive native HTML DOM elements.</li>
+        </ol>
+      </div>
 
-      <p>It takes two inputs, applies declarative directives recursively, and returns a new transformed JSON structure with zero side effects.</p>
+      <!-- SECTION 6: CHOOSE YOUR TRACK (THE MODULAR GATEWAY) -->
+      <h2>6. Choose Your Modular Track</h2>
+      <p>The documentation is divided into two decoupled, fully self-contained modules:</p>
+
+      <div class="track-grid">
+        <!-- TRACK A: FOR USERS -->
+        <div class="track-card user">
+          <div class="track-icon">👤</div>
+          <div class="track-title">For Users <span class="badge badge-user">Recipe Authors</span></div>
+          <div class="track-desc">For application developers, API engineers, and frontend teams using <code>@keshavsoft/json-transformer</code>.</div>
+          <ul class="track-features">
+            <li><span>✓</span> Complete Directive Toolkit: <code>alterKey</code>, <code>transform</code>, <code>valueKey</code>, <code>valueType</code></li>
+            <li><span>✓</span> Enterprise Cookbooks: Tally Stock Batches, Ledgers, XML text unwrap</li>
+            <li><span>✓</span> <strong>Interactive Live Sandbox</strong> to test recipes in the browser</li>
+          </ul>
+          <a href="user/index.html" class="track-btn user">Open User Module &rarr;</a>
+        </div>
+
+        <!-- TRACK B: FOR DEVELOPERS -->
+        <div class="track-card dev">
+          <div class="track-icon">🛠️</div>
+          <div class="track-title">For Developers <span class="badge badge-dev">Engine Internals</span></div>
+          <div class="track-desc">For engine contributors, architects, and AI pair-programmers extending the <code>src/v8/</code> compiler.</div>
+          <ul class="track-features">
+            <li><span>✓</span> The 4 Non-Negotiable Invariants (<code>in</code>/<code>local</code> convention, immutability)</li>
+            <li><span>✓</span> Pipeline Breakdown: <code>traverse.js</code>, <code>traverseObject</code>, <code>ifTransformFound</code></li>
+            <li><span>✓</span> Execution call stack trace, literal dotted keys, &amp; container test harness</li>
+          </ul>
+          <a href="developer/index.html" class="track-btn dev">Open Developer Module &rarr;</a>
+        </div>
+      </div>
 
       <div class="page-nav">
         <span></span>
-        <a href="how-it-works.html">Next: How It Works &rarr;</a>
+        <a href="user/index.html">Next: Open User Module &rarr;</a>
       </div>
     </main>
   </div>

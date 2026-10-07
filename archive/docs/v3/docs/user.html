@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>json-transformer — The User Guide (Recipe Author's Handbook)</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* User Guide & Playground Enhancements */
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 8px;
+      border-radius: 12px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .badge-user {
+      background: rgba(46, 160, 67, 0.2);
+      color: #3fb950;
+      border: 1px solid rgba(46, 160, 67, 0.4);
+    }
+    .badge-dev {
+      background: rgba(163, 113, 247, 0.2);
+      color: #d2a8ff;
+      border: 1px solid rgba(163, 113, 247, 0.4);
+    }
+
+    /* Concept Cards */
+    .concept-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 28px 0;
+    }
+    .concept-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+    .concept-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .concept-icon {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+    }
+    .concept-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+    .concept-role {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .concept-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Live Playground Layout */
+    .playground-section {
+      margin: 48px 0;
+      padding: 28px;
+      background: #090d13;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+    .playground-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .playground-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .preset-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .preset-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .preset-select {
+      background: var(--card-bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      outline: none;
+      cursor: pointer;
+    }
+    .preset-select:focus {
+      border-color: var(--accent);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #238636;
+      color: #ffffff;
+      border: none;
+      padding: 7px 16px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .btn:hover {
+      background: #2ea043;
+    }
+    .btn-secondary {
+      background: var(--card-bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--accent);
+    }
+
+    .playground-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 1050px) {
+      .playground-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .pane {
+      display: flex;
+      flex-direction: column;
+    }
+    .pane-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .pane-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+    .pane-editor {
+      width: 100%;
+      height: 380px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: #e6edf3;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.84rem;
+      line-height: 1.5;
+      padding: 12px;
+      resize: vertical;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .pane-editor:focus {
+      border-color: var(--accent);
+    }
+    .pane-editor.readonly {
+      background: #11161d;
+    }
+    .status-bar {
+      margin-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #3fb950;
+    }
+    .status-dot.error {
+      background: #f85149;
+    }
+
+    /* Callout Note */
+    .note {
+      background: rgba(56, 139, 253, 0.1);
+      border-left: 3px solid var(--accent);
+      padding: 16px 20px;
+      border-radius: 0 6px 6px 0;
+      margin: 24px 0;
+      color: var(--text);
+    }
+    .note strong {
+      color: var(--accent);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .highlight-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 24px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="brand-title">json-transformer</a>
+        <div class="brand-subtitle">v8.0.0 &bull; KeshavSoft</div>
+      </div>
+
+      <div class="nav-label">Documentation Tracks</div>
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link">The Story &amp; Philosophy</a></li>
+        <li><a href="user.html" class="nav-link active">For Users (Recipe Authors) <span class="badge badge-user">User</span></a></li>
+        <li><a href="developer.html" class="nav-link">For Developers (Engine Internals) <span class="badge badge-dev">Dev</span></a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <a href="https://github.com/keshavsoft/json-transformer" target="_blank" rel="noopener">GitHub Repository &rarr;</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <h1>The User Guide <span class="badge badge-user">Recipe Author</span></h1>
+      <div class="lead">The Recipe Author's handbook: How to transform heterogeneous enterprise data into clean, predictable JSON with zero side effects.</div>
+
+      <!-- SECTION 1: THE STORY & MENTAL MODEL -->
+      <h2>1. The Core Story: The Food, The Recipe &amp; The Kitchen</h2>
+      <p>When you build modern applications, you inevitably consume data from external enterprise systems—Tally ERP, SAP, SQL databases, or legacy SOAP/XML APIs. This data arrives in rigid, verbose formats riddled with XML artifacts like <code>#text</code>, attributes like <code>@_TYPE</code>, and capitalized keys.</p>
+
+      <p>Traditional developers solve this by writing brittle imperative loops and mutative scripts. When an optional field disappears or an array turns into a single object, the entire pipeline crashes.</p>
+
+      <p><strong>@keshavsoft/json-transformer</strong> solves this with an unshakeable invariant:</p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-icon">🥗</div>
+          <div class="concept-title">structure.json</div>
+          <div class="concept-role">The Food &bull; Untouchable</div>
+          <div class="concept-desc">Source data belonging to the external producer (Tally, SAP, client API). It is sacred and 100% immutable. The engine never modifies it.</div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-icon">📜</div>
+          <div class="concept-title">data.json</div>
+          <div class="concept-role">The Recipe &bull; Declarative</div>
+          <div class="concept-desc">Your transformation blueprint. It codifies domain knowledge: which keys to keep, what to rename, how to unwrap text, and how to nest structures.</div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-icon">⚙️</div>
+          <div class="concept-title">json-transformer</div>
+          <div class="concept-role">The Kitchen &bull; Pure Compiler</div>
+          <div class="concept-desc">A deterministic, zero-dependency compiler: <code>(food, recipe) &rarr; result</code>. It produces the transformed dish without altering the original ingredients.</div>
+        </div>
+      </div>
+
+      <div class="note">
+        <strong>The KeshavSoft Declarative Ecosystem:</strong>
+        <code>json-transformer</code> is the middle engine in a complete 3-part declarative web ecosystem:
+        <br><br>
+        <strong>1. tag-to-json</strong> (DOM &rarr; JSON Spec) &nbsp;&bull;&nbsp;
+        <strong>2. json-transformer</strong> (Data &rarr; Clean Spec) &nbsp;&bull;&nbsp;
+        <strong>3. json-to-tag</strong> (Spec &rarr; Reactive DOM)
+      </div>
+
+      <!-- SECTION 2: WHY TWO SEPARATE JSONS -->
+      <h2>2. Why Two Separate JSONs? The Immutability Principle</h2>
+      <p>A common question is: <em>"Why can't I just embed transformation rules directly into the source JSON?"</em></p>
+      <p>Embedding instructions inside data violates architectural separation for three fundamental reasons:</p>
+      <ol>
+        <li><strong>Client Data is Sacrosanct:</strong> Upstream data comes from external producers. Mutating it in place corrupts shared memory references, invalidates caches, and triggers subtle downstream regressions.</li>
+        <li><strong>Preventing Infinite Loops:</strong> If a recursive engine mutates data while traversing it, circular references and self-referencing branches trigger infinite execution loops.</li>
+        <li><strong>Independent Lifecycles:</strong> The Food changes on every single API request or database query. The Recipe changes only when your business contract evolves. Decoupling them keeps your application deterministic and rock-solid.</li>
+      </ol>
+
+      <div class="highlight-box">
+        <h3>The Recipe is Domain Proof, Not Duplicate Effort</h3>
+        <p>Why does the recipe mirror the path of the source data? Because <strong>you cannot transform complex enterprise data without first proving you understand its hierarchy</strong>.</p>
+        <p>When you write a recipe, you formally codify: <em>"I know that <code>STOCKITEM</code> contains <code>BATCHALLOCATIONS.LIST</code>, which contains <code>GODOWNNAME</code>."</em> Any key you do not explicitly acknowledge is safely filtered out, preventing unwanted data leaks into your output.</p>
+      </div>
+
+      <!-- SECTION 3: INTERACTIVE LIVE PLAYGROUND -->
+      <h2>3. Interactive Live Playground</h2>
+      <p>Test recipes directly in your browser. Choose a real-world enterprise preset or paste your own JSON to see immediate results computed by the engine.</p>
+
+      <div class="playground-section">
+        <div class="playground-header">
+          <div class="playground-title">
+            <span>🧪</span> Live Transformation Sandbox
+          </div>
+          <div class="preset-controls">
+            <span class="preset-label">Load Preset:</span>
+            <select id="presetSelect" class="preset-select">
+              <option value="tallyBatches">Tally ERP: Stock Items &amp; Batches</option>
+              <option value="xmlUnwrap">XML #text Unwrapping</option>
+              <option value="arrayNormalize">Single Object &rarr; Array Normalization</option>
+              <option value="simpleRename">Simple Field Renaming</option>
+            </select>
+            <button id="runBtn" class="btn"><span>&#9654;</span> Transform</button>
+            <button id="copyBtn" class="btn btn-secondary"><span>📋</span> Copy Output</button>
+          </div>
+        </div>
+
+        <div class="playground-grid">
+          <!-- PANE 1: SOURCE -->
+          <div class="pane">
+            <div class="pane-header">
+              <span class="pane-title">1. The Food (source.json)</span>
+            </div>
+            <textarea id="sourceEditor" class="pane-editor" spellcheck="false"></textarea>
+          </div>
+
+          <!-- PANE 2: RECIPE -->
+          <div class="pane">
+            <div class="pane-header">
+              <span class="pane-title">2. The Recipe (recipe.json)</span>
+            </div>
+            <textarea id="recipeEditor" class="pane-editor" spellcheck="false"></textarea>
+          </div>
+
+          <!-- PANE 3: RESULT -->
+          <div class="pane">
+            <div class="pane-header">
+              <span class="pane-title">3. The Result (output.json)</span>
+            </div>
+            <textarea id="resultEditor" class="pane-editor readonly" readonly spellcheck="false"></textarea>
+          </div>
+        </div>
+
+        <div class="status-bar">
+          <div class="status-indicator">
+            <div id="statusDot" class="status-dot"></div>
+            <span id="statusText">Engine Ready &bull; Pure Invariant Maintained</span>
+          </div>
+          <span id="timingText">Execution: &lt; 1ms</span>
+        </div>
+      </div>
+
+      <!-- SECTION 4: THE DIRECTIVES CHEAT SHEET -->
+      <h2>4. The Directive Vocabulary</h2>
+      <p>Recipes are constructed using four clean declarative directives:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Directive</th>
+            <th>Type</th>
+            <th>Purpose</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>alterKey</code></td>
+            <td><code>string</code></td>
+            <td>Renames the matching source property on the output object.</td>
+            <td><code>{ "alterKey": "StockItems" }</code></td>
+          </tr>
+          <tr>
+            <td><code>transform</code></td>
+            <td><code>object</code></td>
+            <td>Nests transformation directives for child objects or arrays.</td>
+            <td><code>{ "transform": { "NAME": { ... } } }</code></td>
+          </tr>
+          <tr>
+            <td><code>valueKey</code></td>
+            <td><code>string</code></td>
+            <td>Extracts a child property (e.g. <code>#text</code>) directly, unnesting it.</td>
+            <td><code>{ "valueKey": "#text" }</code></td>
+          </tr>
+          <tr>
+            <td><code>valueType</code></td>
+            <td><code>"array"</code></td>
+            <td>Guarantees output is wrapped in an array even if input is a single object.</td>
+            <td><code>{ "valueType": "array" }</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- SECTION 5: STEP-BY-STEP COOKBOOK -->
+      <h2>5. Real-World Recipe Cookbook</h2>
+
+      <h3>Scenario A: Unwrapping XML Text Nodes</h3>
+      <p>When XML converters output text wrappers like <code>BASEUNITS: { "#text": "kgs", "@_TYPE": "String" }</code>:</p>
+      <pre><code>// The Recipe
+{
+  "transform": {
+    "BASEUNITS": {
+      "alterKey": "Units",
+      "valueKey": "#text"
+    }
+  }
+}
+
+// Output: { "Units": "kgs" }</code></pre>
+
+      <h3>Scenario B: Tally Batch Allocations</h3>
+      <p>Tally stock records store batch lists under <code>BATCHALLOCATIONS.LIST</code>. When there is only one batch, Tally outputs a lone object. We normalize it to a clean array and extract only <code>godownName</code>:</p>
+      <pre><code>// The Recipe
+{
+  "transform": {
+    "BATCHALLOCATIONS.LIST": {
+      "alterKey": "Batches",
+      "valueType": "array",
+      "transform": {
+        "GODOWNNAME": {
+          "alterKey": "godownName"
+        }
+      }
+    }
+  }
+}</code></pre>
+
+      <!-- SECTION 6: HOW TO USE IN CODE -->
+      <h2>6. Using @keshavsoft/json-transformer in Code</h2>
+      <p>Install via npm:</p>
+      <pre><code>npm install @keshavsoft/json-transformer</code></pre>
+
+      <p>Execute in your JavaScript or TypeScript modules:</p>
+      <pre><code>import transform from "@keshavsoft/json-transformer";
+
+const food = {
+  STOCKITEM: [
+    {
+      NAME: "Item A",
+      BASEUNITS: { "#text": "kgs" }
+    }
+  ]
+};
+
+const recipe = {
+  transform: {
+    STOCKITEM: {
+      alterKey: "Items",
+      transform: {
+        NAME: { alterKey: "name" },
+        BASEUNITS: { alterKey: "units", valueKey: "#text" }
+      }
+    }
+  }
+};
+
+const result = transform(food, recipe);
+console.log(result);
+// { Items: [ { name: "Item A", units: "kgs" } ] }</code></pre>
+
+      <div class="page-nav">
+        <a href="index.html">&larr; Previous: The Story &amp; Philosophy</a>
+        <a href="developer.html">Next: For Developers (Engine Internals) &rarr;</a>
+      </div>
+    </main>
+  </div>
+
+  <!-- BROWSER TRANSFORMATION ENGINE SCRIPT -->
+  <script type="module">
+    // Built-in v8 engine execution for playground
+    const traverseArray = ({ inItems, inRecipe }) => {
+      const localItems = inItems;
+      const localRecipe = inRecipe;
+      return localItems
+        .map((item) => traverse({ inSource: item, inRecipe: localRecipe }))
+        .flat(Infinity)
+        .filter(Boolean);
+    };
+
+    const ifTransformFound = ({ inSource, inTransform }) => {
+      const localSource = inSource;
+      const localTransform = inTransform;
+      const newElement = {};
+
+      for (const [key, value] of Object.entries(localSource)) {
+        if (!(key in localTransform)) {
+          continue;
+        }
+
+        const directive = localTransform[key];
+        const newKey = directive?.alterKey || key;
+        let processedValue = value;
+
+        if (directive && typeof directive === "object" && "transform" in directive) {
+          processedValue = traverse({
+            inSource: value,
+            inRecipe: directive
+          });
+        }
+
+        if (directive?.valueType === "array" && !Array.isArray(processedValue)) {
+          processedValue = [processedValue];
+        }
+
+        if (directive?.valueKey && processedValue && typeof processedValue === "object") {
+          processedValue = processedValue[directive.valueKey];
+        }
+
+        newElement[newKey] = processedValue;
+      }
+
+      return newElement;
+    };
+
+    const traverseObject = ({ inSource, inRecipe }) => {
+      const localSource = inSource;
+      const localRecipe = inRecipe;
+      let newElement = localSource;
+
+      if (localRecipe && typeof localRecipe === "object" && "transform" in localRecipe) {
+        newElement = ifTransformFound({
+          inSource: localSource,
+          inTransform: localRecipe.transform
+        });
+      }
+
+      for (const [key, value] of Object.entries(newElement)) {
+        if (Array.isArray(value) && localRecipe && key in localRecipe) {
+          newElement[key] = traverseArray({
+            inItems: value,
+            inRecipe: localRecipe[key]
+          });
+        }
+      }
+
+      return newElement;
+    };
+
+    const traverse = ({ inSource, inRecipe }) => {
+      const localSource = inSource;
+      const localRecipe = inRecipe;
+
+      if (Array.isArray(localSource)) {
+        return traverseArray({
+          inItems: localSource,
+          inRecipe: localRecipe
+        });
+      }
+
+      if (typeof localSource === "object" && localSource !== null) {
+        return traverseObject({
+          inSource: localSource,
+          inRecipe: localRecipe
+        });
+      }
+
+      return localSource;
+    };
+
+    const runTransform = (source, recipe) => {
+      return traverse({
+        inSource: source,
+        inRecipe: recipe
+      });
+    };
+
+    // PRESETS
+    const presets = {
+      tallyBatches: {
+        source: {
+          "STOCKITEM": [
+            {
+              "BASEUNITS": {
+                "#text": "kgs",
+                "@_TYPE": "String"
+              },
+              "@_NAME": "0.09/30mm",
+              "@_RESERVEDNAME": "",
+              "BATCHALLOCATIONS.LIST": {
+                "GODOWNNAME": "Main Location",
+                "BATCHNAME": "Navratan-Rs.1210/-",
+                "OPENINGBALANCE": "-9.250 kgs",
+                "OPENINGVALUE": 11100,
+                "OPENINGRATE": "1200.00/kgs"
+              }
+            }
+          ]
+        },
+        recipe: {
+          "transform": {
+            "STOCKITEM": {
+              "alterKey": "StockItems",
+              "transform": {
+                "BASEUNITS": {
+                  "alterKey": "Units",
+                  "valueKey": "#text"
+                },
+                "@_NAME": { "alterKey": "Name" },
+                "@_RESERVEDNAME": { "alterKey": "ReserveName" },
+                "BATCHALLOCATIONS.LIST": {
+                  "alterKey": "Batches",
+                  "valueType": "array",
+                  "transform": {
+                    "GODOWNNAME": { "alterKey": "godownName" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      xmlUnwrap: {
+        source: {
+          "LEDGER": {
+            "NAME": { "#text": "HDFC Bank Ltd", "@_TYPE": "String" },
+            "CURRENCY": { "#text": "INR", "@_TYPE": "Currency" },
+            "CLOSINGBALANCE": { "#text": "145000.00", "@_TYPE": "Amount" }
+          }
+        },
+        recipe: {
+          "transform": {
+            "LEDGER": {
+              "alterKey": "Account",
+              "transform": {
+                "NAME": { "alterKey": "bankName", "valueKey": "#text" },
+                "CURRENCY": { "alterKey": "currency", "valueKey": "#text" },
+                "CLOSINGBALANCE": { "alterKey": "balance", "valueKey": "#text" }
+              }
+            }
+          }
+        }
+      },
+      arrayNormalize: {
+        source: {
+          "INVOICE": {
+            "VOUCHERNUMBER": "INV-2026-001",
+            "ITEM": {
+              "DESCRIPTION": "Widget Pro",
+              "QTY": 5
+            }
+          }
+        },
+        recipe: {
+          "transform": {
+            "INVOICE": {
+              "alterKey": "Invoice",
+              "transform": {
+                "VOUCHERNUMBER": { "alterKey": "invoiceNumber" },
+                "ITEM": {
+                  "alterKey": "items",
+                  "valueType": "array",
+                  "transform": {
+                    "DESCRIPTION": { "alterKey": "desc" },
+                    "QTY": { "alterKey": "quantity" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      simpleRename: {
+        source: {
+          "cust_id": "CUST-992",
+          "cust_nm": "Alpha Logistics",
+          "is_active": true
+        },
+        recipe: {
+          "transform": {
+            "cust_id": { "alterKey": "id" },
+            "cust_nm": { "alterKey": "customerName" },
+            "is_active": { "alterKey": "active" }
+          }
+        }
+      }
+    };
+
+    // UI ELEMENTS
+    const sourceEl = document.getElementById("sourceEditor");
+    const recipeEl = document.getElementById("recipeEditor");
+    const resultEl = document.getElementById("resultEditor");
+    const presetSelect = document.getElementById("presetSelect");
+    const runBtn = document.getElementById("runBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const statusDot = document.getElementById("statusDot");
+    const statusText = document.getElementById("statusText");
+    const timingText = document.getElementById("timingText");
+
+    function loadPreset(key) {
+      const preset = presets[key];
+      if (!preset) return;
+      sourceEl.value = JSON.stringify(preset.source, null, 2);
+      recipeEl.value = JSON.stringify(preset.recipe, null, 2);
+      executeTransformation();
+    }
+
+    function executeTransformation() {
+      try {
+        const srcJson = JSON.parse(sourceEl.value);
+        const recJson = JSON.parse(recipeEl.value);
+
+        const t0 = performance.now();
+        const res = runTransform(srcJson, recJson);
+        const t1 = performance.now();
+
+        resultEl.value = JSON.stringify(res, null, 2);
+        statusDot.className = "status-dot";
+        statusText.textContent = "Transformation Complete • Pure Output Generated";
+        timingText.textContent = `Execution: ${(t1 - t0).toFixed(2)} ms`;
+      } catch (err) {
+        resultEl.value = `Error: ${err.message}`;
+        statusDot.className = "status-dot error";
+        statusText.textContent = `Syntax Error: ${err.message}`;
+        timingText.textContent = "Execution Halted";
+      }
+    }
+
+    presetSelect.addEventListener("change", (e) => loadPreset(e.target.value));
+    runBtn.addEventListener("click", executeTransformation);
+    sourceEl.addEventListener("input", executeTransformation);
+    recipeEl.addEventListener("input", executeTransformation);
+
+    copyBtn.addEventListener("click", () => {
+      navigator.clipboard.writeText(resultEl.value).then(() => {
+        const oldText = copyBtn.innerHTML;
+        copyBtn.innerHTML = "<span>✓</span> Copied!";
+        setTimeout(() => { copyBtn.innerHTML = oldText; }, 1500);
+      });
+    });
+
+    // Initial load
+    loadPreset("tallyBatches");
+  </script>
+</body>
+</html>

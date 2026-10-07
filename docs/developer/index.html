@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Developer Guide — Overview &amp; Engine Evolution</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="brand-title">Developer Guide</a>
+        <div class="brand-subtitle">json-transformer &bull; Engine Internals</div>
+      </div>
+
+      <div class="nav-hub">
+        <a href="../index.html">&larr; Back to Main Portal</a>
+      </div>
+
+      <div class="nav-label">Engine Architecture</div>
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link active">1. Overview &amp; Evolution</a></li>
+        <li><a href="invariants.html" class="nav-link">2. Core Invariants</a></li>
+        <li><a href="pipeline.html" class="nav-link">3. Traversal Pipeline</a></li>
+        <li><a href="trace.html" class="nav-link">4. Trace &amp; Testing</a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <a href="../user/index.html">Switch to User Guide &rarr;</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <h1>The Developer Guide <span class="badge">Engine Internals</span></h1>
+      <div class="lead">Architectural specification for engine maintainers, contributors, and AI pair-programmers extending the <code>src/v8/</code> compiler.</div>
+
+      <!-- SECTION 1: THE EVOLUTION FROM V1 TO V8 -->
+      <h2>1. The Architectural Story: From v1 to v8</h2>
+      <p>Transforming complex enterprise payloads (Tally XML, SAP IDocs, SQL hierarchies) often starts with imperative scripts full of nested <code>for</code> loops and mutable object modifications. In production, this approach collapses when encountering optional fields, mixed types, or multi-megabyte payloads.</p>
+
+      <p>Over eight successive major revisions (v1 through v8), <code>@keshavsoft/json-transformer</code> was distilled from experimental prototypes down to a minimal, mathematically pure specification compiler:</p>
+
+      <div class="invariant-grid">
+        <div class="invariant-card">
+          <h3><span>⚡</span> 1.29 KB Minified Bundle</h3>
+          <p>The entire v8 engine compiles to just 1.29 KB of native ES module JavaScript with zero third-party dependencies.</p>
+        </div>
+        <div class="invariant-card">
+          <h3><span>🛡️</span> Pure Functional Invariant</h3>
+          <p><code>(inSource, inRecipe) &rarr; Output JSON</code>. No mutations, no external state, and no side-effects.</p>
+        </div>
+        <div class="invariant-card">
+          <h3><span>📁</span> Architecture as Structure</h3>
+          <p>Zero inline comments. System architecture is conveyed completely by directory hierarchy and semantic naming.</p>
+        </div>
+        <div class="invariant-card">
+          <h3><span>🔒</span> Scoped Execution</h3>
+          <p>Strict parameter envelope: inputs are unpacked immediately to immutable <code>local...</code> constants.</p>
+        </div>
+      </div>
+
+      <!-- SECTION 2: WHY IMPERATIVE CODE FAILS IN ENTERPRISE -->
+      <h2>2. Why Imperative Code Fails During Transfer</h2>
+      <p>When software transfers data from an upstream Data Provider to a downstream Consumer, conventional developers write custom transformation loops. That model carries severe architectural flaws:</p>
+
+      <ul>
+        <li><strong>Tight Coupling:</strong> The mapper tightly couples to the current version of the source schema. A single optional node missing breaks the entire application.</li>
+        <li><strong>Memory Leaks &amp; Side-Effects:</strong> Mutating source objects causes memory leaks and breaks shared caches in high-throughput node servers.</li>
+        <li><strong>Maintenance Drag:</strong> Every new API endpoint requires another handcrafted imperative function.</li>
+      </ul>
+
+      <p><strong>The Solution:</strong> A recursive co-traversal engine where the data shape is navigated declaratively. The engine code never changes; only the JSON recipe adapts.</p>
+
+      <div class="note">
+        <strong>Repository Roadmap:</strong>
+        Explore the four developer modules to understand how v8 guarantees correctness:
+        <ul style="margin-top: 8px; margin-bottom: 0;">
+          <li><a href="invariants.html" style="color: var(--accent-light);"><strong>2. Core Invariants:</strong></a> The non-negotiable rules governing all engine code.</li>
+          <li><a href="pipeline.html" style="color: var(--accent-light);"><strong>3. Traversal Pipeline:</strong></a> How the 5 core modules interact recursively.</li>
+          <li><a href="trace.html" style="color: var(--accent-light);"><strong>4. Trace &amp; Testing:</strong></a> Step-by-step execution walkthrough and container test suite.</li>
+        </ul>
+      </div>
+
+      <div class="page-nav">
+        <span></span>
+        <a href="invariants.html">Next: Core Invariants &rarr;</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

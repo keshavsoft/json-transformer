@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>User Guide — Enterprise Cookbook</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="brand-title">User Guide</a>
+        <div class="brand-subtitle">json-transformer &bull; Recipe Authors</div>
+      </div>
+
+      <div class="nav-hub">
+        <a href="../index.html">&larr; Back to Main Portal</a>
+      </div>
+
+      <div class="nav-label">User Documentation</div>
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link">1. Overview &amp; Story</a></li>
+        <li><a href="directives.html" class="nav-link">2. Directives Toolkit</a></li>
+        <li><a href="examples.html" class="nav-link active">3. Enterprise Cookbook</a></li>
+        <li><a href="playground.html" class="nav-link">4. Live Sandbox 🧪</a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <a href="../developer/index.html">Switch to Developer Guide &rarr;</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <h1>Enterprise Cookbook <span class="badge">Real-World Recipes</span></h1>
+      <div class="lead">Production recipes for reshaping complex Tally ERP, accounting vouchers, and XML exports.</div>
+
+      <!-- RECIPE 1: TALLY STOCK ITEMS & BATCHES -->
+      <h2>Recipe 1: Tally Stock Items &amp; Batch Allocations</h2>
+      <p>When fetching stock items with inventory allocations from TallyPrime, the raw payload contains XML attributes (<code>@_TYPE</code>), text objects (<code>#text</code>), and verbose list keys (<code>BATCHALLOCATIONS.LIST</code>).</p>
+
+      <h3>Source JSON (The Food)</h3>
+      <pre><code>{
+  "STOCKITEM": [
+    {
+      "BASEUNITS": {
+        "#text": "kgs",
+        "@_TYPE": "String"
+      },
+      "@_NAME": "0.09/30mm",
+      "@_RESERVEDNAME": "",
+      "BATCHALLOCATIONS.LIST": {
+        "GODOWNNAME": "Main Location",
+        "BATCHNAME": "Navratan-Rs.1210/-",
+        "OPENINGBALANCE": "-9.250 kgs",
+        "OPENINGVALUE": 11100,
+        "OPENINGRATE": "1200.00/kgs"
+      }
+    }
+  ]
+}</code></pre>
+
+      <h3>Recipe JSON (The Recipe)</h3>
+      <pre><code>{
+  "transform": {
+    "STOCKITEM": {
+      "alterKey": "StockItems",
+      "transform": {
+        "BASEUNITS": {
+          "alterKey": "Units",
+          "valueKey": "#text"
+        },
+        "@_NAME": { "alterKey": "Name" },
+        "@_RESERVEDNAME": { "alterKey": "ReserveName" },
+        "BATCHALLOCATIONS.LIST": {
+          "alterKey": "Batches",
+          "valueType": "array",
+          "transform": {
+            "GODOWNNAME": { "alterKey": "godownName" }
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+
+      <h3>Transformed Output JSON (Consumption)</h3>
+      <pre><code>{
+  "StockItems": [
+    {
+      "Units": "kgs",
+      "Name": "0.09/30mm",
+      "ReserveName": "",
+      "Batches": [
+        {
+          "godownName": "Main Location"
+        }
+      ]
+    }
+  ]
+}</code></pre>
+
+      <!-- RECIPE 2: ACCOUNTING LEDGERS -->
+      <h2>Recipe 2: Accounting Ledgers &amp; Balance Normalization</h2>
+      <p>Extracting closing balances and currency codes from multi-currency ledger dumps:</p>
+
+      <h3>Source JSON</h3>
+      <pre><code>{
+  "LEDGER": [
+    {
+      "NAME": { "#text": "HDFC Bank Account", "@_TYPE": "String" },
+      "PARENT": "Bank Accounts",
+      "CURRENCY": { "#text": "INR", "@_TYPE": "Currency" },
+      "CLOSINGBALANCE": { "#text": "145000.00", "@_TYPE": "Amount" }
+    }
+  ]
+}</code></pre>
+
+      <h3>Recipe JSON</h3>
+      <pre><code>{
+  "transform": {
+    "LEDGER": {
+      "alterKey": "accounts",
+      "transform": {
+        "NAME": { "alterKey": "bankName", "valueKey": "#text" },
+        "PARENT": { "alterKey": "group" },
+        "CURRENCY": { "alterKey": "currency", "valueKey": "#text" },
+        "CLOSINGBALANCE": { "alterKey": "balance", "valueKey": "#text" }
+      }
+    }
+  }
+}</code></pre>
+
+      <div class="page-nav">
+        <a href="directives.html">&larr; Previous: Directives Toolkit</a>
+        <a href="playground.html">Next: Live Sandbox 🧪 &rarr;</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

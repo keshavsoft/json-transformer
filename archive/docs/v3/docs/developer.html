@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>json-transformer — The Developer Guide (Engine Architecture &amp; Internals)</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 8px;
+      border-radius: 12px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .badge-user {
+      background: rgba(46, 160, 67, 0.2);
+      color: #3fb950;
+      border: 1px solid rgba(46, 160, 67, 0.4);
+    }
+    .badge-dev {
+      background: rgba(163, 113, 247, 0.2);
+      color: #d2a8ff;
+      border: 1px solid rgba(163, 113, 247, 0.4);
+    }
+
+    /* Architecture Pipeline Flow */
+    .pipeline-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin: 28px 0;
+    }
+    .pipeline-step {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      position: relative;
+      transition: border-color 0.2s ease;
+    }
+    .pipeline-step:hover {
+      border-color: var(--accent);
+    }
+    .pipeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .pipeline-file {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #79c0ff;
+    }
+    .pipeline-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      background: rgba(110, 118, 129, 0.15);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .pipeline-desc {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    .pipeline-code {
+      margin-bottom: 0;
+    }
+
+    /* Invariant Grid */
+    .invariant-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .invariant-card {
+      background: #090d13;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .invariant-card h3 {
+      font-size: 1rem;
+      color: #ffffff;
+      margin-top: 0;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .invariant-card p {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin-bottom: 0;
+      line-height: 1.5;
+    }
+
+    /* Trace Diagram */
+    .trace-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 28px 0;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: #e6edf3;
+      overflow-x: auto;
+    }
+    .trace-call {
+      color: #79c0ff;
+      font-weight: 600;
+    }
+    .trace-branch {
+      color: #d2a8ff;
+    }
+    .trace-ret {
+      color: #7ee787;
+    }
+    .trace-indent {
+      padding-left: 20px;
+      border-left: 1px dashed var(--border);
+      margin-left: 6px;
+    }
+
+    .note {
+      background: rgba(163, 113, 247, 0.1);
+      border-left: 3px solid #a371f7;
+      padding: 16px 20px;
+      border-radius: 0 6px 6px 0;
+      margin: 24px 0;
+      color: var(--text);
+    }
+    .note strong {
+      color: #d2a8ff;
+      display: block;
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="brand-title">json-transformer</a>
+        <div class="brand-subtitle">v8.0.0 &bull; KeshavSoft</div>
+      </div>
+
+      <div class="nav-label">Documentation Tracks</div>
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link">The Story &amp; Philosophy</a></li>
+        <li><a href="user.html" class="nav-link">For Users (Recipe Authors) <span class="badge badge-user">User</span></a></li>
+        <li><a href="developer.html" class="nav-link active">For Developers (Engine Internals) <span class="badge badge-dev">Dev</span></a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <a href="https://github.com/keshavsoft/json-transformer" target="_blank" rel="noopener">GitHub Repository &rarr;</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <h1>The Developer Guide <span class="badge badge-dev">Core Engine Internals</span></h1>
+      <div class="lead">Architectural specification for engine maintainers, contributors, and AI pair-programmers extending the <code>src/v8/</code> compiler.</div>
+
+      <!-- SECTION 1: THE STORY OF ENGINE EVOLUTION -->
+      <h2>1. The Architectural Story: From v1 to v8</h2>
+      <p>Transforming complex enterprise payloads (Tally XML, SAP IDocs, SQL hierarchies) often starts with imperative scripts full of nested <code>for</code> loops and mutable object modifications. In production, this approach collapses when encountering optional fields, mixed types, or multi-megabyte payloads.</p>
+
+      <p>Over eight successive major revisions (v1 through v8), <code>@keshavsoft/json-transformer</code> was distilled from experimental prototypes down to a minimal, mathematically pure specification compiler:</p>
+
+      <div class="invariant-grid">
+        <div class="invariant-card">
+          <h3><span>⚡</span> 1.2 KB Minified Footprint</h3>
+          <p>The entire v8 engine compiles to just 1.29 KB of native ES module JavaScript with zero third-party dependencies.</p>
+        </div>
+        <div class="invariant-card">
+          <h3><span>🛡️</span> Pure Functional Invariant</h3>
+          <p><code>(inSource, inRecipe) &rarr; Output JSON</code>. No mutations, no external state, and no side-effects.</p>
+        </div>
+        <div class="invariant-card">
+          <h3><span>📁</span> Architecture as Structure</h3>
+          <p>Zero inline comments. System architecture is conveyed completely by directory hierarchy and semantic naming.</p>
+        </div>
+        <div class="invariant-card">
+          <h3><span>🔒</span> Scoped Execution</h3>
+          <p>Strict parameter envelope: inputs are unpacked immediately to immutable <code>local...</code> constants.</p>
+        </div>
+      </div>
+
+      <!-- SECTION 2: THE FOUR INVARIANTS -->
+      <h2>2. The Four Non-Negotiable Invariants</h2>
+      <p>Before modifying any code in <code>src/v8/</code>, every engineer and AI agent must enforce these four principles:</p>
+
+      <h3>Invariant 1: The <code>in</code> &amp; <code>local</code> Parameter Convention</h3>
+      <p>Every function in the engine accepts a single configuration object with <code>in</code>-prefixed keys, and immediately assigns each key to a <code>local</code>-prefixed constant:</p>
+      <pre><code>// CORRECT — Adheres to KeshavSoft convention
+const startFunc = ({ inSource, inRecipe }) => {
+    const localSource = inSource;
+    const localRecipe = inRecipe;
+
+    // Only localSource and localRecipe are referenced below
+    if (Array.isArray(localSource)) {
+        return traverseArray({ inItems: localSource, inRecipe: localRecipe });
+    }
+    ...
+};
+
+// VIOLATION — Never use naked positional arguments
+function startFunc(source, recipe) { ... }</code></pre>
+      <p><strong>Why this rule matters:</strong> It eliminates parameter re-assignment bugs, guarantees parameter immutability, and establishes consistent stack traces across every module.</p>
+
+      <h3>Invariant 2: Absolute Source Immutability</h3>
+      <p><code>inSource</code> belongs to the external data provider. It must <strong>never</strong> be mutated, altered, or augmented in place. The transformed result is constructed fresh as a new object or array. This guarantees that caches, parent references, and upstream callers remain uncorrupted.</p>
+
+      <h3>Invariant 3: Zero Runtime Dependencies</h3>
+      <p>The engine uses pure ECMAScript. No <code>lodash</code>, no <code>ramda</code>, no helper libraries. This guarantees zero supply-chain vulnerabilities, instant load times in browser runtimes, and frictionless integration into edge runtimes (Cloudflare Workers, Deno, Bun).</p>
+
+      <h3>Invariant 4: Zero Code Comments in Core Code</h3>
+      <p>Code intent is expressed through modular directory organization and explicit function names. If a function requires an inline comment to explain what it does, it is refactored into a named submodule instead.</p>
+
+      <!-- SECTION 3: THE PIPELINE ANATOMY -->
+      <h2>3. The Traversal Pipeline Anatomy</h2>
+      <p>The v8 engine consists of five targeted modules working in synchronized harmony:</p>
+
+      <div class="pipeline-grid">
+        <!-- STEP 1: INDEX.JS -->
+        <div class="pipeline-step">
+          <div class="pipeline-header">
+            <span class="pipeline-file">src/v8/index.js</span>
+            <span class="pipeline-tag">Public API Envelope</span>
+          </div>
+          <div class="pipeline-desc">
+            Acts as the consumer-facing boundary. Converts positional arguments <code>(source, recipe)</code> into the internal <code>{ inSource, inRecipe }</code> configuration object and invokes the central dispatcher.
+          </div>
+          <pre class="pipeline-code"><code>import traverse from "./traverse.js";
+
+const transform = (source, recipe) => {
+    const localSource = source;
+    const localRecipe = recipe;
+
+    return traverse({
+        inSource: localSource,
+        inRecipe: localRecipe
+    });
+};
+
+export default transform;</code></pre>
+        </div>
+
+        <!-- STEP 2: TRAVERSE.JS -->
+        <div class="pipeline-step">
+          <div class="pipeline-header">
+            <span class="pipeline-file">src/v8/traverse.js</span>
+            <span class="pipeline-tag">Central Dispatcher</span>
+          </div>
+          <div class="pipeline-desc">
+            The core traffic controller. It inspects the runtime data type of <code>localSource</code>:
+            <ul style="margin-top: 8px; margin-bottom: 8px;">
+              <li>Arrays branch immediately to <code>traverseArray</code>.</li>
+              <li>Objects branch to <code>traverseObject</code>.</li>
+              <li>Primitives (strings, numbers, booleans, null) pass through unchanged.</li>
+            </ul>
+          </div>
+          <pre class="pipeline-code"><code>const startFunc = ({ inSource, inRecipe }) => {
+    const localSource = inSource;
+    const localRecipe = inRecipe;
+
+    if (Array.isArray(localSource)) {
+        return traverseArray({ inItems: localSource, inRecipe: localRecipe });
+    }
+
+    if (typeof localSource === "object" &amp;&amp; localSource !== null) {
+        return traverseObject({ inSource: localSource, inRecipe: localRecipe });
+    }
+
+    return localSource;
+};</code></pre>
+        </div>
+
+        <!-- STEP 3: TRAVERSEOBJECT -->
+        <div class="pipeline-step">
+          <div class="pipeline-header">
+            <span class="pipeline-file">src/v8/traverseObject/index.js</span>
+            <span class="pipeline-tag">The Secret Gatekeeper</span>
+          </div>
+          <div class="pipeline-desc">
+            <strong>The architectural turning point:</strong> How does the engine know whether to reshape an object? It checks the <strong>Recipe</strong>, not the source!
+            If <code>"transform" in localRecipe</code> is true, it enters reshaping mode via <code>ifTransformFound</code>. If absent, child properties continue their traversal unhindered, preventing data loss.
+          </div>
+          <pre class="pipeline-code"><code>let newElement = localSource;
+
+if (localRecipe &amp;&amp; typeof localRecipe === "object" &amp;&amp; "transform" in localRecipe) {
+    newElement = ifTransformFound({
+        inSource: localSource,
+        inTransform: localRecipe.transform
+    });
+}
+
+for (const [key, value] of Object.entries(newElement)) {
+    if (Array.isArray(value) &amp;&amp; localRecipe &amp;&amp; key in localRecipe) {
+        newElement[key] = traverseArray({ inItems: value, inRecipe: localRecipe[key] });
+    }
+}
+
+return newElement;</code></pre>
+        </div>
+
+        <!-- STEP 4: IFTRANSFORMFOUND -->
+        <div class="pipeline-step">
+          <div class="pipeline-header">
+            <span class="pipeline-file">src/v8/ifTransformFound/index.js</span>
+            <span class="pipeline-tag">The Inversion of Control</span>
+          </div>
+          <div class="pipeline-desc">
+            A brilliant role inversion: <code>localSource</code> drives the iteration (no phantom properties created), while <code>localTransform</code> acts as the directive lookup. Keys absent from the recipe are pruned automatically.
+          </div>
+          <pre class="pipeline-code"><code>for (const [key, value] of Object.entries(localSource)) {
+    if (!(key in localTransform)) {
+        continue; // Unacknowledged properties are pruned
+    }
+
+    const directive = localTransform[key];
+    const newKey = directive?.alterKey || key;
+    let processedValue = value;
+
+    if ("transform" in directive) {
+        processedValue = traverse({ inSource: value, inRecipe: directive });
+    }
+
+    if (directive?.valueType === "array" &amp;&amp; !Array.isArray(processedValue)) {
+        processedValue = [processedValue];
+    }
+
+    if (directive?.valueKey &amp;&amp; processedValue &amp;&amp; typeof processedValue === "object") {
+        processedValue = processedValue[directive.valueKey];
+    }
+
+    newElement[newKey] = processedValue;
+}</code></pre>
+        </div>
+
+        <!-- STEP 5: TRAVERSEARRAY -->
+        <div class="pipeline-step">
+          <div class="pipeline-header">
+            <span class="pipeline-file">src/v8/traverseArray/index.js</span>
+            <span class="pipeline-tag">Collection Processor</span>
+          </div>
+          <div class="pipeline-desc">
+            Maps every array element recursively through <code>traverse</code>, flattens deep sub-arrays with <code>.flat(Infinity)</code>, and strips empty/falsy residues with <code>.filter(Boolean)</code>.
+          </div>
+          <pre class="pipeline-code"><code>const startFunc = ({ inItems, inRecipe }) => {
+    const localItems = inItems;
+    const localRecipe = inRecipe;
+
+    return localItems
+        .map((item) => traverse({ inSource: item, inRecipe: localRecipe }))
+        .flat(Infinity)
+        .filter(Boolean);
+};</code></pre>
+        </div>
+      </div>
+
+      <!-- SECTION 4: CALL STACK & TRACE -->
+      <h2>4. Execution Trace Walkthrough</h2>
+      <p>Here is what happens inside the engine when processing a Tally stock item:</p>
+
+      <div class="trace-container">
+<span class="trace-call">1. transform(food, recipe)</span>
+<div class="trace-indent">
+  &rarr; Enters <span class="trace-call">traverse({ inSource, inRecipe })</span>
+  <div class="trace-indent">
+    &rarr; Type is Object: Enters <span class="trace-call">traverseObject</span>
+    <div class="trace-indent">
+      &rarr; Recipe has "transform": Enters <span class="trace-call">ifTransformFound</span>
+      <div class="trace-indent">
+        &bull; Matches key "STOCKITEM" &rarr; has nested "transform"<br>
+        &bull; Recurses to <span class="trace-call">traverse({ inSource: STOCKITEM, inRecipe: directive })</span><br>
+        <div class="trace-indent">
+          &rarr; Type is Array: Enters <span class="trace-call">traverseArray</span><br>
+          <div class="trace-indent">
+            &bull; Maps item #0 &rarr; <span class="trace-call">traverse({ inSource: item[0], inRecipe })</span><br>
+            &bull; Applies <code>alterKey: "Name"</code> &rarr; outputs clean name<br>
+            &bull; Applies <code>valueKey: "#text"</code> to BASEUNITS &rarr; extracts "kgs"<br>
+            &bull; Applies <code>valueType: "array"</code> to BATCHALLOCATIONS.LIST &rarr; returns clean array
+          </div>
+          <span class="trace-ret">&larr; Returns mapped &amp; filtered array</span>
+        </div>
+      </div>
+      <span class="trace-ret">&larr; Constructs new root object</span>
+    </div>
+  </div>
+  <span class="trace-ret">&larr; Returns final reshaped JSON output</span>
+</div>
+      </div>
+
+      <!-- SECTION 5: ENTERPRISE XML & TALLY QUIRKS -->
+      <h2>5. Enterprise XML &amp; Tally Quirks Handled by Design</h2>
+      <p>The architecture inherently neutralizes real-world enterprise edge cases:</p>
+      <ul>
+        <li><strong>Literal Dotted Keys:</strong> Tally exports often contain literal dots in property names, such as <code>BATCHALLOCATIONS.LIST</code> or <code>LEDGERNAME.#text</code>. Because <code>ifTransformFound</code> uses direct property indexing (<code>localTransform[key]</code>), literal dotted keys match without ambiguous path splitting.</li>
+        <li><strong>Single-Item Object / Array Inconsistency:</strong> XML parsers turn multiple child tags into an Array, but a single child tag into a plain Object. The <code>valueType: "array"</code> directive guarantees downstream consistency regardless of incoming cardinality.</li>
+        <li><strong>Deep Tree Cleanliness:</strong> Unwanted metadata attributes (e.g. <code>@_TYPE="String"</code>, <code>@_RESERVEDNAME=""</code>) are naturally pruned because they are never listed in the recipe.</li>
+      </ul>
+
+      <!-- SECTION 6: DEVELOPMENT & VERIFICATION WORKFLOW -->
+      <h2>6. Engine Development &amp; Test Workflow</h2>
+      <p>When developing or validating engine modifications, use the containerized test suite:</p>
+
+      <h3>1. Run Real-World Enterprise Samples (Zero-dependency test)</h3>
+      <pre><code># Inside container or via wslc:
+wslc exec node-dev node samples/6oct/batches/index.js
+
+# Or test the simple sample:
+wslc exec node-dev node samples/new/simple/index.js</code></pre>
+
+      <h3>2. Build the Production Bundle</h3>
+      <pre><code>wslc exec node-dev npm --prefix /workspace/json-transformer run build</code></pre>
+      <p>This generates the production bundle at <code>docs/dist/v8/min.js</code> and copies it to <code>docs/dist/min.js</code>.</p>
+
+      <div class="page-nav">
+        <a href="user.html">&larr; Previous: For Users (Recipe Authors)</a>
+        <a href="index.html">Back to Start: The Story &amp; Philosophy &rarr;</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
