@@ -34,13 +34,13 @@
 
     <main class="content">
       <h1>Traversal Pipeline <span class="badge">Engine Anatomy</span></h1>
-      <div class="lead">Deep architectural breakdown of the five modules comprising the <code>src/v8/</code> co-traversal engine.</div>
+      <div class="lead">Deep architectural breakdown of the core modules comprising the <code>src/v9/</code> co-traversal engine.</div>
 
       <div class="pipeline-grid">
         <!-- 1. INDEX.JS -->
         <div class="pipeline-step">
           <div class="pipeline-header">
-            <span class="pipeline-file">src/v8/index.js</span>
+            <span class="pipeline-file">src/v9/index.js</span>
             <span class="pipeline-tag">Public API Envelope</span>
           </div>
           <div class="pipeline-desc">
@@ -64,7 +64,7 @@ export default transform;</code></pre>
         <!-- 2. TRAVERSE.JS -->
         <div class="pipeline-step">
           <div class="pipeline-header">
-            <span class="pipeline-file">src/v8/traverse.js</span>
+            <span class="pipeline-file">src/v9/traverse.js</span>
             <span class="pipeline-tag">Central Dispatcher</span>
           </div>
           <div class="pipeline-desc">
@@ -94,7 +94,7 @@ export default transform;</code></pre>
         <!-- 3. TRAVERSEOBJECT -->
         <div class="pipeline-step">
           <div class="pipeline-header">
-            <span class="pipeline-file">src/v8/traverseObject/index.js</span>
+            <span class="pipeline-file">src/v9/traverseObject/index.js</span>
             <span class="pipeline-tag">The Secret Gatekeeper</span>
           </div>
           <div class="pipeline-desc">
@@ -121,42 +121,40 @@ return newElement;</code></pre>
         <!-- 4. IFTRANSFORMFOUND -->
         <div class="pipeline-step">
           <div class="pipeline-header">
-            <span class="pipeline-file">src/v8/ifTransformFound/index.js</span>
-            <span class="pipeline-tag">The Inversion of Control</span>
+            <span class="pipeline-file">src/v9/ifTransformFound/index.js</span>
+            <span class="pipeline-tag">Orchestrated Function Pipeline</span>
           </div>
           <div class="pipeline-desc">
-            <code>localSource</code> drives the iteration (preventing phantom properties), while <code>localTransform</code> acts as the directive lookup. Directives execute in strict order:
-            <code>alterKey</code> &rarr; recursive <code>transform</code> &rarr; <code>valueType</code> &rarr; <code>valueKey</code>.
+            Rather than a monolithic loop, <code>v9</code> decomposes property transformation into four pure, single-purpose functions. The orchestrator drives iteration from <code>localSource</code>, executing each stage in clean sequence:
           </div>
           <pre class="pipeline-code"><code>for (const [key, value] of Object.entries(localSource)) {
-    if (!(key in localTransform)) {
-        continue; // Unacknowledged properties are pruned
-    }
+    if (!(key in localTransform)) continue;
 
     const directive = localTransform[key];
-    const newKey = directive?.alterKey || key;
+    const newKey = resolveKey({ inKey: key, inDirective: directive });
+
     let processedValue = value;
-
-    if ("transform" in directive) {
-        processedValue = traverse({ inSource: value, inRecipe: directive });
-    }
-
-    if (directive?.valueType === "array" &amp;&amp; !Array.isArray(processedValue)) {
-        processedValue = [processedValue];
-    }
-
-    if (directive?.valueKey &amp;&amp; processedValue &amp;&amp; typeof processedValue === "object") {
-        processedValue = processedValue[directive.valueKey];
-    }
+    processedValue = applyTransform({ inValue: processedValue, inDirective: directive });
+    processedValue = normalizeValueType({ inValue: processedValue, inDirective: directive });
+    processedValue = extractValueKey({ inValue: processedValue, inDirective: directive });
 
     newElement[newKey] = processedValue;
 }</code></pre>
+          <div class="pipeline-desc" style="margin-top: 12px; font-size: 0.88rem;">
+            <strong>Submodules in <code>src/v9/ifTransformFound/</code>:</strong>
+            <ul style="margin: 6px 0 0 18px; line-height: 1.6;">
+              <li><code>resolveKey/index.js</code> &mdash; Resolves <code>alterKey || key</code>.</li>
+              <li><code>applyTransform/index.js</code> &mdash; Recurses into child recipes via <code>traverse</code>.</li>
+              <li><code>normalizeValueType/index.js</code> &mdash; Normalizes single objects to arrays when <code>valueType === "array"</code>.</li>
+              <li><code>extractValueKey/index.js</code> &mdash; Unwraps XML metadata/text wrappers (<code>valueKey</code>).</li>
+            </ul>
+          </div>
         </div>
 
         <!-- 5. TRAVERSEARRAY -->
         <div class="pipeline-step">
           <div class="pipeline-header">
-            <span class="pipeline-file">src/v8/traverseArray/index.js</span>
+            <span class="pipeline-file">src/v9/traverseArray/index.js</span>
             <span class="pipeline-tag">Collection Processor</span>
           </div>
           <div class="pipeline-desc">

@@ -46,6 +46,51 @@
       margin: 32px 0;
     }
 
+    h2 {
+      font-size: 1.6rem;
+      color: #ffffff;
+      margin: 48px 0 20px 0;
+      padding-top: 28px;
+      border-top: 1px solid #30363d;
+    }
+
+    pre {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 18px 22px;
+      overflow-x: auto;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.92rem;
+      line-height: 1.55;
+      margin: 20px 0 28px 0;
+      color: #e6edf3;
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.9em;
+      background: rgba(110, 118, 129, 0.2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #79c0ff;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+
+    ul, ol {
+      margin: 0 0 24px 24px;
+      color: #e6edf3;
+    }
+
+    li {
+      margin-bottom: 10px;
+    }
+
     p.footer-links {
       margin-top: 48px;
       padding-top: 24px;
@@ -111,6 +156,117 @@
 
   <p>
     The function stays small, the parameters stay minimal, and the traversal engine never has to change.
+  </p>
+
+  <h2>The Transformation Function: How It Is Defined and How It Should Be Built</h2>
+
+  <p>
+    If the engine exists to run functions, <strong>how should a transformation function itself be defined?</strong>
+  </p>
+
+  <p>
+    In enterprise systems, transformation functions must obey strict invariants:
+  </p>
+
+  <ol>
+    <li>
+      <strong>Single Configuration Input (<code>in...</code> convention):</strong> A function must never accept loose positional parameters. It accepts a single named configuration object whose keys are prefixed with <code>in</code> (e.g. <code>{ inValue, inDirective }</code>).
+    </li>
+    <li>
+      <strong>Immediate Local Assignment (<code>local...</code> convention):</strong> The top line of the function must unpack every input into an immutable local variable (e.g. <code>const localValue = inValue;</code>). This guarantees parameter immutability and instant visual traceability.
+    </li>
+    <li>
+      <strong>Pure Single Responsibility:</strong> One function does exactly one job. It never mixes key renaming, type coercion, recursion, and field extraction into a monolithic blob.
+    </li>
+  </ol>
+
+  <h2>A Real-World Story: Normalizing the Company Tree</h2>
+
+  <p>
+    Consider an upstream accounting service that returns an enterprise company node:
+  </p>
+
+  <pre><code>// Source Data (The Food)
+{
+  "COMPANY": {
+    "@_NAME": "mani9",
+    "@_RESERVEDNAME": ""
+  }
+}</code></pre>
+
+  <p>
+    Downstream client systems expect two critical guarantees:
+  </p>
+  <ul>
+    <li><strong>Cardinality Normalization:</strong> The company value must be an <strong>array</strong>, because downstream consumers treat companies as a collection.</li>
+    <li><strong>Key Normalization:</strong> The root key must be idiomatic <code>Companies</code>, and XML metadata keys like <code>@_NAME</code> must become <code>Name</code>.</li>
+  </ul>
+
+  <p>
+    Traditional code would write a 40-line imperative function full of <code>if (Array.isArray)</code>, <code>Object.keys()</code>, and mutations. In <code>json-transformer</code>, the transformation story is told declaratively with small functions:
+  </p>
+
+  <pre><code>// Transformation Recipe
+{
+  "transform": {
+    "COMPANY": {
+      "alterKey": "Companies",
+      "valueType": "array"
+    }
+  },
+  "Companies": {
+    "transform": {
+      "@_NAME": { "alterKey": "Name" },
+      "@_RESERVEDNAME": { "alterKey": "ReserveName" }
+    }
+  }
+}</code></pre>
+
+  <h2>Behind the Scenes: The Orchestrated Function Pipeline</h2>
+
+  <p>
+    Inside the engine (<code>src/v9/ifTransformFound</code>), instead of a bloated loop, each field passes through a pipeline of dedicated, single-purpose functions:
+  </p>
+
+  <pre><code>// src/v9/ifTransformFound/index.js
+const directive = localTransform[key];
+
+const newKey = resolveKey({ inKey: key, inDirective: directive });
+
+let processedValue = value;
+processedValue = applyTransform({ inValue: processedValue, inDirective: directive });
+processedValue = normalizeValueType({ inValue: processedValue, inDirective: directive });
+processedValue = extractValueKey({ inValue: processedValue, inDirective: directive });
+
+newElement[newKey] = processedValue;</code></pre>
+
+  <p>
+    Notice how readable the story becomes:
+  </p>
+
+  <ul>
+    <li><code>resolveKey</code>: Takes <code>inKey</code> and <code>inDirective</code> &rarr; decides the new property name (<code>Companies</code>).</li>
+    <li><code>applyTransform</code>: If a nested recipe exists &rarr; recurses cleanly through <code>traverse</code>.</li>
+    <li><code>normalizeValueType</code>: If <code>valueType === "array"</code> &rarr; wraps the object into a guaranteed array <code>[{ ... }]</code>.</li>
+    <li><code>extractValueKey</code>: If <code>valueKey</code> is specified &rarr; unwraps child XML text.</li>
+  </ul>
+
+  <p>
+    The result is clean, predictable, and pure:
+  </p>
+
+  <pre><code>// Result JSON
+{
+  "Companies": [
+    {
+      "Name": "mani9",
+      "ReserveName": ""
+    }
+  ]
+}</code></pre>
+
+  <p>
+    The engine orchestrates; the small functions execute. That is the complete story of the transformation function.
   </p>
 
   <p class="footer-links">

@@ -57,7 +57,7 @@ There is a fundamental architectural reason:
 
 ## How It Works: The Traversal Pipeline
 
-Under the hood in `v8`, the traversal follows a strict, predictable sequence:
+Under the hood in `v9`, the traversal follows a strict, predictable sequence:
 
 ### 1. Central Dispatcher (`traverse.js`)
 The engine inspects the input:
@@ -79,18 +79,29 @@ if (localRecipe && typeof localRecipe === "object" && "transform" in localRecipe
 
 The engine queries the recipe: *"Do you have instructions for this level?"* If `"transform"` exists, it delegates to `ifTransformFound`.
 
-### 3. Iteration in `ifTransformFound`
+### 3. Orchestrated Execution in `ifTransformFound`
 Here, the roles flip:
 - `localSource` becomes the **Source of Truth** that drives the loop (`Object.entries(localSource)`).
 - `localTransform` acts strictly as the **Lookup Table** for instructions.
 
-For every key in `localSource`:
-- If the key is not in `localTransform`, it is ignored.
-- If the key has directives:
-  - `alterKey`: Renames the key on the output object.
-  - `transform`: Recursively invokes `traverse` on nested values.
-  - `valueType: "array"`: Ensures the output is an array.
-  - `valueKey`: Extracts a specific child property value.
+Instead of a monolithic loop, `v9` runs a pipeline of four dedicated, single-purpose functions:
+
+```javascript
+const directive = localTransform[key];
+const newKey = resolveKey({ inKey: key, inDirective: directive });
+
+let processedValue = value;
+processedValue = applyTransform({ inValue: processedValue, inDirective: directive });
+processedValue = normalizeValueType({ inValue: processedValue, inDirective: directive });
+processedValue = extractValueKey({ inValue: processedValue, inDirective: directive });
+
+newElement[newKey] = processedValue;
+```
+
+- **`resolveKey`**: Resolves `alterKey || key`.
+- **`applyTransform`**: Recursively invokes `traverse` on nested values when `"transform"` is present.
+- **`normalizeValueType`**: Enforces array normalization (`valueType: "array"`) for singleton objects when downstream consumers expect arrays (e.g., `COMPANY` $\rightarrow$ `Companies: [ { ... } ]`).
+- **`extractValueKey`**: Extracts child properties or strips XML metadata text wrappers (`valueKey`).
 
 ---
 

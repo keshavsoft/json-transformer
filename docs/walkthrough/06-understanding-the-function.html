@@ -162,9 +162,27 @@ FUNCTION
    ↓
 Application behavior executed</code></pre>
 
+      <h2>8. The Production Transformation Function: The <code>in</code> / <code>local</code> Pipeline</h2>
+      <p>
+        In production systems, this leaf-function mental model evolves into the modular <strong>Transformation Function</strong> pipeline:
+      </p>
+
+      <ul>
+        <li><strong>Strict Input Envelope:</strong> All transformation functions accept a single named object with <code>in</code>-prefixed keys (e.g. <code>{ inValue, inDirective }</code>).</li>
+        <li><strong>Immutable Local Scope:</strong> The top line unrolls inputs into <code>local...</code> constants to eliminate parameter reassignment bugs.</li>
+        <li><strong>Composed Responsibility:</strong> Instead of writing monolithic transformation blobs, each step is its own micro-function:
+          <ol style="margin-top: 8px;">
+            <li><code>resolveKey</code> &mdash; computes output property names (<code>alterKey</code>).</li>
+            <li><code>applyTransform</code> &mdash; traverses nested recipes recursively.</li>
+            <li><code>normalizeValueType</code> &mdash; ensures singleton objects become arrays (<code>valueType: "array"</code>) when downstream consumers require list semantics.</li>
+            <li><code>extractValueKey</code> &mdash; strips XML wrappers (<code>valueKey</code>).</li>
+          </ol>
+        </li>
+      </ul>
+
       <div class="note">
         <strong>You have completed the Conceptual Walkthrough!</strong><br>
-        Now that you understand the foundational mental model, dive into the production User Guide to learn the full directive toolkit and try out the live interactive playground.
+        Now that you understand how external traversal drives focused transformation functions, explore the production User Guide and Developer Guide to see this pipeline in action.
       </div>
 
       <div class="page-nav">
