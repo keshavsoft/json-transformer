@@ -1,0 +1,30 @@
+{
+    "transform": {
+        "STOCKITEM": {
+            "alterKey": "StockItems"
+        }
+    },
+    "StockItems": {
+        "transform": {
+            "@_NAME": {
+                "alterKey": "Name"
+            },
+            "@_RESERVEDNAME": {
+                "alterKey": "ReserveName"
+            },
+            "BASEUNITS": {
+                "alterKey": "Units",
+                "valueKey": "#text"
+            },
+            "BATCHALLOCATIONS.LIST": {
+                "alterKey": "Batches",
+                "valueType": "array",
+                "transform": {
+                    "GODOWNNAME": {
+                        "alterKey": "godownName"
+                    }
+                }
+            }
+        }
+    }
+}
