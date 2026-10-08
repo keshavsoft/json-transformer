@@ -22,6 +22,9 @@
                 "transform": {
                     "GODOWNNAME": {
                         "alterKey": "godownName"
+                    },
+                    "BATCHNAME": {
+                        "alterKey": "BatchName"
                     }
                 }
             }
