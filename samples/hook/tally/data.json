@@ -1,0 +1,14 @@
+{
+    "transform": {
+        "tally": {
+            "transform": {
+                "company": {
+                    "transform": {
+                        "fetch": "",
+                        "hook": "function"
+                    }
+                }
+            }
+        }
+    }
+}

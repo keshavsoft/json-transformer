@@ -6,10 +6,13 @@ import data from "./data.json" with {type: 'json'};
 const start = () => {
   try {
     let specAsJsonToDom = buildSpecElement(structure, data);
+    const hookFunc = specAsJsonToDom.tally.company.hook;
 
-    // console.log("0 : ", specAsJsonToDom);
+    hookFunc();
+    // console.log("---------ouput  ", specAsJsonToDom.tally.company.hook);
+
+
     // console.log("1 : ", specAsJsonToDom.StockItems[0].Batches);
-
   } catch (err) {
     console.log("error : ", err);
   };
