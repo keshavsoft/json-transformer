@@ -1,0 +1,18 @@
+{
+  "transform": {
+    "COMPANY": {
+      "alterKey": "Companies",
+      "valueType": "array"
+    }
+  },
+  "Companies": {
+    "transform": {
+      "@_NAME": {
+        "alterKey": "Name"
+      },
+      "@_RESERVEDNAME": {
+        "alterKey": "ReserveName"
+      }
+    }
+  }
+}
