@@ -7,8 +7,8 @@ const start = () => {
   try {
     let specAsJsonToDom = buildSpecElement(structure, data);
 
-    // console.log("0 : ", specAsJsonToDom);
-    // console.log("1 : ", specAsJsonToDom.StockItems[0].Batches);
+    console.log("0 : ", specAsJsonToDom);
+    console.log("1 : ", specAsJsonToDom.StockItems[0].Batches);
 
   } catch (err) {
     console.log("error : ", err);
