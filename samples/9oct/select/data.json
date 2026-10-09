@@ -1,0 +1,28 @@
+{
+  "transform": {
+    "tagName": "",
+    "attributes": "",
+    "children": ""
+  },
+  "operation": {
+    "children": {
+      "operationType": "loopArray",
+      "arrayData": [
+        {
+          "tagName": "option",
+          "attributes": {
+            "value": "kehav"
+          },
+          "textContent": "keshav"
+        },
+        {
+          "tagName": "option",
+          "attributes": {
+            "value": "charan"
+          },
+          "textContent": "charan"
+        }
+      ]
+    }
+  }
+}

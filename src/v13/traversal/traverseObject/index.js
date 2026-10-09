@@ -1,20 +1,16 @@
-import ifTransformFound from "../ifTransformFound/index.js";
 import traverseArray from "../traverseArray/index.js";
 
-const showLog = false;
-
-const startFunc = ({ inSource, inRecipe }) => {
+const startFunc = ({ inSource, inRecipe, inExecute }) => {
     const localSource = inSource;
     const localRecipe = inRecipe;
-
-    if (showLog) console.log("traverseObject : ", localSource, localRecipe);
+    const localExecute = inExecute;
 
     let newElement = localSource;
 
-    if (localRecipe && typeof localRecipe === "object" && "transform" in localRecipe) {
-        newElement = ifTransformFound({
+    if (typeof localExecute === "function") {
+        newElement = localExecute({
             inSource: localSource,
-            inTransform: localRecipe.transform
+            inRecipe: localRecipe
         });
     }
 
@@ -22,7 +18,8 @@ const startFunc = ({ inSource, inRecipe }) => {
         if (Array.isArray(value) && localRecipe && key in localRecipe) {
             newElement[key] = traverseArray({
                 inItems: value,
-                inRecipe: localRecipe[key]
+                inRecipe: localRecipe[key],
+                inExecute: localExecute
             });
         }
     }
