@@ -1,0 +1,17 @@
+{
+  "transform": {
+    "children": ""
+  },
+  "operation": {
+    "children": {
+      "operationType": "loopArray",
+      "template": {
+        "tagName": "option",
+        "attributes": {
+          "value": "${}"
+        },
+        "textContent": "${}"
+      }
+    }
+  }
+}
