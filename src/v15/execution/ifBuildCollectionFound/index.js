@@ -3,6 +3,23 @@ const keyName = "buildCollection";
 const buildRow = ({ inSource, inTemplate }) => {
     const localSource = inSource;
 
+    return localSource.map(element => {
+        const loopInsideBuild = structuredClone(inTemplate?.row);
+
+        const loopInsideArray = buildCell({
+            inSource: element,
+            inTemplate: inTemplate?.cell
+        });
+
+        loopInsideBuild.children = loopInsideArray;
+
+        return loopInsideBuild;
+    });
+};
+
+const buildCell = ({ inSource, inTemplate }) => {
+    const localSource = inSource;
+
     // console.log("localBuildObject : ", localSource, inTemplate);
 
     let loopInsideArray = [];
@@ -25,7 +42,7 @@ const startFunc = ({ inSource, inBuild, inExecute }) => {
     for (const [key, value] of Object.entries(localBuild)) {
         const loopInsideArray = buildRow({
             inSource: localSource[key],
-            inTemplate: value?.cell
+            inTemplate: value
         });
 
         localSource[key] = loopInsideArray;

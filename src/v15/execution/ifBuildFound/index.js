@@ -21,7 +21,7 @@ const startFunc = ({ inSource, inBuild, inExecute }) => {
     const localSource = structuredClone(inSource);
     const localBuild = structuredClone(inBuild);
     const localExecute = inExecute;
-    console.log("aaaaaaaaa : ", localSource, localBuild);
+    // console.log("aaaaaaaaa : ", localSource, localBuild);
 
     for (const [key, value] of Object.entries(localBuild)) {
         const loopInsideArray = buildRow({
