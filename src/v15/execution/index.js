@@ -3,6 +3,7 @@ import ifOperationFound from "./ifOperationFound/index.js";
 import ifBuildFound from "./ifBuildFound/index.js";
 import ifBuildCollectionFound from "./ifBuildCollectionFound/index.js";
 import ifBuildArrayFound from "./ifBuildArrayFound/index.js";
+import ifBuildBodyFound from "./ifBuildBodyFound/index.js";
 
 const showLogs = false;
 
@@ -60,6 +61,16 @@ const startFunc = ({ inSource, inRecipe }) => {
         const fromBuildCollection = ifBuildArrayFound({
             inSource: localSource,
             inBuild: localRecipe?.buildArray,
+            inExecute: startFunc
+        });
+        // console.log("fromBuildCollection : ", fromBuildCollection);
+        localSource = fromBuildCollection;
+    };
+
+    if (localRecipe && typeof localRecipe === "object" && "buildBody" in localRecipe) {
+        const fromBuildCollection = ifBuildBodyFound({
+            inSource: localSource,
+            inBuild: localRecipe?.buildBody,
             inExecute: startFunc
         });
         // console.log("fromBuildCollection : ", fromBuildCollection);

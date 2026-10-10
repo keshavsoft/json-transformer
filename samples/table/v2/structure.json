@@ -1,0 +1,10 @@
+{
+    "columns": [
+        {
+            "columnName": "itemName"
+        },
+        {
+            "columnName": "reservedName"
+        }
+    ]
+}
