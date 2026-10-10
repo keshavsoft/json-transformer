@@ -4,6 +4,8 @@ import ifBuildFound from "./ifBuildFound/index.js";
 import ifBuildCollectionFound from "./ifBuildCollectionFound/index.js";
 import ifBuildArrayFound from "./ifBuildArrayFound/index.js";
 import ifBuildBodyFound from "./ifBuildBodyFound/index.js";
+import objectToArray from "./objectToArray/index.js";
+import ifSpecFound from "./ifSpecFound/index.js";
 
 const showLogs = false;
 
@@ -75,6 +77,26 @@ const startFunc = ({ inSource, inRecipe }) => {
         });
         // console.log("fromBuildCollection : ", fromBuildCollection);
         localSource = fromBuildCollection;
+    };
+
+    if (localRecipe && typeof localRecipe === "object" && "objectToArray" in localRecipe) {
+        const fromBuildCollection = objectToArray({
+            inSource: localSource,
+            inBuild: localRecipe?.objectToArray,
+            inExecute: startFunc
+        });
+        // console.log("fromBuildCollection : ", fromBuildCollection);
+        localSource = fromBuildCollection;
+    };
+
+    if (localRecipe && typeof localRecipe === "object" && "spec" in localRecipe) {
+        const fromSpec = ifSpecFound({
+            inSource: localSource,
+            inTransform: localRecipe?.spec,
+            inExecute: startFunc
+        });
+        // console.log("fromBuildCollection : ", fromBuildCollection);
+        localSource = fromSpec;
     };
 
     return localSource;
