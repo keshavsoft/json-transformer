@@ -1,6 +1,7 @@
 import ifTransformFound from "./ifTransformFound/index.js";
 import ifOperationFound from "./ifOperationFound/index.js";
 import ifBuildFound from "./ifBuildFound/index.js";
+import ifBuildCollectionFound from "./ifBuildCollectionFound/index.js";
 
 const showLogs = false;
 
@@ -8,7 +9,7 @@ const startFunc = ({ inSource, inRecipe }) => {
     let localSource = inSource;
     const localRecipe = inRecipe;
 
-    console.log("1111111 : ", inSource, inRecipe);
+    // console.log("start : ", inSource, inRecipe);
 
     if (showLogs) {
         console.log("execution", localSource, localRecipe);
@@ -42,6 +43,16 @@ const startFunc = ({ inSource, inRecipe }) => {
         });
 
         localSource = fromOperation;
+    };
+
+    if (localRecipe && typeof localRecipe === "object" && "buildCollection" in localRecipe) {
+        const fromBuildCollection = ifBuildCollectionFound({
+            inSource: localSource,
+            inBuild: localRecipe?.buildCollection,
+            inExecute: startFunc
+        });
+        // console.log("fromBuildCollection : ", fromBuildCollection);
+        localSource = fromBuildCollection;
     };
 
     return localSource;

@@ -1,11 +1,14 @@
 {
     "buildCollection": {
-        "Rows": "---"
-    },
-    "Rows": {
-        "buildCollection": {
-            "tagName": "td",
-            "textContent": "${}"
+        "Rows": {
+            "row": {
+                "tagName": "tr",
+                "textContent": "${}"
+            },
+            "cell": {
+                "tagName": "td",
+                "textContent": "${}"
+            }
         }
     }
 }
