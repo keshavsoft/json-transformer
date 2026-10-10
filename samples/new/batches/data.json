@@ -1,7 +1,8 @@
 {
     "transform": {
         "STOCKITEM": {
-            "alterKey": "StockItems"
+            "alterKey": "StockItems",
+            "valueType": "array"
         }
     },
     "StockItems": {
@@ -22,6 +23,18 @@
                 "transform": {
                     "GODOWNNAME": {
                         "alterKey": "godownName"
+                    },
+                    "BATCHNAME": {
+                        "alterKey": "BatchName"
+                    },
+                    "OPENINGBALANCE": {
+                        "alterKey": "OpeningBalance"
+                    },
+                    "OPENINGVALUE": {
+                        "alterKey": "OpeningValue"
+                    },
+                    "OPENINGRATE": {
+                        "alterKey": "OpeningRate"
                     }
                 }
             }

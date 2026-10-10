@@ -1,0 +1,11 @@
+{
+    "buildCollection": {
+        "Rows": "---"
+    },
+    "Rows": {
+        "buildCollection": {
+            "tagName": "td",
+            "textContent": "${}"
+        }
+    }
+}

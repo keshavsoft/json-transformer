@@ -1,11 +1,14 @@
 import ifTransformFound from "./ifTransformFound/index.js";
 import ifOperationFound from "./ifOperationFound/index.js";
+import ifBuildFound from "./ifBuildFound/index.js";
 
 const showLogs = false;
 
 const startFunc = ({ inSource, inRecipe }) => {
     let localSource = inSource;
     const localRecipe = inRecipe;
+
+    console.log("1111111 : ", inSource, inRecipe);
 
     if (showLogs) {
         console.log("execution", localSource, localRecipe);
@@ -25,6 +28,16 @@ const startFunc = ({ inSource, inRecipe }) => {
         const fromOperation = ifOperationFound({
             inSource: localSource,
             inOperation: localRecipe.operation,
+            inExecute: startFunc
+        });
+
+        localSource = fromOperation;
+    };
+
+    if (localRecipe && typeof localRecipe === "object" && "build" in localRecipe) {
+        const fromOperation = ifBuildFound({
+            inSource: localSource,
+            inBuild: localRecipe,
             inExecute: startFunc
         });
 
