@@ -1,0 +1,13 @@
+{
+    "buildArray": {
+        "Rows": {
+            "row": {
+                "tagName": "tr"
+            },
+            "cell": {
+                "tagName": "th",
+                "textContent": "${}"
+            }
+        }
+    }
+}
