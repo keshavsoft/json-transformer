@@ -1,9 +1,6 @@
 {
     "build": {
-        "Row": "---"
-    },
-    "Row": {
-        "build": {
+        "Row": {
             "tagName": "td",
             "textContent": "${}"
         }

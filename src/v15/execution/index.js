@@ -38,7 +38,7 @@ const startFunc = ({ inSource, inRecipe }) => {
     if (localRecipe && typeof localRecipe === "object" && "build" in localRecipe) {
         const fromOperation = ifBuildFound({
             inSource: localSource,
-            inBuild: localRecipe,
+            inBuild: localRecipe?.build,
             inExecute: startFunc
         });
 
